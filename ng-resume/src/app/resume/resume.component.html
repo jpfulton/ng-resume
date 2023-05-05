@@ -4,6 +4,12 @@
     </section>
     <section>
         <h2>Work Experience</h2>
+
+        <component-work-history-item 
+            *ngFor="let workHistory of workHistoryList"
+            [workHistory]="workHistory">
+        </component-work-history-item>
+
     </section>
     <section>
         <h2>Education and Certification</h2>

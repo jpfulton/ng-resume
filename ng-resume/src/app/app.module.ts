@@ -7,7 +7,7 @@ import { ResumeComponent } from "./resume/resume.component";
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
     ],
     providers: [],
     bootstrap: [AppComponent],
