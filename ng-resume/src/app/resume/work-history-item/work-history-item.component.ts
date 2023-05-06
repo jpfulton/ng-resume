@@ -13,15 +13,4 @@ import { WorkHistory } from '../models/workhistory';
 })
 export class WorkHistoryItemComponent {
   @Input() workHistory!: WorkHistory;
-  /*workHistory: WorkHistory = {
-    startYear: 2000,
-    endYear: 2010,
-    title: 'Job Title',
-    organization: 'Example Company',
-    organizationURL: new URL('https://www.google.com/'),
-    bullets: [
-      'Example accomplishment one.',
-      'Example accomplishment two.',
-    ]
-  };*/
 }
