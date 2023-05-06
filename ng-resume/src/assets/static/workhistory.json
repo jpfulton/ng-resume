@@ -1,0 +1,24 @@
+[
+    {
+        "startYear": 2000,
+        "endYear": 2002,
+        "organization": "Org One",
+        "organizationURL": "https://www.google.com",
+        "title": "Title One",
+        "bullets": [
+            "Accomplishment A",
+            "Accomplishment B"
+        ]
+    },
+    {
+        "startYear": 2002,
+        "endYear": 2006,
+        "organization": "Org Two",
+        "organizationURL": "https://www.google.com",
+        "title": "Title Two",
+        "bullets": [
+            "Accomplishment A1",
+            "Accomplishment B1"
+        ]
+    }
+]
