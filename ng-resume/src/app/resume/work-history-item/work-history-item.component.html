@@ -1,0 +1,14 @@
+<div>
+    <div>{{workHistory.startYear}} - {{workHistory.endYear}}</div>
+    <div class="card">
+        <div class="card-header">{{workHistory.organization}}</div>
+        <div class="card-body">
+            <h5 class="card-title">{{workHistory.title}}</h5>
+            <div class="card-text">
+                <ul>
+                    <li *ngFor="let bullet of workHistory.bullets">{{bullet}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
