@@ -5,4 +5,5 @@ export interface WorkHistory {
     organization: string;
     organizationURL: URL;
     bullets: string[];
+    skills: string[];
 }

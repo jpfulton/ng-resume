@@ -8,6 +8,11 @@
         "bullets": [
             "Accomplishment A",
             "Accomplishment B"
+        ],
+        "skills": [
+            "Skill One",
+            "Skill Two",
+            "Skill Three"
         ]
     },
     {
@@ -19,6 +24,11 @@
         "bullets": [
             "Accomplishment A1",
             "Accomplishment B1"
+        ],
+        "skills": [
+            "Skill One",
+            "Skill Two",
+            "Skill Three"
         ]
     }
 ]
