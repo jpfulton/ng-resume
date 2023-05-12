@@ -1,0 +1,46 @@
+.work-history {
+    margin: 0 40px 0 40px;
+    display: flex;
+
+    .date-range {
+        width: 120px;
+        vertical-align: top;
+    }
+
+    .work-history-body {
+        width: 100%;
+
+        .work-history-title {
+            font-weight: bold;
+        }
+
+        .work-history-org {
+            font-style: italic;
+
+            span {
+                a, a:hover, a:visited {
+                    text-decoration: none;
+                    color: blue;
+                }
+            }
+        }
+
+        .bullet-list ol {
+            list-style: disc;
+        }
+
+        .skill-list {
+            text-align: right;
+            font-style: italic;
+
+            ol {
+                list-style: none;
+
+                li {
+                    display: inline;
+                    padding-left: 5px;
+                }
+            }
+        }
+    }
+}
