@@ -20,7 +20,10 @@
             </div>
             <div class="skill-list">
                 <ol>
-                    <li *ngFor="let skill of workHistory.skills">{{skill}}</li>
+                    <li *ngFor="let skill of workHistory.skills; index as i;">
+                        <span *ngIf="i != 0">|</span>
+                        {{skill}}
+                    </li>
                 </ol>
             </div>
         </div>
