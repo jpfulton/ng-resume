@@ -1,13 +1,27 @@
-<div>
-    <div>{{workHistory.startYear}} - {{workHistory.endYear}}</div>
-    <div class="card">
-        <div class="card-header">{{workHistory.organization}}</div>
-        <div class="card-body">
-            <h5 class="card-title">{{workHistory.title}}</h5>
-            <div class="card-text">
-                <ul>
+<div class="work-history">
+    <div class="date-range">{{workHistory.startYear}} - {{workHistory.endYear}}</div>
+    <div class="work-history-body">
+        <div class="work-history-title">{{workHistory.title}}</div>
+        <div>
+            <div class="work-history-org">
+
+                <span *ngIf="workHistory.organizationURL != null; else noLinkBlock">
+                    <a href="{{workHistory.organizationURL}}">{{workHistory.organization}}</a>
+                </span>
+                <ng-template #noLinkBlock>
+                    <span>{{workHistory.organization}}</span>
+                </ng-template>
+            
+            </div>
+            <div class="bullet-list">
+                <ol>
                     <li *ngFor="let bullet of workHistory.bullets">{{bullet}}</li>
-                </ul>
+                </ol>
+            </div>
+            <div class="skill-list">
+                <ol>
+                    <li *ngFor="let skill of workHistory.skills">{{skill}}</li>
+                </ol>
             </div>
         </div>
     </div>

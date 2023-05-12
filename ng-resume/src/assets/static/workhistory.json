@@ -8,17 +8,26 @@
         "bullets": [
             "Accomplishment A",
             "Accomplishment B"
+        ],
+        "skills": [
+            "Skill One",
+            "Skill Two",
+            "Skill Three"
         ]
     },
     {
         "startYear": 2002,
         "endYear": 2006,
         "organization": "Org Two",
-        "organizationURL": "https://www.google.com",
         "title": "Title Two",
         "bullets": [
             "Accomplishment A1",
             "Accomplishment B1"
+        ],
+        "skills": [
+            "Skill One",
+            "Skill Two",
+            "Skill Three"
         ]
     }
 ]
