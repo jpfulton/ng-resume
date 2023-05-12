@@ -1,0 +1,39 @@
+.divider {
+    width: 100%;
+    display: block;
+    border-top: 2px solid black;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+main {
+    padding: 10px;
+}
+
+section {
+    margin-bottom: 10px;
+
+    h1 {
+        font-size: 1em;
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+
+    .column-container {
+        display: flex;
+
+        .column {
+            text-align: left;
+        }
+
+        .column-right {
+            width: 100%;
+            text-align: right;
+        }
+    }
+}
+
+#work-experience-section, #education-section {
+    padding-left: 40px;
+    padding-right: 40px;
+}
