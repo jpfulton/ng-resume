@@ -1,0 +1,11 @@
+.education-item {
+    padding-bottom: 10px;
+
+    .education-item-title {
+        font-weight: bold;
+    }
+
+    .education-item-subtitle, .education-item-organization {
+        font-style: italic;
+    }
+}
