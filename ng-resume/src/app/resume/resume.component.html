@@ -31,5 +31,10 @@
     <section id="education-section">
         <h1>Education and Certification</h1>
         <div class="divider"></div>
+
+        <component-education-item
+            *ngFor="let education of educationList"
+            [education]="education">
+        </component-education-item>
     </section>
 </main>

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WorkHistory } from '../models/workhistory';
+import { WorkHistory } from '../../models/workhistory';
 
 @Component({
   selector: 'component-work-history-item',
