@@ -8,8 +8,6 @@ export class EducationService {
 
   url = './assets/static/education.json'
 
-  constructor() { }
-
   async getAllEducationItems() : Promise<Education[]> {
     const data = await fetch(this.url);
     return await data.json() ?? [];
