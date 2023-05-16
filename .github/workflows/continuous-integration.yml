@@ -24,6 +24,10 @@ jobs:
           working-directory: ng-resume
           run: yarn --frozen-lockfile
 
+        - name: Lint application
+          working-directory: ng-resume
+          run: yarn run lint
+
         - name: Build application
           working-directory: ng-resume
           run: yarn run build
