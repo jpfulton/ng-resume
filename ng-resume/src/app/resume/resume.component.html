@@ -21,10 +21,10 @@
         <h1>Work Experience</h1>
         <div class="divider"></div>
 
-        <component-work-history-item 
+        <app-component-work-history-item 
             *ngFor="let workHistory of workHistoryList"
             [workHistory]="workHistory">
-        </component-work-history-item>
+        </app-component-work-history-item>
 
     </section>
 
@@ -32,9 +32,9 @@
         <h1>Education and Certification</h1>
         <div class="divider"></div>
 
-        <component-education-item
+        <app-component-education-item
             *ngFor="let education of educationList"
             [education]="education">
-        </component-education-item>
+        </app-component-education-item>
     </section>
 </main>
