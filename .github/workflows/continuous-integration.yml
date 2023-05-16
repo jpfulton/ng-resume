@@ -21,7 +21,9 @@ jobs:
             node-version: '18.x'
 
         - name: Install dependencies via yarn with frozen lockfile
-          run: ./ng-resume/yarn --frozen-lockfile
+          working-directory: ng-resume
+          run: yarn --frozen-lockfile
 
         - name: Build application
-          run: ./ng-resume/yarn run build
+          working-directory: ng-resume
+          run: yarn run build
