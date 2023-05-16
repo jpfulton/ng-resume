@@ -8,7 +8,7 @@ import { EducationService } from './services/education.service';
 import { EducationItemComponent } from './components/education-item/education-item.component';
 
 @Component({
-  selector: 'component-resume',
+  selector: 'app-component-resume',
   standalone: true,
   imports: [
     CommonModule,
