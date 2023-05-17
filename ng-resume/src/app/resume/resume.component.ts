@@ -7,6 +7,9 @@ import { Education } from './models/education';
 import { EducationService } from './services/education.service';
 import { EducationItemComponent } from './components/education-item/education-item.component';
 
+/**
+ * Top level component for the resume view heirarchy.
+ */
 @Component({
   selector: 'app-component-resume',
   standalone: true,
