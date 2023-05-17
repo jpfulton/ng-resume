@@ -1,7 +1,8 @@
-import { ErrorHandler, Injectable } from "@angular/core";
+import { ErrorHandler, Injectable, NgZone } from "@angular/core";
 import { LoggingService } from "../services/logging.service";
 import { ErrorService } from "../services/error.service";
 import { HttpErrorResponse } from "@angular/common/http";
+import { Router } from "@angular/router";
 
 /**
  * Custom global error handler.
@@ -13,7 +14,9 @@ export class GlobalErrorHandler implements ErrorHandler {
 
     constructor(
         private errorService: ErrorService,
-        private loggingService: LoggingService
+        private loggingService: LoggingService,
+        private router: Router,
+        private zone: NgZone
     ) {}
 
     /**
@@ -33,5 +36,6 @@ export class GlobalErrorHandler implements ErrorHandler {
         }
 
         this.loggingService.logError(message, stackTrace);
+        this.zone.run(() => this.router.navigate(['error'], { skipLocationChange: true }));
     }
 }
