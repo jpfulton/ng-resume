@@ -7,6 +7,9 @@ import {
 } from '@angular/common/http';
 import { Observable, retry } from 'rxjs';
 
+/**
+ * Interceptor for HTTP requests made by the HttpClient service.
+ */
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
 
