@@ -1,3 +1,6 @@
+/**
+ * Interface to define structure of a work history item object.
+ */
 export interface WorkHistory {
     startYear: number;
     endYear: number;
