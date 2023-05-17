@@ -1,7 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Education } from '../../models/education';
 
+/**
+ * Component to render elements in the resume education and certification section.
+ */
 @Component({
   selector: 'app-component-education-item',
   standalone: true,
@@ -9,7 +12,8 @@ import { Education } from '../../models/education';
     CommonModule,
   ],
   templateUrl: './education-item.component.html',
-  styleUrls: ['./education-item.component.scss']
+  styleUrls: ['./education-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EducationItemComponent {
   @Input() education!: Education;
