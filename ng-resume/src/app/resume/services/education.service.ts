@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Education } from '../models/education';
 import { LocalDataSourceLocations } from '../enums/local-data-source-locations';
 import { Observable } from 'rxjs';
@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class EducationService {
-  httpClient: HttpClient = inject(HttpClient);
+  constructor(private httpClient: HttpClient) {}
 
   /**
    * Get all education objects from remote datasource.

@@ -1,11 +1,17 @@
-import { ErrorHandler, inject } from "@angular/core";
+import { ErrorHandler, Injectable } from "@angular/core";
 import { LoggingService } from "../services/logging.service";
 import { ErrorService } from "../services/error.service";
 import { HttpErrorResponse } from "@angular/common/http";
 
+@Injectable({
+    providedIn: "root"
+})
 export class GlobalErrorHandler implements ErrorHandler {
-    errorService: ErrorService = inject(ErrorService);
-    loggingService: LoggingService = inject(LoggingService);
+
+    constructor(
+        private errorService: ErrorService,
+        private loggingService: LoggingService
+    ) {}
 
     handleError(error: Error | HttpErrorResponse): void {
         let message, stackTrace;

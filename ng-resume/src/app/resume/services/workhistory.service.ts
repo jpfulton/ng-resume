@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LocalDataSourceLocations } from '../enums/local-data-source-locations';
 import { WorkHistory } from '../models/workhistory';
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class WorkHistoryService {
-  httpClient: HttpClient = inject(HttpClient);
+  constructor(private httpClient: HttpClient) {}
 
   /**
    * Get all work history objects from a remote data source.
