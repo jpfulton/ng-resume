@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { LocalDataSourceLocations } from '../enums/local-data-source-locations';
 import { WorkHistory } from '../models/workhistory';
+import { Observable } from 'rxjs';
 
 /**
  * Service to access WorkHistory objects from a remote source.
@@ -9,13 +11,13 @@ import { WorkHistory } from '../models/workhistory';
   providedIn: 'root'
 })
 export class WorkHistoryService {
+  httpClient: HttpClient = inject(HttpClient);
 
   /**
    * Get all work history objects from a remote data source.
-   * @returns {Promise<WorkHistory[]>} An array of WorkHistory objects.
+   * @returns {Observable<WorkHistory[]>} An observable array of WorkHistory objects.
    */
-  async getAllWorkHistoryItems() : Promise<WorkHistory[]> {
-    const responseData = await fetch(LocalDataSourceLocations.WorkHistory);
-    return await responseData.json() ?? [];
+  getAllWorkHistoryItems() : Observable<WorkHistory[]> {
+    return this.httpClient.get<WorkHistory[]>(LocalDataSourceLocations.WorkHistory);
   }
 }
