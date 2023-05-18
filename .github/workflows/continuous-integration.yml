@@ -34,4 +34,4 @@ jobs:
 
         - name: Test application
           working-directory: ng-resume
-          run: yarn run test -- --configuration=ci
+          run: yarn run test --configuration=ci
