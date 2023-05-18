@@ -31,3 +31,7 @@ jobs:
         - name: Build application
           working-directory: ng-resume
           run: yarn run build
+
+        - name: Test application
+          working-directory: ng-resume
+          run: yarn run test
