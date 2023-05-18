@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Education } from '../models/education';
 import { LocalDataSourceLocations } from '../enums/local-data-source-locations';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * Service to access Education objects from a remote source.
@@ -9,13 +11,13 @@ import { LocalDataSourceLocations } from '../enums/local-data-source-locations';
   providedIn: 'root'
 })
 export class EducationService {
+  constructor(private httpClient: HttpClient) {}
 
   /**
    * Get all education objects from remote datasource.
-   * @returns {Promise<Education[]>} An array of Education objects.
+   * @returns {Observable<Education[]>} An observable array of Education objects.
    */
-  async getAllEducationItems() : Promise<Education[]> {
-    const responseData = await fetch(LocalDataSourceLocations.Education);
-    return await responseData.json() ?? [];
+  getAllEducationItems() : Observable<Education[]> {
+    return this.httpClient.get<Education[]>(LocalDataSourceLocations.Education);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WorkHistoryItemComponent } from './components/work-history-item/work-history-item.component';
 import { WorkHistory } from './models/workhistory';
@@ -19,22 +19,19 @@ import { EducationItemComponent } from './components/education-item/education-it
     WorkHistoryItemComponent,
   ],
   templateUrl: './resume.component.html',
-  styleUrls: ['./resume.component.scss']
+  styleUrls: ['./resume.component.scss'],
+  providers: [
+    EducationService,
+    WorkHistoryService
+  ]
 })
 export class ResumeComponent {
   educationList: Education[] = [];
-  educationService: EducationService = inject(EducationService);
-
   workHistoryList: WorkHistory[] = [];
-  workHistoryService: WorkHistoryService = inject(WorkHistoryService);
-  
-  constructor() {
 
-    this.educationService.getAllEducationItems()
-      .then((educationList: Education[]) => {this.educationList = educationList});
-
-    this.workHistoryService.getAllWorkHistoryItems()
-      .then((workHistoryList: WorkHistory[]) => {this.workHistoryList = workHistoryList});
-
+  constructor(educationService: EducationService, workHistoryService: WorkHistoryService)
+  {
+    educationService.getAllEducationItems().subscribe(data => this.educationList = data);
+    workHistoryService.getAllWorkHistoryItems().subscribe(data => this.workHistoryList = data);
   }
 }
