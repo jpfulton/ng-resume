@@ -3,6 +3,6 @@
  */
 export interface Education {
     title: string;
-    subtitle: string;
-    organization: string;
+    subtitle?: string;
+    organization?: string;
 }
