@@ -9,4 +9,5 @@ A personal resume implemented in [Angular v16](https://angular.io/). Static JSON
 * [es-lint](https://eslint.org) style checking
 * [JSDOC](https://jsdoc.app) comments
 * Unit test suite
+* [VSCode](https://code.visualstudio.com) extension recommendations and settings
 * Continuous integration workflow implemented in [GitHub Actions](https://github.com/features/actions)
