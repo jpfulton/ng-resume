@@ -6,7 +6,7 @@ export interface WorkHistory {
     endYear: number;
     title: string;
     organization: string;
-    organizationURL: URL;
+    organizationURL?: URL;
     bullets: string[];
     skills: string[];
 }

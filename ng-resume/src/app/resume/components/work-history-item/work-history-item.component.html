@@ -1,24 +1,24 @@
 <div class="work-history">
-    <div class="date-range">{{workHistory.startYear}} - {{workHistory.endYear}}</div>
+    <div class="work-history-date-range">{{workHistory.startYear}} - {{workHistory.endYear}}</div>
     <div class="work-history-body">
         <div class="work-history-title">{{workHistory.title}}</div>
         <div>
             <div class="work-history-org">
 
-                <span *ngIf="workHistory.organizationURL !== null; else noLinkBlock">
+                <span *ngIf="workHistory.organizationURL !== undefined; else noLinkBlock">
                     <a href="{{workHistory.organizationURL}}">{{workHistory.organization}}</a>
                 </span>
                 <ng-template #noLinkBlock>
-                    <span>{{workHistory.organization}}</span>
+                    <span class="no-org-url">{{workHistory.organization}}</span>
                 </ng-template>
             
             </div>
-            <div class="bullet-list">
+            <div class="work-history-bullet-list">
                 <ol>
                     <li *ngFor="let bullet of workHistory.bullets">{{bullet}}</li>
                 </ol>
             </div>
-            <div class="skill-list">
+            <div class="work-history-skill-list">
                 <ol>
                     <li *ngFor="let skill of workHistory.skills; index as i;">
                         <span *ngIf="i !== 0">|</span>

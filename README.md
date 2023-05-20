@@ -8,5 +8,6 @@ A personal resume implemented in [Angular v16](https://angular.io/). Static JSON
 * [SASS](https://sass-lang.com) CSS pre-processing using C-syntax
 * [es-lint](https://eslint.org) style checking
 * [JSDOC](https://jsdoc.app) comments
-* Unit test suite
+* Unit test suite implemented in [jasmine](https://jasmine.github.io/) and run in [Karma](https://karma-runner.github.io/latest/index.html)
+* [VSCode](https://code.visualstudio.com) extension recommendations and settings
 * Continuous integration workflow implemented in [GitHub Actions](https://github.com/features/actions)
