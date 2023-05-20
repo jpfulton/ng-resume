@@ -1,7 +1,7 @@
 .work-history {
     display: flex;
 
-    .date-range {
+    .work-history-date-range {
         width: 120px;
         vertical-align: top;
     }
@@ -17,11 +17,11 @@
             font-style: italic;
         }
 
-        .bullet-list ol {
+        .work-history-bullet-list ol {
             list-style: disc;
         }
 
-        .skill-list {
+        .work-history-skill-list {
             text-align: right;
             font-style: italic;
 
