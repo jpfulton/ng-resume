@@ -57,6 +57,7 @@ jobs:
           with:
             node-version: '18.x'
             cache: 'yarn'
+            cache-dependency-path: ng-resume/yarn.lock
 
         - name: Install dependencies via yarn with frozen lockfile
           working-directory: ng-resume
