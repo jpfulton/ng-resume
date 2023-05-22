@@ -4,22 +4,24 @@ import { ResumeComponent } from './resume/resume.component';
 import { ErrorComponent } from './core/components/error/error.component';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 
+const TITLE_PREFIX = "jpatrickfulton.com - ";
+
 const routeConfig: Routes = [
     {
         path: '',
         pathMatch: 'full',
         component: ResumeComponent,
-        title: 'Resume'
+        title: TITLE_PREFIX + 'Resume'
     },
     {
         path: 'error',
         component: ErrorComponent,
-        title: 'Error'
+        title: TITLE_PREFIX + 'Error'
     },
     {
         path: '**',
         component: NotFoundComponent,
-        title: 'Not Found'
+        title: TITLE_PREFIX + 'Not Found'
     }
 ];
 
