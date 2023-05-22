@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+
 import { ResumeComponent } from './resume/resume.component';
 import { ErrorComponent } from './core/components/error/error.component';
 
