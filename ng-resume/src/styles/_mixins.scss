@@ -1,0 +1,8 @@
+/*
+    responsivity mixin
+*/
+@mixin responsive($query) {
+    @media ( min-width: $query ) {
+        @content;
+    }
+}
