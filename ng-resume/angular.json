@@ -33,7 +33,20 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/favicon.ico",
+              "src/android-chrome-192x192.png",
+              "src/android-chrome-512x512.png",
+              "src/apple-touch-icon-60x60.png",
+              "src/apple-touch-icon-76x76.png",
+              "src/apple-touch-icon-120x120.png",
+              "src/apple-touch-icon-152x152.png",
+              "src/apple-touch-icon-180x180.png",
+              "src/apple-touch-icon.png",
+              "src/browserconfig.xml",
+              "src/favicon-16x16.png",
+              "src/favicon-32x32.png",
+              "src/mstile-150x150.png",
+              "src/safari-pinned-tab.svg",
+              "src/site.webmanifest",
               "src/assets"
             ],
             "styles": [
@@ -97,7 +110,6 @@
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
