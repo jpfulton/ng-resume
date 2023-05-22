@@ -1,5 +1,12 @@
+@import '/src/styles/variables';
+@import '/src/styles/mixins';
+
 .work-history {
-    display: flex;
+    display: flexbox;
+
+    @include responsive( $med ) {
+        display: flex;
+    }
 
     .work-history-date-range {
         width: 120px;
@@ -19,6 +26,11 @@
 
         .work-history-bullet-list ol {
             list-style: disc;
+            padding-left: 15px;
+
+            @include responsive( $med ) {
+                padding-left: 40px;
+            }
         }
 
         .work-history-skill-list {

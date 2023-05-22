@@ -1,3 +1,6 @@
+@import '/src/styles/variables';
+@import '/src/styles/mixins';
+
 .divider {
     width: 100%;
     display: block;
@@ -20,7 +23,11 @@ section {
     }
 
     .column-container {
-        display: flex;
+        display: flexbox;
+
+        @include responsive( $med ) {
+            display: flex;
+        }
 
         .column {
             text-align: left;
@@ -28,12 +35,17 @@ section {
 
         .column-right {
             width: 100%;
-            text-align: right;
+
+            @include responsive( $med ) {
+                text-align: right;
+            }
         }
     }
 }
 
 #work-experience-section, #education-section {
-    padding-left: 40px;
-    padding-right: 40px;
+    @include responsive( $med ) {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
 }
