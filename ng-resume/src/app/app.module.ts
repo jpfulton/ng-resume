@@ -13,11 +13,13 @@ import { GlobalErrorHandler } from './core/utils/global-error-handler';
 import { provideRouter } from '@angular/router';
 import routeConfig from './routes';
 import { ErrorComponent } from './core/components/error/error.component';
+import { NotFoundComponent } from './core/components/not-found/not-found.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         ErrorComponent,
+        NotFoundComponent,
     ],
     providers: [
         provideRouter(routeConfig),
