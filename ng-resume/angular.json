@@ -50,8 +50,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/cookieconsent/build/cookieconsent.min.css"
+              "node_modules/cookieconsent/build/cookieconsent.min.css",
+              "src/styles.scss"
             ],
             "scripts": [
               "node_modules/cookieconsent/build/cookieconsent.min.js"
