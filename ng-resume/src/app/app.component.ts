@@ -3,6 +3,8 @@ import { Component, Inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 
+import { NgcCookieConsentService } from 'ngx-cookieconsent';
+
 /**
  * Root component for ng-resume application.
  */
@@ -16,7 +18,8 @@ export class AppComponent {
   constructor(
     private router: Router,
     private titleService: Title,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    private cookieConsentService: NgcCookieConsentService
     ) 
   {
     this.handleRouteEvents();

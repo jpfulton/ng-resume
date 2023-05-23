@@ -1,14 +1,16 @@
 import { NgcCookieConsentConfig } from 'ngx-cookieconsent';
 
 /**
- * Cookie consent popup configuration object.
+ * Cookie consent popup configuration object. FYI, the ngx-cookieconsent
+ * library is extremely opinionated about behavior and styling. Only use
+ * hex color codes.
  * 
  * Reference: https://tinesoft.github.io/ngx-cookieconsent/home
  */
 export const COOKIE_CONSENT_CONFIG : NgcCookieConsentConfig = {
     /*
     "cookie": {
-      "domain": "jpatrickfulton.com"
+      "domain": "jpatrickfulton.com" // TODO: determine if needed when only managing GA cookies
     },
     */
     "position": "bottom",
@@ -20,7 +22,7 @@ export const COOKIE_CONSENT_CONFIG : NgcCookieConsentConfig = {
         "link": "#ffffff"
       },
       "button": {
-        "background": "#f1d600",
+        "background": "#add8e6",
         "text": "#000000",
         "border": "transparent"
       }
@@ -28,7 +30,10 @@ export const COOKIE_CONSENT_CONFIG : NgcCookieConsentConfig = {
     "type": "opt-in",
     "content": {
       "message": "This website uses cookies for anayltics and to ensure you get the best experience on our website.",
-      "dismiss": "Got it!",
-      "deny": "Refuse cookies"
+      "dismiss": "Accept cookies",
+      "deny": "Refuse cookies",
+      "link": "Learn more...",
+      "href": "/cookiepolicy",
+      "policy": "Cookies"
     }
   };
