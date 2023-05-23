@@ -1,14 +1,17 @@
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { TestBed } from '@angular/core/testing';
+import { NgcCookieConsentModule } from 'ngx-cookieconsent';
 
 import { AppComponent } from './app.component';
+import { COOKIE_CONSENT_CONFIG } from './core/constants/cookieconsent-constants';
 
 describe('AppComponent', () => {
   beforeEach(() => TestBed.configureTestingModule({
     declarations: [AppComponent],
     imports: [
-      RouterTestingModule
+      RouterTestingModule,
+      NgcCookieConsentModule.forRoot(COOKIE_CONSENT_CONFIG)
     ]
   }));
 
