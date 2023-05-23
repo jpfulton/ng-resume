@@ -23,7 +23,7 @@ export class AppComponent {
   }
 
   /**
-   * Subscriibes to events triggered by the router. On NavigationEnd events, which are
+   * Subscribes to events triggered by the router. On NavigationEnd events, which are
    * sent at the end of a successful router navgation, push a page_view event to 
    * Google Analytics.
    * 
