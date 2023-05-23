@@ -27,10 +27,10 @@ export const COOKIE_CONSENT_CONFIG : NgcCookieConsentConfig = {
         "border": "transparent"
       }
     },
-    "type": "opt-in",
+    "type": "opt-out", // consent widget is displayed in full prior to minimizing after a user choice
     "content": {
       "message": "This website uses cookies for anayltics and to ensure you get the best experience on our website.",
-      "dismiss": "Accept cookies",
+      "allow": "Accept cookies",
       "deny": "Refuse cookies",
       "link": "Learn more...",
       "href": "/cookiepolicy",
