@@ -5488,6 +5488,13 @@ neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
+ngx-cookieconsent@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/ngx-cookieconsent/-/ngx-cookieconsent-4.0.2.tgz#0fa062bd9a74a6c7f21bcad725cac61be6a92561"
+  integrity sha512-KREGRd53LV0SrFlJsk1XwgzZIEf7GAeLD3/znYF/CzTYml+SFqWrYleXA3aMtFLGqUHwbGS/fMA6cHwpvxT5JA==
+  dependencies:
+    tslib "^2.1.0"
+
 nice-napi@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/nice-napi/-/nice-napi-1.0.2.tgz#dc0ab5a1eac20ce548802fc5686eaa6bc654927b"
