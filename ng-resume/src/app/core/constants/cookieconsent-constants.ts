@@ -5,6 +5,10 @@ import { NgcCookieConsentConfig } from 'ngx-cookieconsent';
  * library is extremely opinionated about behavior and styling. Only use
  * hex color codes.
  * 
+ * Note:
+ *  In a strange implementation choice, the cookie consent widget uses
+ *  a cookie to persiste the users opt-in or opt-out selection.
+ * 
  * Reference: https://tinesoft.github.io/ngx-cookieconsent/home
  */
 export const COOKIE_CONSENT_CONFIG : NgcCookieConsentConfig = {

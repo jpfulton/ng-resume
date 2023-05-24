@@ -41,7 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 
+   * Handle cookie consent status change events.
    */
   private handleConsentStatusEvents() : void {
     this.cookieConsentStatusChangeSubscription = this.cookieConsentService.statusChange$.subscribe(

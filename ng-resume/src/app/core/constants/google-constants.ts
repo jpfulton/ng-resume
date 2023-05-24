@@ -9,6 +9,9 @@ export const GOOGLE_TRACKING_IDS : string[] = [
 ];
 
 /**
- * 
+ * All gtag related cookies are named with this prefix. The "main" cookie
+ * uses only this string. Property cookies use this prefix + "_" and the
+ * last portion of the tracking id with "G-" trimmed from the front of the
+ * string.
  */
 export const GOOGLE_COOKIE_PREFIX = "_ga";
