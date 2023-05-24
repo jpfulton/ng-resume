@@ -8,6 +8,10 @@ import { GoogleAnalyticsService } from './core/services/google-analytics.service
 
 /**
  * Root component for ng-resume application.
+ * 
+ * References:
+ *  https://tinesoft.github.io/ngx-cookieconsent/doc/index.html
+ *  https://tinesoft.github.io/ngx-cookieconsent/home
  */
 @Component({
   selector: 'app-root',
