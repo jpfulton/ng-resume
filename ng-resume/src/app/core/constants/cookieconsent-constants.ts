@@ -12,11 +12,9 @@ import { NgcCookieConsentConfig } from 'ngx-cookieconsent';
  * Reference: https://tinesoft.github.io/ngx-cookieconsent/home
  */
 export const COOKIE_CONSENT_CONFIG : NgcCookieConsentConfig = {
-    /*
     "cookie": {
-      "domain": "jpatrickfulton.com" // TODO: determine if needed when only managing GA cookies
+      "domain": ".jpatrickfulton.com"
     },
-    */
     "position": "bottom",
     "theme": "edgeless",
     "palette": {
