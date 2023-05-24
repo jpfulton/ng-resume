@@ -12,14 +12,20 @@ import { GlobalErrorHandler } from './core/utils/global-error-handler';
 
 import { provideRouter } from '@angular/router';
 import routeConfig from './routes';
+
+import { COOKIE_CONSENT_CONFIG } from './core/constants/cookieconsent-constants';
+import { NgcCookieConsentModule } from 'ngx-cookieconsent';
+
 import { ErrorComponent } from './core/components/error/error.component';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
+import { CookiePolicyComponent } from './core/components/cookie-policy/cookie-policy.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         ErrorComponent,
         NotFoundComponent,
+        CookiePolicyComponent,
     ],
     providers: [
         provideRouter(routeConfig),
@@ -32,6 +38,7 @@ import { NotFoundComponent } from './core/components/not-found/not-found.compone
         HttpClientModule,
         RouterModule,
         BrowserAnimationsModule,
+        NgcCookieConsentModule.forRoot(COOKIE_CONSENT_CONFIG),
         ResumeComponent
     ]
 })
