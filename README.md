@@ -12,6 +12,8 @@ A personal resume implemented in [Angular v16](https://angular.io/). Static JSON
 * Unit test suite implemented in [jasmine](https://jasmine.github.io/) and run in [Karma](https://karma-runner.github.io/latest/index.html)
 * [VSCode](https://code.visualstudio.com) extension recommendations and settings
 * Continuous integration workflow implemented in [GitHub Actions](https://github.com/features/actions)
+* [Google Analytics](https://analytics.google.com/) integration that pushes page views based on [Angular Router](https://angular.io/api/router/Router) events
+* User cookie consent banner implementation
 
 ## DevOps and Deployment
 
