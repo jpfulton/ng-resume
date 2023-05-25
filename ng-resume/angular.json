@@ -33,6 +33,7 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              "src/staticwebapp.config.json",
               "src/android-chrome-192x192.png",
               "src/android-chrome-512x512.png",
               "src/apple-touch-icon-60x60.png",
