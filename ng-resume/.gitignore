@@ -43,4 +43,5 @@ Thumbs.db
 
 # Cypress run outputs
 /cypress/downloads
+/cypress/screenshots
 /cypress/videos
