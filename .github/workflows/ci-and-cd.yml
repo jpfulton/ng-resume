@@ -50,9 +50,11 @@ jobs:
 
     steps:
         - name: Checkout repository
+          id: checkout
           uses: actions/checkout@v3
 
         - name: Use Node.js
+          id: nodejs
           uses: actions/setup-node@v3
           with:
             node-version: '18.x'
@@ -60,18 +62,22 @@ jobs:
             cache-dependency-path: ng-resume/yarn.lock
 
         - name: Install dependencies via yarn with frozen lockfile
+          id: installdeps
           working-directory: ng-resume
           run: yarn --frozen-lockfile
 
         - name: Lint application
+          id: lint
           working-directory: ng-resume
           run: yarn run lint
 
         - name: Test application
+          id: test
           working-directory: ng-resume
           run: yarn run test --configuration=ci
 
         - name: Build application
+          id: build
           working-directory: ng-resume
           run: yarn run build
 
@@ -80,6 +86,7 @@ jobs:
         # In the event of a pending PR into the default branch, create and deploy to a preview
         # environment with a comment on the PR including the preview URL.
         - name: Deploy application to Azure
+          id: deploy
           uses: Azure/static-web-apps-deploy@v1
           with:
             repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
@@ -88,6 +95,13 @@ jobs:
             app_location: ${{ env.APP_LOCATION }}
             api_location: ${{ env.API_LOCATION }}
             output_location: ${{ env.OUTPUT_LOCATION }}
+
+        - name: E2E test suite on deployment
+          id: e2e
+          uses: cypress-io/github-action@v5
+          with:
+            working-directory: ng-resume
+            config: baseUrl=${{ steps.deploy.outputs.static_web_app_url }}
 
   close_pull_request_job:
     name: On Closed Pull Request Clean Up Azure Preview Environments Job
