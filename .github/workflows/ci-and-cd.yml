@@ -79,7 +79,7 @@ jobs:
         - name: Build application
           id: build
           working-directory: ng-resume
-          run: yarn run build
+          run: yarn run build --configuration=production
 
         # Deploy build artifacts into Azure.
         # In the event of a push into the default branch, deploy to production.
@@ -108,7 +108,7 @@ jobs:
           uses: actions/upload-artifact@v3
           if: failure()
           with:
-            name: failure-screenshots
+            name: e2e-failure-screenshots
             path: ng-resume/cypress/screenshots
 
         - name: Upload E2E test suite video artifact
