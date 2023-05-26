@@ -4,6 +4,7 @@ import { ResumeComponent } from './resume/resume.component';
 import { ErrorComponent } from './core/components/error/error.component';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 import { CookiePolicyComponent } from './core/components/cookie-policy/cookie-policy.component';
+import { PrivacyPolicyComponent } from './core/components/privacy-policy/privacy-policy.component';
 
 const TITLE_PREFIX = "jpatrickfulton.com - ";
 
@@ -23,6 +24,11 @@ const routeConfig: Routes = [
         path: 'cookiepolicy',
         component: CookiePolicyComponent,
         title: TITLE_PREFIX + 'Cookie Policy'
+    },
+    {
+        path: 'privacy',
+        component: PrivacyPolicyComponent,
+        title: TITLE_PREFIX + 'Privacy Policy'
     },
     {
         path: '**',
