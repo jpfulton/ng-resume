@@ -4,6 +4,8 @@
 #   https://github.com/actions/starter-workflows/blob/main/deployments/azure-staticwebapp.yml
 #   https://github.com/Azure/static-web-apps-deploy
 #   https://github.com/actions/setup-node#caching-global-packages-data
+#   https://github.com/cypress-io/github-action
+#   https://github.com/actions/upload-artifact/tree/main
 name: continous-integration-and-deployment
 
 # Define environment variables available to all jobs and steps.
@@ -35,8 +37,8 @@ permissions:
   contents: read
 
 jobs:
-  lint_test_build_deploy_job:
-    name: "Lint -> Test -> Build -> Deploy Job"
+  ci_cd_job:
+    name: CI/CD Job
 
     # Execute this job upon pushes to the default branch or
     # PRs into the default branch that are not closed.
@@ -96,6 +98,10 @@ jobs:
             api_location: ${{ env.API_LOCATION }}
             output_location: ${{ env.OUTPUT_LOCATION }}
 
+        # Run the cypress e2e sanity test suite on the Azure deployment.
+        # The static_web_app_url output variable from the deployment step
+        # will contain either the production URL or the URL of a preview environment
+        # if this workflow is running on a PR.
         - name: E2E test suite on deployment
           id: e2e
           uses: cypress-io/github-action@v5
@@ -103,6 +109,8 @@ jobs:
             working-directory: ng-resume
             config: baseUrl=${{ steps.deploy.outputs.static_web_app_url }}
 
+        # Upload the cypress e2e test suite screenshots as artifacts to this
+        # workflow if failure is detected in a previous step.
         - name: Upload E2E test suite failure screenshots artifact
           id: e2e-failure-screenshot-upload
           uses: actions/upload-artifact@v3
@@ -111,6 +119,7 @@ jobs:
             name: e2e-failure-screenshots
             path: ng-resume/cypress/screenshots
 
+        # Upload the cypress e2e test suite videos as artifacts to this workflow.
         - name: Upload E2E test suite video artifact
           id: e2e-video-upload
           uses: actions/upload-artifact@v3
@@ -120,7 +129,7 @@ jobs:
             path: ng-resume/cypress/videos
 
   close_pull_request_job:
-    name: On Closed Pull Request Clean Up Azure Preview Environments Job
+    name: Clean Up Preview Environments Job
 
     permissions:
       contents: none # no repo access required in this job
