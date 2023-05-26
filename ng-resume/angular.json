@@ -5,9 +5,9 @@
     "packageManager": "yarn",
     "analytics": "f9d0e5ee-5f13-4d7c-bb74-cfcc0b0f4ae7",
     "schematicCollections": [
+      "@schematics/angular",
       "@cypress/schematic",
-      "@angular-eslint/schematics",
-      "@schematics/angular"
+      "@angular-eslint/schematics"
     ]
   },
   "newProjectRoot": "projects",
