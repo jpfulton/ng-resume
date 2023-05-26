@@ -19,6 +19,7 @@ import { NgcCookieConsentModule } from 'ngx-cookieconsent';
 import { ErrorComponent } from './core/components/error/error.component';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 import { CookiePolicyComponent } from './core/components/cookie-policy/cookie-policy.component';
+import { PrivacyPolicyComponent } from './core/components/privacy-policy/privacy-policy.component';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import { CookiePolicyComponent } from './core/components/cookie-policy/cookie-po
         ErrorComponent,
         NotFoundComponent,
         CookiePolicyComponent,
+        PrivacyPolicyComponent,
     ],
     providers: [
         provideRouter(routeConfig),
