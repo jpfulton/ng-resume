@@ -12,12 +12,15 @@ A personal resume implemented in [Angular v16](https://angular.io/). Static JSON
 * Unit test suite implemented in [jasmine](https://jasmine.github.io/) and run in [Karma](https://karma-runner.github.io/latest/index.html)
 * [VSCode](https://code.visualstudio.com) extension recommendations and settings
 * Continuous integration workflow implemented in [GitHub Actions](https://github.com/features/actions)
+* E2E automated test suite for deployment santity implemented in [Cypress](https://docs.cypress.io/guides/overview/why-cypress)
 * [Google Analytics](https://analytics.google.com/) integration that pushes page views based on [Angular Router](https://angular.io/api/router/Router) events
 * User cookie consent banner implementation
 
 ## DevOps and Deployment
 
-The CI/CD pipeline for this project is implemented in a [GitHub Actions](https://github.com/features/actions) workflow through [YAML](https://yaml.org) file
+### CI/CD Workflow
+
+The CI/CD workflow pipeline for this project is implemented in a [GitHub Actions](https://github.com/features/actions) workflow through [YAML](https://yaml.org) file
 that can be found [here](https://github.com/jpfulton/ng-resume/blob/main/.github/workflows/ci-and-cd.yml).
 Deployments to both preview and production environments are made by the pipeline into
 [Microsoft Azure](https://azure.microsoft.com/en-us/) and hosted in a
@@ -28,3 +31,9 @@ a push into the default branch or the opening, reopening or synchronization of a
 branch. PR build results are deployed to preview environments that are given dynamic DNS entries. Preview environment
 locations are posted as comments on the PR following a successful deployment. Closure of a PR will
 result in the preview environment being deleted from the Azure resource as a clean up mechanism.
+
+### E2E Deployment Santity Testing
+
+Following deployments to both preivew and production Azure environments, an end-to-end test suite is run to validate the sanity of the deployment. In the event of a test failure, screenshots of the
+website state following each individual test are uploaded as artifacts to the source workflow. After
+each test suite run, a video of the test suite run is always uploaded as a workflow artifact.
