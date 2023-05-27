@@ -19,7 +19,7 @@
         </div>
     </section>
 
-    <section id="work-experience-section">
+    <section *ngIf="workHistoryList.length !== 0" id="work-experience-section">
         <h1>Work Experience</h1>
         <div class="divider"></div>
 
@@ -30,7 +30,7 @@
 
     </section>
 
-    <section id="education-section">
+    <section *ngIf="educationList.length !== 0" id="education-section">
         <h1>Education and Certification</h1>
         <div class="divider"></div>
 

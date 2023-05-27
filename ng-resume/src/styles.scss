@@ -1,8 +1,17 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
+    padding-bottom: 30px;
 }
 
 a, a:hover, a:visited {
     text-decoration: none;
     color: steelblue;
+}
+
+.divider {
+    width: 100%;
+    display: block;
+    border-top: 2px solid black;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }

@@ -25,6 +25,6 @@ describe("Deployment Sanity Tests", () => {
 
   it("Visits the not found page", () => {
     cy.visit("/oops");
-    cy.contains("Not found");
+    cy.contains("not found");
   });
 });
