@@ -1,14 +1,6 @@
 @import '/src/styles/variables';
 @import '/src/styles/mixins';
 
-.divider {
-    width: 100%;
-    display: block;
-    border-top: 2px solid black;
-    margin-top: 4px;
-    margin-bottom: 4px;
-}
-
 main {
     padding: 10px;
 }
