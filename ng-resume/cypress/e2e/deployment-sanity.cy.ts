@@ -18,6 +18,11 @@ describe("Deployment Sanity Tests", () => {
     cy.contains("cookie");
   });
 
+  it("Visits the privacy policy page", () => {
+    cy.visit("/privacy");
+    cy.contains("privacy");
+  });
+
   it("Visits the not found page", () => {
     cy.visit("/oops");
     cy.contains("Not found");
