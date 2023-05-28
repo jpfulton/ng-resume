@@ -26,7 +26,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ng-resume",
+            "outputPath": "dist/ng-resume/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -184,6 +184,61 @@
               "devServerTarget": "ng-resume:serve:production"
             }
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/ng-resume/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json",
+            "inlineStyleLanguage": "scss"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false,
+              "vendorChunk": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "ng-resume:build:development",
+              "serverTarget": "ng-resume:server:development"
+            },
+            "production": {
+              "browserTarget": "ng-resume:build:production",
+              "serverTarget": "ng-resume:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ng-resume:build:production",
+              "serverTarget": "ng-resume:server:production"
+            },
+            "development": {
+              "browserTarget": "ng-resume:build:development",
+              "serverTarget": "ng-resume:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }

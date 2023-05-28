@@ -10,7 +10,11 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "dev:ssr": "ng run ng-resume:serve-ssr",
+    "serve:ssr": "node dist/ng-resume/server/main.js",
+    "build:ssr": "ng build && ng run ng-resume:server",
+    "prerender": "ng run ng-resume:prerender"
   },
   "private": true,
   "dependencies": {
@@ -21,10 +25,13 @@
     "@angular/forms": "^16.0.0",
     "@angular/platform-browser": "^16.0.0",
     "@angular/platform-browser-dynamic": "^16.0.0",
+    "@angular/platform-server": "^16.0.0",
     "@angular/router": "^16.0.0",
+    "@nguniversal/express-engine": "^16.0.2",
     "@types/gtag.js": "^0.0.12",
     "cookieconsent": "^3.1.1",
     "eslint-plugin-jsdoc": "^44.2.4",
+    "express": "^4.15.2",
     "ngx-cookie-service": "^16.0.0",
     "ngx-cookieconsent": "^4.0.2",
     "rxjs": "~7.8.0",
@@ -41,9 +48,13 @@
     "@angular/cli": "~16.0.0",
     "@angular/compiler-cli": "^16.0.0",
     "@cypress/schematic": "2.5.0",
+    "@nguniversal/builders": "^16.0.2",
+    "@types/express": "^4.17.0",
     "@types/jasmine": "~4.3.0",
+    "@types/node": "^14.15.0",
     "@typescript-eslint/eslint-plugin": "5.59.2",
     "@typescript-eslint/parser": "5.59.2",
+    "cypress": "latest",
     "eslint": "^8.39.0",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
@@ -51,7 +62,6 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
-    "typescript": "~5.0.2",
-    "cypress": "latest"
+    "typescript": "~5.0.2"
   }
 }
