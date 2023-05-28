@@ -20,6 +20,7 @@ import { ErrorComponent } from './core/components/error/error.component';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 import { CookiePolicyComponent } from './core/components/cookie-policy/cookie-policy.component';
 import { PrivacyPolicyComponent } from './core/components/privacy-policy/privacy-policy.component';
+import { SpinnerComponent } from './core/components/spinner/spinner.component';
 
 @NgModule({
     declarations: [
@@ -28,6 +29,7 @@ import { PrivacyPolicyComponent } from './core/components/privacy-policy/privacy
         NotFoundComponent,
         CookiePolicyComponent,
         PrivacyPolicyComponent,
+        SpinnerComponent,
     ],
     providers: [
         provideRouter(routeConfig),
