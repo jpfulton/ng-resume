@@ -12,6 +12,7 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "dev:ssr": "ng run ng-resume:serve-ssr",
+    "debugserver:ssr": "ng run ng-resume:serve-ssr --inspect",
     "serve:ssr": "node dist/ng-resume/server/main.js",
     "build:ssr": "ng build && ng run ng-resume:server",
     "prerender": "ng run ng-resume:prerender"
