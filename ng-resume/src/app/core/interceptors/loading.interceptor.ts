@@ -6,8 +6,13 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable, finalize } from 'rxjs';
+
 import { LoadingService } from '../services/loading.service';
 
+/**
+ * Http interceptor to work with simple state management service to count
+ * ongoing requests from HttpClient objects.
+ */
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
 
@@ -25,7 +30,7 @@ export class LoadingInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       finalize(() => {
         this.totalRequests--;
-        
+
         if (this.totalRequests == 0) {
           this.loadingService.setLoading(false);
         }
