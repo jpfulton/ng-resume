@@ -16,12 +16,6 @@ export class ErrorService {
    * @returns {string} A message contructed from the error parameter.
    */
   getClientMessage(error: Error) : string {
-    /*
-    if (!navigator.onLine) {
-      return 'No internet connection.';
-    }
-    */
-
     return error.message ? error.message : error.toString();
   }
 
