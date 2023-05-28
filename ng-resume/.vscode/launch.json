@@ -3,18 +3,34 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "ng serve",
+      "name": "Debug SPA Mode",
       "type": "chrome",
       "request": "launch",
       "preLaunchTask": "npm: start",
       "url": "http://localhost:4200/"
     },
     {
-      "name": "ng test",
+      "name": "Debug Unit Test Suite",
       "type": "chrome",
       "request": "launch",
       "preLaunchTask": "npm: test",
       "url": "http://localhost:9876/debug.html"
+    },
+    {
+      "name": "Debug Dynamic SSR Mode",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "npm: dev:ssr",
+      "url": "http://localhost:4200/"
+    },
+    {
+      "name": "Debug (Attach to) SSR Server",
+      "type": "node",
+      "request": "attach",
+      "port": 9229,
+      "skipFiles": [
+          "<node_internals>/**"
+      ]
     }
   ]
 }
