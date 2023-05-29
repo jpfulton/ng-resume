@@ -1,6 +1,11 @@
 {
     "navigationFallback": {
       "rewrite": "/index.html",
-      "exclude": ["*.{css,scss,js,png,gif,ico,jpg,svg,xml,webmanifest,txt,json}"]
+      "exclude": [
+        "/error/index.html",
+        "/cookiepolicy/index.html",
+        "/privacy/index.html",
+        "*.{css,scss,js,png,gif,ico,jpg,svg,xml,webmanifest,txt,json}"
+      ]
     }
 }
