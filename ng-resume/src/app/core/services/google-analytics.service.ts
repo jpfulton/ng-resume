@@ -1,11 +1,11 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import { DOCUMENT } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 
 import { GOOGLE_COOKIE_PREFIX, GOOGLE_TRACKING_IDS } from '../constants/google-constants';
 
 import { CookieService } from 'ngx-cookie-service';
+import { PlatformService } from './platform.service';
 
 /**
  * Service to encapsulate Google Analytics logic. Manages gtag related calls
@@ -28,7 +28,7 @@ export class GoogleAnalyticsService {
   constructor(
     private cookieService: CookieService,
     private titleService: Title,
-    @Inject(DOCUMENT) private document: Document
+    private platformService: PlatformService
   ) 
   {
   }
@@ -94,11 +94,12 @@ export class GoogleAnalyticsService {
     if (!this.isInitialized) return;
 
     const title = this.titleService.getTitle();
+    const href = this.platformService.getLocation().href;
 
     gtag('event', 'page_view', {
       page_title: title,
       page_path: urlAfterRedirects,
-      page_location: this.document.location.href
+      page_location: href
     });
   }
 }
