@@ -1,4 +1,7 @@
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+/* eslint-disable jsdoc/no-undefined-types */
+/* eslint-disable @typescript-eslint/ban-types */
+
+import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 
 /**
@@ -7,6 +10,9 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
  * However, platform branching logic should generally be used as a last resort and other
  * strategies should be utilized when possible as described in the reference documentation
  * below.
+ * 
+ * Provides access to commonly used global objects with primitive server-side
+ * implementations when executing on server.
  * 
  * Also, limits the need for line specific linting overrides associated with the use
  * of the Object interface to be spread accross multiple files.
@@ -20,8 +26,8 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 export class PlatformService {
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(DOCUMENT) private document: Document
   ) 
   { }
 
@@ -37,5 +43,26 @@ export class PlatformService {
    */
   isServer() : boolean {
     return isPlatformServer(this.platformId);
+  }
+
+  /**
+   * @returns {Document} Returns the document global object.
+   */
+  getDocument() : Document {
+    return this.document;
+  }
+
+  /**
+   * @returns {Window | null} Returns the window global object.
+   */
+  getWindow() : Window | null {
+    return this.document.defaultView;
+  }
+
+  /**
+   * @returns {Location} Returns the location global object.
+   */
+  getLocation() : Location {
+    return this.document.location;
   }
 }
