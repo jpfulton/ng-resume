@@ -20,6 +20,8 @@ import { ErrorComponent } from './core/components/error/error.component';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 import { CookiePolicyComponent } from './core/components/cookie-policy/cookie-policy.component';
 import { PrivacyPolicyComponent } from './core/components/privacy-policy/privacy-policy.component';
+import { SpinnerComponent } from './core/components/spinner/spinner.component';
+import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 
 @NgModule({
     declarations: [
@@ -28,11 +30,13 @@ import { PrivacyPolicyComponent } from './core/components/privacy-policy/privacy
         NotFoundComponent,
         CookiePolicyComponent,
         PrivacyPolicyComponent,
+        SpinnerComponent,
     ],
     providers: [
         provideRouter(routeConfig),
         { provide: ErrorHandler, useClass: GlobalErrorHandler},
-        { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true }
+        { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }
     ],
     bootstrap: [AppComponent],
     imports: [

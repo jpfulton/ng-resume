@@ -5,10 +5,14 @@ import { NgcCookieConsentModule } from 'ngx-cookieconsent';
 
 import { AppComponent } from './app.component';
 import { COOKIE_CONSENT_CONFIG } from './core/constants/cookieconsent-constants';
+import { SpinnerComponent } from './core/components/spinner/spinner.component';
 
 describe('AppComponent', () => {
   beforeEach(() => TestBed.configureTestingModule({
-    declarations: [AppComponent],
+    declarations: [
+      AppComponent,
+      SpinnerComponent
+    ],
     imports: [
       RouterTestingModule,
       NgcCookieConsentModule.forRoot(COOKIE_CONSENT_CONFIG)
