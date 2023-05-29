@@ -15,6 +15,7 @@ A personal resume implemented in [Angular v16](https://angular.io/). Static JSON
 * E2E automated test suite for deployment santity implemented in [Cypress](https://docs.cypress.io/guides/overview/why-cypress)
 * [Google Analytics](https://analytics.google.com/) integration that pushes page views based on [Angular Router](https://angular.io/api/router/Router) events
 * User cookie consent banner implementation
+* Build-time prerendering using [Angular Universal](https://github.com/angular/universal)
 
 ## DevOps and Deployment
 
