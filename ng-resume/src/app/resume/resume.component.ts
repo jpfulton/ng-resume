@@ -1,6 +1,7 @@
 import { Subscription } from 'rxjs';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+import { Component, Inject, PLATFORM_ID, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { WorkHistoryItemComponent } from './components/work-history-item/work-history-item.component';
@@ -37,6 +38,8 @@ export class ResumeComponent implements OnInit, OnDestroy {
   private workHistorySubscription: Subscription | null = null;
 
   constructor(
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    @Inject(PLATFORM_ID) private platformId: Object,
     private educationService: EducationService, 
     private workHistoryService: WorkHistoryService
     )
@@ -44,8 +47,10 @@ export class ResumeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.educationSubscription = this.educationService.getAllEducationItems().subscribe(data => this.educationList = data);
-    this.workHistorySubscription = this.workHistoryService.getAllWorkHistoryItems().subscribe(data => this.workHistoryList = data);
+    if (!isPlatformServer(this.platformId)) {
+      this.educationSubscription = this.educationService.getAllEducationItems().subscribe(data => this.educationList = data);
+      this.workHistorySubscription = this.workHistoryService.getAllWorkHistoryItems().subscribe(data => this.workHistoryList = data);
+    }
   }
 
   ngOnDestroy(): void {
