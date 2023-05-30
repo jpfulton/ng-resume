@@ -17,7 +17,8 @@ const routeConfig: Routes = [
         data: {
             image: "/assets/images/riverwalk.png",
             description: "A personal resume implemented in Angular.",
-            keywords: ["resume", "Angular", "Angular Universal"]
+            keywords: ["resume", "Angular", "Angular Universal"],
+            allowRobotIndexing: true
         }
     },
     {
@@ -36,7 +37,8 @@ const routeConfig: Routes = [
         data: {
             image: "/assets/images/cookie.jpg",
             description: "Site cookie policy.",
-            keywords: ["cookie policy", "Angular", "Angular Universal"]
+            keywords: ["cookie policy", "Angular", "Angular Universal"],
+            allowRobotIndexing: true
         }
     },
     {
@@ -46,7 +48,8 @@ const routeConfig: Routes = [
         data: {
             image: "/assets/images/harbor.jpg",
             description: "Site privacy policy.",
-            keywords: ["privacy policy", "Angular", "Angular Universal"]
+            keywords: ["privacy policy", "Angular", "Angular Universal"],
+            allowRobotIndexing: true
         }
     },
     {
@@ -55,7 +58,7 @@ const routeConfig: Routes = [
         title: TITLE_PREFIX + 'Not Found',
         data: {
             image: "/assets/images/mountains.jpg",
-            description: "Page not found."
+            description: "Page not found.",
         }
     }
 ];

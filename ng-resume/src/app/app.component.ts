@@ -66,6 +66,9 @@ export class AppComponent implements OnInit, OnDestroy {
    * allow access to the route's snapshot data property, set head tags and SEO meta data.
    * On NavigationEnd events, which are sent at the end of a successful router navgation, 
    * push a page_view event to Google Analytics.
+   * 
+   * Route data property example:
+   * `data: { image: "/assets/images/harbor.jpg", description: "Site privacy policy.", keywords: ["privacy policy", "Angular", "Angular Universal"], allowRobotIndexing: true }`
    */
   private handleRouteEvents() : void {
     this.routerEventsSubscription = this.router.events.subscribe(event => {
@@ -78,13 +81,16 @@ export class AppComponent implements OnInit, OnDestroy {
         const description = routeData["description"];
         const keywords = routeData["keywords"];
 
+        const allowRobotIndexing = routeData["allowRobotIndexing"] ?? false; // route config data must be explicit about allowing robot indexing
+
         this.seoService.updateSeoHeaderTags(
           {
             title: title,
             image: image,
             description: description,
             keywords: keywords
-          }
+          },
+          allowRobotIndexing
         );
       }
       else if (event instanceof NavigationEnd) {
