@@ -5,6 +5,7 @@ import { Meta, MetaDefinition, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 import { DEFAULT_SEO_CONFIG } from '../constants/seo-constants';
+import { scrubProperties } from '../utils/object-utils';
 
 /**
  * SeoService configuration value object interface.
@@ -53,7 +54,9 @@ export class SeoService {
    * @param {boolean} allowRobotIndexing Allows robot indexing. Defaults to true.
    */
   updateSeoHeaderTags(seoConfig: Partial<SeoConfig>, allowRobotIndexing: boolean = true) : void {
+    scrubProperties(seoConfig); // remove properties with null or undefined values
     const config : SeoConfig = { ...DEFAULT_SEO_CONFIG, ...seoConfig };
+
     const metaTagDefinitions : MetaDefinition[] = this.createMetaDefinitions(config, allowRobotIndexing);
 
     this.titleService.setTitle(config.title);
