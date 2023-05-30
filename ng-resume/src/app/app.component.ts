@@ -4,8 +4,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivationEnd, Data, NavigationEnd, Router } from '@angular/router';
 
 import { NgcCookieConsentService, NgcStatusChangeEvent } from 'ngx-cookieconsent';
+
+import { ApplicationInsights } from '@microsoft/applicationinsights-web';
+import { AngularPlugin } from '@microsoft/applicationinsights-angularplugin-js';
+import { APPLICATION_INSIGHTS_CONNECTION_STRING } from './core/constants/application-insights-constants';
+
 import { GoogleAnalyticsService } from './core/services/google-analytics.service';
 import { SeoService } from './core/services/seo.service';
+import { GlobalErrorHandler } from './core/utils/global-error-handler';
 
 /**
  * Root component for ng-resume application.
@@ -13,6 +19,10 @@ import { SeoService } from './core/services/seo.service';
  * References:
  *  https://tinesoft.github.io/ngx-cookieconsent/doc/index.html
  *  https://tinesoft.github.io/ngx-cookieconsent/home
+ *  
+ *  https://github.com/microsoft/applicationinsights-angularplugin-js
+ *  https://learn.microsoft.com/en-us/azure/azure-monitor/app/javascript-framework-extensions?tabs=angular
+ *  https://github.com/MicrosoftDocs/azure-docs/issues/109392
  */
 @Component({
   selector: 'app-root',
@@ -26,6 +36,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
+    private globalErrorHandler: GlobalErrorHandler,
     private cookieConsentService: NgcCookieConsentService,
     private googleAnalyticsService: GoogleAnalyticsService,
     private seoService: SeoService
@@ -34,6 +45,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.initializeApplicationInsights();
     this.handleConsentStatusEvents();
     this.handleRouteEvents();
   }
@@ -44,6 +56,29 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.routerEventsSubscription?.unsubscribe();
     this.cookieConsentStatusChangeSubscription?.unsubscribe();
+  }
+
+  /**
+   * Initialize Azure Application Insights integration.
+   */
+  private initializeApplicationInsights() : void {
+    const angularPlugin = new AngularPlugin();
+
+    const appInsights = new ApplicationInsights(
+      { config: {
+          connectionString: APPLICATION_INSIGHTS_CONNECTION_STRING,
+          extensions: [angularPlugin],
+          extensionConfig: {
+            [angularPlugin.identifier]: { 
+              router: this.router,
+              errorServices: [this.globalErrorHandler]
+            }
+          }
+        } 
+      }
+    );
+
+    appInsights.loadAppInsights();
   }
 
   /**
