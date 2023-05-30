@@ -1,10 +1,11 @@
 import { Subscription } from 'rxjs';
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivationEnd, Data, NavigationEnd, Router } from '@angular/router';
 
 import { NgcCookieConsentService, NgcStatusChangeEvent } from 'ngx-cookieconsent';
 import { GoogleAnalyticsService } from './core/services/google-analytics.service';
+import { SeoService } from './core/services/seo.service';
 
 /**
  * Root component for ng-resume application.
@@ -26,7 +27,8 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private cookieConsentService: NgcCookieConsentService,
-    private googleAnalyticsService: GoogleAnalyticsService
+    private googleAnalyticsService: GoogleAnalyticsService,
+    private seoService: SeoService
     ) 
   {
   }
@@ -59,13 +61,39 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Subscribes to events triggered by the router. On NavigationEnd events, which are
-   * sent at the end of a successful router navgation, push a page_view event to 
-   * Google Analytics.
+   * Subscribes to events triggered by the router.
+   * On ActivationEnd events, which are sent following the activation phase of routes and
+   * allow access to the route's snapshot data property, set head tags and SEO meta data.
+   * On NavigationEnd events, which are sent at the end of a successful router navgation, 
+   * push a page_view event to Google Analytics.
+   * 
+   * Route data property example:
+   * `data: { image: "/assets/images/harbor.jpg", description: "Site privacy policy.", keywords: ["privacy policy", "Angular", "Angular Universal"], allowRobotIndexing: true }`
    */
   private handleRouteEvents() : void {
     this.routerEventsSubscription = this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
+
+      if (event instanceof ActivationEnd) { // route data snapshots are available at this stage
+        const title = event.snapshot.title;
+        const routeData : Data = event.snapshot.data;
+
+        const image = routeData["image"];
+        const description = routeData["description"];
+        const keywords = routeData["keywords"];
+
+        const allowRobotIndexing = routeData["allowRobotIndexing"] ?? false; // route config data must be explicit about allowing robot indexing
+
+        this.seoService.updateSeoHeaderTags(
+          {
+            title: title,
+            image: image,
+            description: description,
+            keywords: keywords
+          },
+          allowRobotIndexing
+        );
+      }
+      else if (event instanceof NavigationEnd) {
         this.googleAnalyticsService.sendPageView(event.urlAfterRedirects);
       }
     });

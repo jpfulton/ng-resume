@@ -16,6 +16,10 @@ A personal resume implemented in [Angular v16](https://angular.io/). Static JSON
 * [Google Analytics](https://analytics.google.com/) integration that pushes page views based on [Angular Router](https://angular.io/api/router/Router) events
 * User cookie consent banner implementation
 * Build-time prerendering using [Angular Universal](https://github.com/angular/universal)
+* SEO head and meta tag generation through dynamically configured route data with support for:
+  * [iMessage Previews](https://developer.apple.com/library/archive/technotes/tn2444/_index.html)
+  * [Twitter Cards](https://developer.twitter.com/en/docs/twitter-for-websites/cards/guides/getting-started)
+  * [Open Graph Previews](https://ogp.me)
 
 ## DevOps and Deployment
 
