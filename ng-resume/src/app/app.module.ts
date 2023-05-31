@@ -8,7 +8,6 @@ import { HttpErrorInterceptor } from './core/interceptors/http-error.interceptor
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ResumeComponent } from "./resume/resume.component";
-// import { GlobalErrorHandler } from './core/utils/global-error-handler';
 
 import { provideRouter } from '@angular/router';
 import routeConfig from './routes';
