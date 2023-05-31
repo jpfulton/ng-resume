@@ -20,6 +20,7 @@ import { GlobalErrorHandler } from './core/utils/global-error-handler';
  *  https://tinesoft.github.io/ngx-cookieconsent/doc/index.html
  *  https://tinesoft.github.io/ngx-cookieconsent/home
  *  
+ *  https://github.com/microsoft/ApplicationInsights-JS
  *  https://github.com/microsoft/applicationinsights-angularplugin-js
  *  https://learn.microsoft.com/en-us/azure/azure-monitor/app/javascript-framework-extensions?tabs=angular
  *  https://github.com/MicrosoftDocs/azure-docs/issues/109392
