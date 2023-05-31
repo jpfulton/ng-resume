@@ -34,7 +34,6 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private cookieConsentService: NgcCookieConsentService,
-    private appInsightsService: ApplicationInsightsService,
     private googleAnalyticsService: GoogleAnalyticsService,
     private seoService: SeoService
     ) 
