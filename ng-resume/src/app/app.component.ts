@@ -4,8 +4,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivationEnd, Data, NavigationEnd, Router } from '@angular/router';
 
 import { NgcCookieConsentService, NgcStatusChangeEvent } from 'ngx-cookieconsent';
+
 import { GoogleAnalyticsService } from './core/services/google-analytics.service';
 import { SeoService } from './core/services/seo.service';
+import { GlobalErrorHandler } from './core/utils/global-error-handler';
+import { ApplicationInsightsService } from './core/services/application-insights.service';
 
 /**
  * Root component for ng-resume application.
@@ -13,6 +16,11 @@ import { SeoService } from './core/services/seo.service';
  * References:
  *  https://tinesoft.github.io/ngx-cookieconsent/doc/index.html
  *  https://tinesoft.github.io/ngx-cookieconsent/home
+ *  
+ *  https://github.com/microsoft/ApplicationInsights-JS
+ *  https://github.com/microsoft/applicationinsights-angularplugin-js
+ *  https://learn.microsoft.com/en-us/azure/azure-monitor/app/javascript-framework-extensions?tabs=angular
+ *  https://github.com/MicrosoftDocs/azure-docs/issues/109392
  */
 @Component({
   selector: 'app-root',
@@ -26,6 +34,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
+    private globalErrorHandler: GlobalErrorHandler,
+    private applicationInsightsService: ApplicationInsightsService,
     private cookieConsentService: NgcCookieConsentService,
     private googleAnalyticsService: GoogleAnalyticsService,
     private seoService: SeoService
@@ -34,6 +44,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.applicationInsightsService.initialize(this.router, this.globalErrorHandler);
     this.handleConsentStatusEvents();
     this.handleRouteEvents();
   }

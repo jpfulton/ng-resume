@@ -1,8 +1,10 @@
-import { ErrorHandler, Injectable, NgZone } from "@angular/core";
+import { Injectable, NgZone } from "@angular/core";
 import { LoggingService } from "../services/logging.service";
 import { ErrorService } from "../services/error.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Router } from "@angular/router";
+
+import { IErrorService } from '@microsoft/applicationinsights-angularplugin-js';
 
 /**
  * Custom global error handler.
@@ -10,7 +12,7 @@ import { Router } from "@angular/router";
 @Injectable({
     providedIn: "root"
 })
-export class GlobalErrorHandler implements ErrorHandler {
+export class GlobalErrorHandler implements IErrorService {
 
     constructor(
         private errorService: ErrorService,

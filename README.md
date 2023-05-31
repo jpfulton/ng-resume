@@ -20,6 +20,7 @@ A personal resume implemented in [Angular v16](https://angular.io/). Static JSON
   * [iMessage Previews](https://developer.apple.com/library/archive/technotes/tn2444/_index.html)
   * [Twitter Cards](https://developer.twitter.com/en/docs/twitter-for-websites/cards/guides/getting-started)
   * [Open Graph Previews](https://ogp.me)
+* Integration with [Azure Monitor (Application Insights)](https://learn.microsoft.com/en-us/azure/azure-monitor/overview)
 
 ## DevOps and Deployment
 
