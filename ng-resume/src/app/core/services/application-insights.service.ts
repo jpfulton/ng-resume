@@ -25,13 +25,19 @@ export class ApplicationInsightsService {
   private isInitialized = false;
   private appInsights: ApplicationInsights | null = null;
 
+  private checkIsInitialized(method: string) {
+    if (!this.isInitialized || this.appInsights === null)
+      throw new Error(`Application insights is not initialized. Cannot invoke ${method}.`);
+  }
+
   initialize(
     router: Router, 
     globalErrorHandler: GlobalErrorHandler,
     allowCookies = false
     ) : void 
   {
-    if (this.isInitialized) return;
+    if (this.isInitialized) 
+      throw new Error("Repeat initialization of ApplicationInsightsService attempted.");
 
     const angularPlugin = new AngularPlugin();
 
@@ -55,12 +61,12 @@ export class ApplicationInsightsService {
   }
 
   enableCookies(value: boolean) : void {
-    if (!this.isInitialized) return;
+    this.checkIsInitialized("enableCookies");
     this.appInsights?.getCookieMgr().setEnabled(value);
   }
 
   logPageView(name?: string, url?: string) { // option to call manually
-    if (!this.isInitialized) return;
+    this.checkIsInitialized("logPageView");
 
     this.appInsights?.trackPageView({
       name: name,
@@ -69,22 +75,22 @@ export class ApplicationInsightsService {
   }
 
   logEvent(name: string, properties?: { [key: string]: any }) {
-    if (!this.isInitialized) return;
+    this.checkIsInitialized("logEvent");
     this.appInsights?.trackEvent({ name: name}, properties);
   }
 
   logMetric(name: string, average: number, properties?: { [key: string]: any }) {
-    if (!this.isInitialized) return;
+    this.checkIsInitialized("logMetric");
     this.appInsights?.trackMetric({ name: name, average: average }, properties);
   }
 
   logException(exception: Error, severityLevel?: number) {
-    if (!this.isInitialized) return;
+    this.checkIsInitialized("logException");
     this.appInsights?.trackException({ exception: exception, severityLevel: severityLevel });
   }
 
   logTrace(message: string, properties?: { [key: string]: any }) {
-    if (!this.isInitialized) return;
+    this.checkIsInitialized("logTrace");
     this.appInsights?.trackTrace({ message: message}, properties);
   }
 }
