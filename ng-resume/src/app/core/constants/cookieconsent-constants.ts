@@ -7,7 +7,7 @@ import { NgcCookieConsentConfig } from 'ngx-cookieconsent';
  * 
  * Note:
  *  In a strange implementation choice, the cookie consent widget uses
- *  a cookie to persiste the users opt-in or opt-out selection.
+ *  a cookie to persist the users opt-in or opt-out selection.
  * 
  * Reference: https://tinesoft.github.io/ngx-cookieconsent/home
  */
