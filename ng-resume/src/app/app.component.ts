@@ -9,6 +9,7 @@ import { GoogleAnalyticsService } from './core/services/google-analytics.service
 import { SeoService } from './core/services/seo.service';
 import { GlobalErrorHandler } from './core/utils/global-error-handler';
 import { ApplicationInsightsService } from './core/services/application-insights.service';
+import { LoggingService } from './core/services/logging.service';
 
 /**
  * Root component for ng-resume application.
@@ -39,13 +40,15 @@ export class AppComponent implements OnInit, OnDestroy {
     private applicationInsightsService: ApplicationInsightsService,
     private cookieConsentService: NgcCookieConsentService,
     private googleAnalyticsService: GoogleAnalyticsService,
-    private seoService: SeoService
+    private seoService: SeoService,
+    private loggingService: LoggingService
     ) 
   {
   }
 
   ngOnInit(): void {
     const currentCookieConsent = this.cookieConsentService.hasConsented();
+    this.loggingService.logInfo(`Current cookie consent status: ${currentCookieConsent}.`);
 
     this.applicationInsightsService.initialize(
       this.router, 
@@ -70,11 +73,14 @@ export class AppComponent implements OnInit, OnDestroy {
   private handleConsentStatusEvents() : void {
     this.cookieConsentStatusChangeSubscription = this.cookieConsentService.statusChange$.subscribe(
       (event: NgcStatusChangeEvent) => {
-        if (event.status === "allow") {
+        const consentStatus = event.status;
+        this.loggingService.logInfo(`Cookie consent status changed to ${consentStatus}.`);
+
+        if (consentStatus === "allow") {
           this.googleAnalyticsService.initializeAndCreateCookies();
           this.applicationInsightsService.enableCookies(true);
         }
-        else if (event.status === "deny") {
+        else if (consentStatus === "deny") {
           this.googleAnalyticsService.destroyAndClearCookies();
           this.applicationInsightsService.enableCookies(false);
         }

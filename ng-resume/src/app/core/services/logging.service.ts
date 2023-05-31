@@ -5,6 +5,7 @@ import { ApplicationInsightsService } from './application-insights.service';
 /**
  * Service to encapsulate logging functionality. Currently logs to console
  * and Azure Application Insights.
+ * 
  * Additional logging targets can be added here. (e.g. Splunk, etc.)
  */
 @Injectable({
@@ -16,6 +17,30 @@ export class LoggingService {
     private applicationInsightsService: ApplicationInsightsService
   )
   { }
+
+  /**
+   * Logs a debug message.
+   * @param {string} message Message for debug log.
+   */
+  logDebug(message: string) {
+    console.debug("LoggingService: [debug] " + message);
+  }
+
+  /**
+   * Logs an info message.
+   * @param {string} message Message for info log.
+   */
+  logInfo(message: string) {
+    console.info("LoggingService: [info] " + message);
+  }
+
+  /**
+   * Logs an warn message.
+   * @param {string} message Message for warn log.
+   */
+  logWarn(message: string) {
+    console.warn("LoggingService: [warn] " + message);
+  }
 
   /**
    * Logs a trace message.
@@ -32,10 +57,7 @@ export class LoggingService {
    * @param {string} stackTrace Optional stack trace.
    */
   logError(message: string, stackTrace?: string) {
-    // send to application insights
     this.applicationInsightsService.logException(new Error(message, { cause: stackTrace }));
-
-    // avoid logging stackTrace to console on browser, leave available for other log targets
-    console.log("LoggingService: [error]" + message);
+    console.error("LoggingService: [error]" + message);
   }
 }

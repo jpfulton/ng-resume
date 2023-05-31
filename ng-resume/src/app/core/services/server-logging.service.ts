@@ -15,7 +15,7 @@ export class ServerLoggingService extends LoggingService {
    * @param {string} message Message for trace.
    */
   override logTrace(message: string) {
-    console.trace("LoggingService: [trace] " + message);
+    console.trace("ServerLoggingService: [trace] " + message);
   }
 
   /**
@@ -24,7 +24,7 @@ export class ServerLoggingService extends LoggingService {
    * @param {string} stackTrace Optional stack trace.
    */
   override logError(message: string, stackTrace?: string) {
-    console.log("ServerLoggingService: [error] " + message);
+    console.error("ServerLoggingService: [error] " + message);
     if (stackTrace !== undefined) console.log(stackTrace);
   }
 }

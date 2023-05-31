@@ -50,12 +50,12 @@ export class ResumeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.platformService.isBrowser()) {
-      this.loggingService.logTrace("Platform is browser.");
+      this.loggingService.logDebug("Platform is browser.");
 
-      this.loggingService.logTrace("Loading remote education source data.");
+      this.loggingService.logDebug("Loading remote education source data.");
       this.educationSubscription = this.educationService.getAllEducationItems().subscribe(data => this.educationList = data);
       
-      this.loggingService.logTrace("Loading remote work history source data.");
+      this.loggingService.logDebug("Loading remote work history source data.");
       this.workHistorySubscription = this.workHistoryService.getAllWorkHistoryItems().subscribe(data => this.workHistoryList = data);
     }
   }
