@@ -1,5 +1,7 @@
 import { NgcCookieConsentConfig } from 'ngx-cookieconsent';
 
+import { environment } from 'src/environments/environment';
+
 /**
  * Cookie consent popup configuration object. FYI, the ngx-cookieconsent
  * library is extremely opinionated about behavior and styling. Only use
@@ -13,7 +15,7 @@ import { NgcCookieConsentConfig } from 'ngx-cookieconsent';
  */
 export const COOKIE_CONSENT_CONFIG : NgcCookieConsentConfig = {
     "cookie": {
-      "domain": ".jpatrickfulton.com"
+      "domain": environment.cookieDomain
     },
     "position": "bottom",
     "theme": "edgeless",
