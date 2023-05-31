@@ -5,13 +5,9 @@ import { ActivationEnd, Data, NavigationEnd, Router } from '@angular/router';
 
 import { NgcCookieConsentService, NgcStatusChangeEvent } from 'ngx-cookieconsent';
 
-import { ApplicationInsights } from '@microsoft/applicationinsights-web';
-import { AngularPlugin } from '@microsoft/applicationinsights-angularplugin-js';
-import { APPLICATION_INSIGHTS_CONNECTION_STRING } from './core/constants/application-insights-constants';
-
+import { ApplicationInsightsService } from './core/services/application-insights.service';
 import { GoogleAnalyticsService } from './core/services/google-analytics.service';
 import { SeoService } from './core/services/seo.service';
-import { GlobalErrorHandler } from './core/utils/global-error-handler';
 
 /**
  * Root component for ng-resume application.
@@ -37,8 +33,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private globalErrorHandler: GlobalErrorHandler,
     private cookieConsentService: NgcCookieConsentService,
+    private appInsightsService: ApplicationInsightsService,
     private googleAnalyticsService: GoogleAnalyticsService,
     private seoService: SeoService
     ) 
@@ -46,7 +42,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initializeApplicationInsights();
     this.handleConsentStatusEvents();
     this.handleRouteEvents();
   }
@@ -57,29 +52,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.routerEventsSubscription?.unsubscribe();
     this.cookieConsentStatusChangeSubscription?.unsubscribe();
-  }
-
-  /**
-   * Initialize Azure Application Insights integration.
-   */
-  private initializeApplicationInsights() : void {
-    const angularPlugin = new AngularPlugin();
-
-    const appInsights = new ApplicationInsights(
-      { config: {
-          connectionString: APPLICATION_INSIGHTS_CONNECTION_STRING,
-          extensions: [angularPlugin],
-          extensionConfig: {
-            [angularPlugin.identifier]: { 
-              router: this.router,
-              errorServices: [this.globalErrorHandler]
-            }
-          }
-        } 
-      }
-    );
-
-    appInsights.loadAppInsights();
   }
 
   /**
