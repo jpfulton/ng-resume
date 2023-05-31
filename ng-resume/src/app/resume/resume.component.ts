@@ -11,6 +11,7 @@ import { Education } from './models/education';
 import { EducationService } from './services/education.service';
 import { EducationItemComponent } from './components/education-item/education-item.component';
 import { PlatformService } from '../core/services/platform.service';
+import { LoggingService } from '../core/services/logging.service';
 
 /**
  * Top level component for the resume view heirarchy.
@@ -41,14 +42,20 @@ export class ResumeComponent implements OnInit, OnDestroy {
   constructor(
     private educationService: EducationService, 
     private workHistoryService: WorkHistoryService,
-    private platformService: PlatformService
+    private platformService: PlatformService,
+    private loggingService: LoggingService
     )
   {
   }
 
   ngOnInit(): void {
     if (this.platformService.isBrowser()) {
+      this.loggingService.logTrace("Platform is browser.");
+
+      this.loggingService.logTrace("Loading remote education source data.");
       this.educationSubscription = this.educationService.getAllEducationItems().subscribe(data => this.educationList = data);
+      
+      this.loggingService.logTrace("Loading remote work history source data.");
       this.workHistorySubscription = this.workHistoryService.getAllWorkHistoryItems().subscribe(data => this.workHistoryList = data);
     }
   }

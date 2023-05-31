@@ -7,6 +7,8 @@ import { NgcCookieConsentService, NgcStatusChangeEvent } from 'ngx-cookieconsent
 
 import { GoogleAnalyticsService } from './core/services/google-analytics.service';
 import { SeoService } from './core/services/seo.service';
+import { GlobalErrorHandler } from './core/utils/global-error-handler';
+import { ApplicationInsightsService } from './core/services/application-insights.service';
 
 /**
  * Root component for ng-resume application.
@@ -32,6 +34,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
+    private globalErrorHandler: GlobalErrorHandler,
+    private applicationInsightsService: ApplicationInsightsService,
     private cookieConsentService: NgcCookieConsentService,
     private googleAnalyticsService: GoogleAnalyticsService,
     private seoService: SeoService
@@ -40,6 +44,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.applicationInsightsService.initialize(this.router, this.globalErrorHandler);
     this.handleConsentStatusEvents();
     this.handleRouteEvents();
   }

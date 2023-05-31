@@ -22,13 +22,12 @@ import { APPLICATION_INSIGHTS_CONNECTION_STRING } from '../constants/application
   providedIn: 'root'
 })
 export class ApplicationInsightsService {
-  appInsights: ApplicationInsights;
+  private isInitialized = false;
+  private appInsights: ApplicationInsights | null = null;
 
-  constructor(
-    private router: Router,
-    private globalErrorHandler: GlobalErrorHandler
-  ) 
-  { 
+  initialize(router: Router, globalErrorHandler: GlobalErrorHandler) : void {
+    if (this.isInitialized) return;
+
     const angularPlugin = new AngularPlugin();
 
     this.appInsights = new ApplicationInsights(
@@ -37,8 +36,8 @@ export class ApplicationInsightsService {
           extensions: [angularPlugin],
           extensionConfig: {
             [angularPlugin.identifier]: { 
-              router: this.router,
-              errorServices: [this.globalErrorHandler]
+              router: router,
+              errorServices: [globalErrorHandler]
             }
           }
         } 
@@ -49,25 +48,31 @@ export class ApplicationInsightsService {
   }
 
   logPageView(name?: string, url?: string) { // option to call manually
-    this.appInsights.trackPageView({
+    if (!this.isInitialized) return;
+
+    this.appInsights?.trackPageView({
       name: name,
       uri: url
     });
   }
 
   logEvent(name: string, properties?: { [key: string]: any }) {
-    this.appInsights.trackEvent({ name: name}, properties);
+    if (!this.isInitialized) return;
+    this.appInsights?.trackEvent({ name: name}, properties);
   }
 
   logMetric(name: string, average: number, properties?: { [key: string]: any }) {
-    this.appInsights.trackMetric({ name: name, average: average }, properties);
+    if (!this.isInitialized) return;
+    this.appInsights?.trackMetric({ name: name, average: average }, properties);
   }
 
   logException(exception: Error, severityLevel?: number) {
-    this.appInsights.trackException({ exception: exception, severityLevel: severityLevel });
+    if (!this.isInitialized) return;
+    this.appInsights?.trackException({ exception: exception, severityLevel: severityLevel });
   }
 
   logTrace(message: string, properties?: { [key: string]: any }) {
-    this.appInsights.trackTrace({ message: message}, properties);
+    if (!this.isInitialized) return;
+    this.appInsights?.trackTrace({ message: message}, properties);
   }
 }
