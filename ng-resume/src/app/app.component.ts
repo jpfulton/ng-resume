@@ -5,7 +5,6 @@ import { ActivationEnd, Data, NavigationEnd, Router } from '@angular/router';
 
 import { NgcCookieConsentService, NgcStatusChangeEvent } from 'ngx-cookieconsent';
 
-import { ApplicationInsightsService } from './core/services/application-insights.service';
 import { GoogleAnalyticsService } from './core/services/google-analytics.service';
 import { SeoService } from './core/services/seo.service';
 
