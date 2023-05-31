@@ -24,6 +24,9 @@ import { PrivacyPolicyComponent } from './core/components/privacy-policy/privacy
 import { SpinnerComponent } from './core/components/spinner/spinner.component';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 
+import { HeaderComponent } from './core/components/header/header.component';
+import { FooterComponent } from './core/components/footer/footer.component';
+
 /**
  * Primary NgModule for app.
  * 
@@ -52,6 +55,8 @@ import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
         RouterModule,
         BrowserAnimationsModule,
         NgcCookieConsentModule.forRoot(COOKIE_CONSENT_CONFIG),
+        HeaderComponent,
+        FooterComponent,
         ResumeComponent
     ]
 })
