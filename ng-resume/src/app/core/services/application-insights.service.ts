@@ -3,10 +3,10 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { GlobalErrorHandler } from '../utils/global-error-handler';
-
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { AngularPlugin } from '@microsoft/applicationinsights-angularplugin-js';
+
+import { GlobalErrorHandler } from '../utils/global-error-handler';
 import { APPLICATION_INSIGHTS_CONNECTION_STRING } from '../constants/application-insights-constants';
 
 /**
@@ -25,7 +25,12 @@ export class ApplicationInsightsService {
   private isInitialized = false;
   private appInsights: ApplicationInsights | null = null;
 
-  initialize(router: Router, globalErrorHandler: GlobalErrorHandler) : void {
+  initialize(
+    router: Router, 
+    globalErrorHandler: GlobalErrorHandler,
+    allowCookies = false
+    ) : void 
+  {
     if (this.isInitialized) return;
 
     const angularPlugin = new AngularPlugin();
@@ -33,6 +38,7 @@ export class ApplicationInsightsService {
     this.appInsights = new ApplicationInsights(
       { config: {
           connectionString: APPLICATION_INSIGHTS_CONNECTION_STRING,
+          disableCookiesUsage: !allowCookies,
           extensions: [angularPlugin],
           extensionConfig: {
             [angularPlugin.identifier]: { 
@@ -45,6 +51,12 @@ export class ApplicationInsightsService {
     );
 
     this.appInsights.loadAppInsights();
+    this.isInitialized = true;
+  }
+
+  enableCookies(value: boolean) : void {
+    if (!this.isInitialized) return;
+    this.appInsights?.getCookieMgr().setEnabled(value);
   }
 
   logPageView(name?: string, url?: string) { // option to call manually

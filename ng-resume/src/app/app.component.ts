@@ -16,6 +16,7 @@ import { ApplicationInsightsService } from './core/services/application-insights
  * References:
  *  https://tinesoft.github.io/ngx-cookieconsent/doc/index.html
  *  https://tinesoft.github.io/ngx-cookieconsent/home
+ *  https://github.com/tinesoft/ngx-cookieconsent
  *  
  *  https://github.com/microsoft/ApplicationInsights-JS
  *  https://github.com/microsoft/applicationinsights-angularplugin-js
@@ -44,7 +45,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.applicationInsightsService.initialize(this.router, this.globalErrorHandler);
+    const currentCookieConsent = this.cookieConsentService.hasConsented();
+
+    this.applicationInsightsService.initialize(
+      this.router, 
+      this.globalErrorHandler,
+      currentCookieConsent);
+
     this.handleConsentStatusEvents();
     this.handleRouteEvents();
   }
@@ -63,10 +70,14 @@ export class AppComponent implements OnInit, OnDestroy {
   private handleConsentStatusEvents() : void {
     this.cookieConsentStatusChangeSubscription = this.cookieConsentService.statusChange$.subscribe(
       (event: NgcStatusChangeEvent) => {
-        if (event.status === "allow")
+        if (event.status === "allow") {
           this.googleAnalyticsService.initializeAndCreateCookies();
-        else if (event.status === "deny")
+          this.applicationInsightsService.enableCookies(true);
+        }
+        else if (event.status === "deny") {
           this.googleAnalyticsService.destroyAndClearCookies();
+          this.applicationInsightsService.enableCookies(false);
+        }
       }
     );
   }

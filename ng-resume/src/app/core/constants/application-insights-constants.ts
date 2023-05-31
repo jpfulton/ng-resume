@@ -6,3 +6,8 @@
  */
 export const APPLICATION_INSIGHTS_CONNECTION_STRING = 
     "InstrumentationKey=ef2e3d1e-2ee7-4129-b4c2-75b058f43047;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/";
+
+/**
+ * Cookie names used by AI.
+ */
+export const APPLICATION_INSIGHTS_COOKIE_NAMES = ["ai_user", "ai_session"];
