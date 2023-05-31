@@ -74,15 +74,22 @@ export class AppComponent implements OnInit, OnDestroy {
     this.cookieConsentStatusChangeSubscription = this.cookieConsentService.statusChange$.subscribe(
       (event: NgcStatusChangeEvent) => {
         const consentStatus = event.status;
+
         this.loggingService.logInfo(`Cookie consent status changed to ${consentStatus}.`);
+        this.applicationInsightsService.logEvent(
+          "CookieConsentStatusChange",
+          {
+            cookieConsentGiven: consentStatus
+          }
+        );
 
         if (consentStatus === "allow") {
           this.googleAnalyticsService.initializeAndCreateCookies();
-          this.applicationInsightsService.enableCookies(true);
+          this.applicationInsightsService.enableCookies(this.router, this.globalErrorHandler, true);
         }
         else if (consentStatus === "deny") {
           this.googleAnalyticsService.destroyAndClearCookies();
-          this.applicationInsightsService.enableCookies(false);
+          this.applicationInsightsService.enableCookies(this.router, this.globalErrorHandler, false);
         }
       }
     );
