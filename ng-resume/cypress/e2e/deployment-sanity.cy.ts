@@ -29,7 +29,8 @@ describe("Deployment Sanity Tests", () => {
   });
 
   it("[API] Invoke the message test api function", () => {
-    cy.visit("/api/messagetest?name=cypress");
-    cy.contains("Hello, cypress.");
+    cy.request("/api/messagetest?name=cypress")
+      .its("body")
+      .should("include", "Hello, cypress.");
   });
 });
