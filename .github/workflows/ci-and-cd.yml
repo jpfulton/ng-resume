@@ -20,7 +20,7 @@ name: continous-integration-and-deployment
 # Reference for framework deploy configurations: https://docs.microsoft.com/azure/static-web-apps/front-end-frameworks
 env:
   APP_LOCATION: "/ng-resume/dist/ng-resume/browser" # location of the client application build artifacts
-  API_LOCATION: "" # no backend api exists in the current project state
+  API_LOCATION: "/ng-resume-api"
   OUTPUT_LOCATION: "" # an empty value here causes the APP_LOCATION location to be pushed to Azure
   AZURE_STATIC_WEB_APPS_API_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }} # repository secret containing deployment token
 
