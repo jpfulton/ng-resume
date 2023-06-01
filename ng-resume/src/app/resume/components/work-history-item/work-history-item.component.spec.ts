@@ -53,6 +53,7 @@ describe('WorkHistoryItemComponent', () => {
     // tests should assign undefined to properties to test for conditional display
     // in the test function
     workHistoryItem = {
+      "id": "6df24b89-99c6-4af6-b064-b507b2533828",
       "startYear": 0,
       "endYear": 0,
       "organization": "Mock org",
