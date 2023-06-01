@@ -43,6 +43,15 @@ body {
   margin: 0;
   padding-bottom: 30px;
   font-family: Roboto, "Helvetica Neue", sans-serif; 
+
+  // background style for the cookie consent widget in minimized state
+  .cc-revoke {
+    background-color: darkgrey !important;
+  }
+}
+
+main {
+  padding: 10px;
 }
 
 a, a:hover, a:visited {

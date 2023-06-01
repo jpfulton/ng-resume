@@ -1,5 +1,7 @@
 <mat-toolbar id="header-toolbar" color="primary">
-    <span>&nbsp;</span>
+    <a mat-icon-button class="home-button" routerLink="/" routerLinkActive="active">
+        <mat-icon>home</mat-icon>
+    </a>
 
     <span class="toolbar-spacer"></span>
 
@@ -9,7 +11,17 @@
         </mat-icon>
     </a>
 
-    <button mat-icon-button aria-label="Menu">
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu">
         <mat-icon>menu</mat-icon>
     </button>
+    <mat-menu #menu="matMenu">
+        <a mat-menu-item routerLink="/cookiepolicy" routerLinkActive="active">
+            <mat-icon>cookie</mat-icon>
+            <span>Cookie Policy</span>
+        </a>
+        <a mat-menu-item routerLink="/privacy" routerLinkActive="active">
+            <mat-icon>privacy_tip</mat-icon>
+            <span>Privacy Policy</span>
+        </a>
+    </mat-menu>
 </mat-toolbar>

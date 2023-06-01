@@ -2,4 +2,12 @@
 
 #header-toolbar {
     @include mat.elevation(10);
+
+    .home-button {
+        color: white;
+
+        &:hover, &:visited {
+            color: white;
+        }
+    }
 }
