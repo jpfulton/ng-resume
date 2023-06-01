@@ -10,14 +10,21 @@ using Newtonsoft.Json;
 
 namespace Jpf.NgResume.Api
 {
-    public static class HttpTrigger
+    public static class MessageTestFunction
     {
-        [FunctionName("HttpTrigger")]
+        [FunctionName("MessageTest")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(
+                AuthorizationLevel.Anonymous, 
+                "get", 
+                "post", 
+                Route = null
+                )
+            ] 
+            HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("C# HTTP triggered MessageTest function processed a request.");
 
             string name = req.Query["name"];
 
