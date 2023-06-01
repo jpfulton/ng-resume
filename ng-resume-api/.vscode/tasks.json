@@ -13,7 +13,7 @@
       "type": "process",
       "problemMatcher": "$msCompile",
       "options": {
-        "cwd": "${workspaceFolder}/ng-resume-api"
+        "cwd": "${workspaceFolder}"
       }
     },
     {
@@ -32,7 +32,7 @@
       },
       "problemMatcher": "$msCompile",
       "options": {
-        "cwd": "${workspaceFolder}/ng-resume-api"
+        "cwd": "${workspaceFolder}"
       }
     },
     {
@@ -48,7 +48,7 @@
       "type": "process",
       "problemMatcher": "$msCompile",
       "options": {
-        "cwd": "${workspaceFolder}/ng-resume-api"
+        "cwd": "${workspaceFolder}"
       }
     },
     {
@@ -65,14 +65,14 @@
       "dependsOn": "clean release (functions)",
       "problemMatcher": "$msCompile",
       "options": {
-        "cwd": "${workspaceFolder}/ng-resume-api"
+        "cwd": "${workspaceFolder}"
       }
     },
     {
       "type": "func",
       "dependsOn": "build (functions)",
       "options": {
-        "cwd": "${workspaceFolder}/ng-resume-api/bin/Debug/net6.0"
+        "cwd": "${workspaceFolder}/bin/Debug/net6.0"
       },
       "command": "host start",
       "isBackground": true,
