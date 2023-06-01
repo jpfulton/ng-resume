@@ -1,8 +1,18 @@
+@use '@angular/material' as mat;
+
 @import '/src/styles/variables';
 @import '/src/styles/mixins';
 
 .work-history {
     display: flexbox;
+    padding: 10px;
+    border-radius: 15px;
+    @include mat.elevation-transition();
+    @include mat.elevation(0);
+
+    &:hover {
+        @include mat.elevation(5);
+    }
 
     @include responsive( $med ) {
         display: flex;
