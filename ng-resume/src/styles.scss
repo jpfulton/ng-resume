@@ -41,7 +41,6 @@ html, body {
 
 body { 
   margin: 0;
-  padding-bottom: 30px;
   font-family: Roboto, "Helvetica Neue", sans-serif; 
 
   // background style for the cookie consent widget in minimized state
@@ -51,7 +50,7 @@ body {
 }
 
 main {
-  padding: 10px;
+  padding: 10px 10px 35px 10px;
 }
 
 a, a:hover, a:visited {
