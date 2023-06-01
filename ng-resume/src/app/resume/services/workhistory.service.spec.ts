@@ -12,6 +12,7 @@ describe("WorkhistoryService", () => {
   const dataSourceLocation = LocalDataSourceLocations.WorkHistory;
   const responseData: WorkHistory[] = [
     {
+      id: "874874ae-7b3b-44c7-b19a-9c3187f15835",
       bullets: ["Bullet one", "Bullet two"],
       endYear: 2001,
       organization: "Mock org",
@@ -21,6 +22,7 @@ describe("WorkhistoryService", () => {
       title: "Mock title"
     },
     {
+      id: "ee17fbf3-73b3-477f-b1a7-3d3431569253",
       bullets: ["Bullet one", "Bullet two"],
       endYear: 2001,
       organization: "Mock org 2",

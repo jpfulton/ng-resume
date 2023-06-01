@@ -12,11 +12,13 @@ describe("EducationService", () => {
   const dataSourceLocation = LocalDataSourceLocations.Education;
   const responseData: Education[] = [
     {
+      id: "8c2ee1a8-96d4-4ef3-a2cb-92eada889474",
       title: "Mock title",
       subtitle: "Mock subtitle",
       organization: "Mock org"
     },
     {
+      id: "66337f2d-a9c5-448d-a52d-82320d716139",
       title: "Mock title2",
       subtitle: "Mock subtitle2",
       organization: "Mock org2"

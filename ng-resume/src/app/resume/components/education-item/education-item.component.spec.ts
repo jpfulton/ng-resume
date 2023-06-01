@@ -47,6 +47,7 @@ describe("EducationItemComponent", () => {
     // tests should assign undefined to properties to test for conditional display
     // in the test function
     educationItem = {
+      id: "4825f74e-80ae-4823-a523-a5bf631cb3ad",
       organization: "Mock org",
       subtitle: "Mock subtitle",
       title: "Mock title"
