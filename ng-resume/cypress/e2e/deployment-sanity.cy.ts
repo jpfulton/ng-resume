@@ -3,28 +3,34 @@ describe("Deployment Sanity Tests", () => {
     cy.screenshot();
   });
   
-  it("Visits the resume page", () => {
+  it("[APP] Visits the resume page", () => {
     cy.visit("/");
     cy.contains("J. Patrick Fulton");
   });
 
-  it("Visits the error page", () => {
+  it("[APP] Visits the error page", () => {
     cy.visit("/error");
     cy.contains("Something went wrong.");
   });
 
-  it("Visits the cookie policy page", () => {
+  it("[APP] Visits the cookie policy page", () => {
     cy.visit("/cookiepolicy");
     cy.contains("cookie");
   });
 
-  it("Visits the privacy policy page", () => {
+  it("[APP] Visits the privacy policy page", () => {
     cy.visit("/privacy");
     cy.contains("privacy");
   });
 
-  it("Visits the not found page", () => {
+  it("[APP] Visits the not found page", () => {
     cy.visit("/oops");
     cy.contains("not found");
+  });
+
+  it("[API] Invoke the message test api function", () => {
+    cy.request("/api/messagetest?name=cypress")
+      .its("body")
+      .should("include", "Hello, cypress.");
   });
 });

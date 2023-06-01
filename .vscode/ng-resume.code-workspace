@@ -1,0 +1,25 @@
+{
+  "folders": [
+    {
+      "name": "ROOT",
+      "path": "../"
+    },
+    {
+      "name": "ng-resume",
+      "path": "../ng-resume"
+    },
+    {
+      "name": "ng-resume-api",
+      "path": "../ng-resume-api"
+    },
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      "ng-resume/": true,
+      "ng-resume-api/": true
+    }
+  }
+}
