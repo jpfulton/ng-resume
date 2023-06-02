@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Education } from '../models/education';
-import { LocalDataSourceLocations } from '../enums/local-data-source-locations';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { RestApiLocations } from '../enums/rest-api-locations';
 
 /**
  * Service to access Education objects from a remote source.
@@ -18,6 +18,6 @@ export class EducationService {
    * @returns {Observable<Education[]>} An observable array of Education objects.
    */
   getAllEducationItems() : Observable<Education[]> {
-    return this.httpClient.get<Education[]>(LocalDataSourceLocations.Education);
+    return this.httpClient.get<Education[]>(RestApiLocations.Education);
   }
 }
