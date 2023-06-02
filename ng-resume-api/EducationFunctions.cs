@@ -12,11 +12,11 @@ namespace Jpf.NgResume.Api
 {
     public static class EducationFunctions
     {
-        private static readonly EducationDataStore educationDataStore;
+        private static readonly EducationDataStore dataStore;
 
         static EducationFunctions()
         {
-            educationDataStore = new EducationDataStore();
+            dataStore = new EducationDataStore();
         }
 
         [FunctionName("GetAllEducation")]
@@ -29,7 +29,7 @@ namespace Jpf.NgResume.Api
             ] HttpRequest request,
             ILogger log)
         {
-            var data = await educationDataStore.GetAllEducationsAsync();
+            var data = await dataStore.GetAllEducationsAsync();
             return new OkObjectResult(data);
         }
 
@@ -45,7 +45,7 @@ namespace Jpf.NgResume.Api
             ILogger log)
         {
             var idAsGuid = Guid.Parse(id);
-            var data = await educationDataStore.GetEducationAsync(idAsGuid);
+            var data = await dataStore.GetEducationAsync(idAsGuid);
             return new OkObjectResult(data);
         }
     }
