@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 
 namespace Jpf.NgResume.Api.Models
 {
+    /// <summary>
+    /// Model class to represent work history items.
+    /// </summary>
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
     public class WorkHistory
     {

@@ -6,6 +6,9 @@ using Jpf.NgResume.Api.Models;
 
 namespace Jpf.NgResume.Api.DataStore
 {
+    /// <summary>
+    /// An in-memory store of education items.
+    /// </summary>
     public class EducationDataStore : BaseDataStore<Guid, Education>
     {
         private static readonly string JSON_EMBEDDED_RESOURCE = "api.resources.education.json";
@@ -14,28 +17,37 @@ namespace Jpf.NgResume.Api.DataStore
         {
         }
 
-        public override async Task Initialize()
+        protected override async Task InitializeAsync()
         {
             var dataList = await this.GetDataFromEmbeddedJsonResource(JSON_EMBEDDED_RESOURCE);
 
             foreach (var item in dataList)
             {
-                this.GetMap().Add(item.Id, item);
+                this.Data.Add(item.Id, item);
             }
 
             this.IsInitialized = true;
         }
 
+        /// <summary>
+        /// Returns all eduction items in the store.
+        /// </summary>
+        /// <returns>A list of education items.</returns>
         public async Task<IList<Education>> GetAllEducationsAsync()
         {
-            if (!IsInitialized) await Initialize();
-            return this.GetMap().Values.ToList<Education>();
+            if (!IsInitialized) await InitializeAsync();
+            return this.Data.Values.ToList<Education>();
         }
 
+        /// <summary>
+        /// Returns an education item from the store by its Id property.
+        /// </summary>
+        /// <param name="id">Key of the education item.</param>
+        /// <returns>An eduction item.</returns>
         public async Task<Education> GetEducationAsync(Guid id)
         {
-            if (!IsInitialized) await Initialize();
-            return this.GetMap()[id];
+            if (!IsInitialized) await InitializeAsync();
+            return this.Data[id];
         }
     }
 }
