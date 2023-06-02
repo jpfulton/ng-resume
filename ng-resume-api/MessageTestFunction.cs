@@ -10,8 +10,17 @@ using Newtonsoft.Json;
 
 namespace Jpf.NgResume.Api
 {
+    /// <summary>
+    /// Host class for test functions.
+    /// </summary>
     public static class MessageTestFunction
     {
+        /// <summary>
+        /// Simple message processing function for API tests.
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
         [FunctionName("MessageTest")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(
