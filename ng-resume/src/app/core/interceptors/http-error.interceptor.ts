@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/require-jsdoc */
 import { Injectable } from '@angular/core';
 import {
   HttpRequest,
@@ -5,7 +6,8 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import { Observable, retry } from 'rxjs';
+import { Observable, finalize, retry, timer } from 'rxjs';
+import { LoadingService } from '../services/loading.service';
 
 /**
  * Interceptor for HTTP requests made by the HttpClient service.
@@ -13,9 +15,35 @@ import { Observable, retry } from 'rxjs';
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
 
+  private totalRequests = 0;
+
+  constructor(
+    private loadingService: LoadingService
+  ) 
+  {}
+
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return next.handle(request).pipe(
-      retry(1)
-    );
+    this.totalRequests++;
+    this.loadingService.setLoading(true);
+
+    if (request.method === "GET") {
+      return next.handle(request).pipe(
+        retry({ count: 3, delay: (_error, retryCount) => timer(retryCount * 1000) }),
+        finalize(() => this.manageTotalRequests() )
+      );
+    }
+    else {
+      return next.handle(request).pipe(
+        finalize(() => this.manageTotalRequests() )
+      );
+    }
+  }
+
+  private manageTotalRequests() {
+    this.totalRequests--;
+
+    if (this.totalRequests == 0) {
+      this.loadingService.setLoading(false);
+    }
   }
 }

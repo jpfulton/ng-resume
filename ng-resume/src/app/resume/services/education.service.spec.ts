@@ -3,13 +3,13 @@ import { TestBed } from '@angular/core/testing';
 
 import { Education } from '../models/education';
 import { EducationService } from './education.service';
-import { LocalDataSourceLocations } from '../enums/local-data-source-locations';
+import { RestApiLocations } from '../enums/rest-api-locations';
 
 describe("EducationService", () => {
   let httpTestingController: HttpTestingController;
   let service: EducationService;
 
-  const dataSourceLocation = LocalDataSourceLocations.Education;
+  const dataSourceLocation = RestApiLocations.Education;
   const responseData: Education[] = [
     {
       id: "8c2ee1a8-96d4-4ef3-a2cb-92eada889474",
