@@ -1,4 +1,7 @@
-describe("Deployment Sanity Tests", () => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable jsdoc/require-jsdoc */
+
+describe("Deployment Sanity Tests [APP]", () => {
   afterEach(() => {
     cy.screenshot();
   });
@@ -26,11 +29,5 @@ describe("Deployment Sanity Tests", () => {
   it("[APP] Visits the not found page", () => {
     cy.visit("/oops");
     cy.contains("not found");
-  });
-
-  it("[API] Invoke the message test api function", () => {
-    cy.request("/api/messagetest?name=cypress")
-      .its("body")
-      .should("include", "Hello, cypress.");
   });
 });

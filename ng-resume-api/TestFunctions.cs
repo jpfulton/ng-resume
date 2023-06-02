@@ -10,30 +10,32 @@ using Newtonsoft.Json;
 
 namespace Jpf.NgResume.Api
 {
+    /// <summary>
+    /// Host class for test functions.
+    /// </summary>
     public static class MessageTestFunction
     {
-        [FunctionName("MessageTest")]
-        public static async Task<IActionResult> Run(
+        /// <summary>
+        /// Simple message processing function for API tests.
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        [FunctionName("TestGet")]
+        public static IActionResult Run(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "get", 
-                "post", 
-                Route = null
+                Route = "test"
                 )
             ] 
             HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP triggered MessageTest function processed a request.");
-
             string name = req.Query["name"];
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
-
             string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
+                ? "This HTTP triggered function executed successfully. Pass a name in the query string for a personalized response."
                 : $"Hello, {name}. This HTTP triggered function executed successfully.";
 
             return new OkObjectResult(responseMessage);
