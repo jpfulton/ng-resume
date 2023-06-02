@@ -1,0 +1,210 @@
+[
+    {
+        "id": "564bab1a-77a5-4a3c-98a5-d57e5bf1a0ef",
+        "startYear": 2018,
+        "endYear": 2021,
+        "organization": "Upfront Healthcare Services, Inc.",
+        "organizationURL": "https://www.upfronthealthcare.com",
+        "title": "Chief Technology Officer",
+        "bullets": [
+            "Led the software engineering, quality assurance and DevOps functions for a rapidly growing software as a service business",
+            "Collaborated with executive leadership team on the implementation of key projects and initiatives",
+            "Produced and delivered regular reports on engineering strategy and execution status to the board of directors",
+            "Expanded a healthcare communication solution, designed to enhance patient outcomes by delivering personalized digital experiences, powered by machine learning and driven by proprietary behavioral datasets, from pilot to enterprise platform",
+            "Migrated to an elastic scale architecture founded on .NET technologies in the Microsoft Azure cloud, maintaining an efficient compute profile while scaling without intervention to meet massive patient engagement demands",
+            "Impacted more than 2.5 million lives and achieved over a 40% aggregate patient outreach activation rate",
+            "Delivered strategic guidance on the system’s scalability, reliability, security, and technical infrastructure",
+            "Realized a 50x increase in contracted annual recurring revenue (CARR)",
+            "Increased engineering organization headcount 10x while fostering and retaining a collaborative, mission-driven culture",
+            "Prepared and presented engineering function artifacts in support of investor diligence on a Series B funding phase",
+            "Sponsored the creation of and coached the leadership of an internal diversity, equity and inclusion committee",
+            "Headed the transition of a centralized engineering team to a multi-geographic, remote working environment"
+        ],
+        "skills": [
+            "Technical Leadership",
+            "Team Management",
+            "Enterprise Architecture",
+            "Agile Methodologies",
+            "Cloud Computing",
+            "Microsoft Azure",
+            "Vendor Management",
+            "Software as a Service (SaaS)",
+            "C#",
+            "Git",
+            "JavaScript"
+        ]
+    },
+    {
+        "id": "cf810231-fcc4-447a-8094-532b5478287b",
+        "startYear": 2016,
+        "endYear": 2018,
+        "organization": "ZirMed, now a part of Waystar",
+        "organizationURL": "https://www.waystar.com",
+        "title": "Engineering Development Manager",
+        "bullets": [
+            "Oversaw the design and implementation of a healthcare contract management platform and green field development on a payment variance application supported by that platform",
+            "Managed a line of business engineering team composed of ten software and quality assurance engineers spanning multiple geographic locations",
+            "Performed staffing and recruitment functions to maintain head count, ensure team cohesion and sustain team culture",
+            "Worked in close collaboration with the enterprise architecture and DevOps groups to ensure compliance in system design and coordination with deployment technologies",
+            "Coordinated and troubleshot end-of-sprint system deployments into a private cloud utilizing a proprietary delivery platform",
+            "Led engineering design sessions and formal code reviews to ensure code quality, code base maintainability and system scalability"
+        ],
+        "skills": [
+            "Technical Leadership",
+            "Team Management",
+            "Enterprise Architecture",
+            "Agile Methodologies",
+            "Cloud Computing",
+            "Software as a Service (SaaS)",
+            "C#",
+            "Git",
+            "Machine Learning",
+            "JavaScript"
+        ]
+    },
+    {
+        "id": "c512ef32-2fe5-4cde-91c3-6064f2861ac3",
+        "startYear": 2014,
+        "endYear": 2016,
+        "organization": "ZirMed, now a part of Waystar",
+        "organizationURL": "https://www.waystar.com",
+        "title": "Managing Architect",
+        "bullets": [
+            "Developed and implemented a structured software engineering internship program",
+            "Selected and trained entry level software engineers, achieving a 92% hire rate out of the program within two years of program inception",
+            "Responsible for initiatives related to engineering department education, professional development and design maintainability",
+            "Led research and development projects focused on technology selection and the creation of patterns / techniques to be consumed by line of business application engineering teams",
+            "Implemented an Agile software development methodology on a team in advance of wider organizational and departmental adoption",
+            "Designed and deployed multiple production-quality internal applications as reference implementations exemplifying current organizational architectural and design guidelines"
+        ],
+        "skills": [
+            "Technical Leadership",
+            "Team Management",
+            "Technical Training",
+            "Enterprise Architecture",
+            "Agile Methodologies",
+            "Cloud Computing",
+            "Microsoft Azure",
+            "Software as a Service (SaaS)",
+            "C#",
+            "Git",
+            "Twilio",
+            "Machine Learning",
+            "JavaScript"
+        ]
+    },
+    {
+        "id": "67a28b94-f42c-4c2d-94c6-62d322a29aef",
+        "startYear": 2013,
+        "endYear": 2014,
+        "organization": "ZirMed, now a part of Waystar",
+        "organizationURL": "https://www.waystar.com",
+        "title": "Software Architect",
+        "bullets": [
+            "Led and coordinated system design initiatives across a portfolio of line of business applications",
+            "Developed and ensured conformance with technological and design guidelines",
+            "Delivered educational presentations and artifacts on technologies, patterns and practices developed by the enterprise architecture group",
+            "Engineered core frameworks, patterns and libraries for consumption by application engineering teams",
+            "Participated in architectural and code review sessions to guarantee maintainability, scalability and consistency of solution design across the organizational product portfolio"
+        ],
+        "skills": [
+            "Technical Leadership",
+            "Technical Training",
+            "Enterprise Architecture",
+            "Agile Methodologies",
+            "Cloud Computing",
+            "Software as a Service (SaaS)",
+            "C#",
+            "Git",
+            "JavaScript"
+        ]
+    },
+    {
+        "id": "056115be-ca18-4b34-99da-64a63fb8148d",
+        "startYear": 2012,
+        "endYear": 2013,
+        "organization": "ZirMed, now a part of Waystar",
+        "organizationURL": "https://www.waystar.com",
+        "title": "Technical Lead",
+        "bullets": [
+            "Developed design specifications and oversaw product implementation by an engineering team through code review and pair coding sessions",
+            "Ensured adherence to established architectural design patterns",
+            "Provided mentoring, coaching and training to engineering team resources",
+            "Interfaced with quality assurance specialists to guarantee product quality and prompt defect resolution",
+            "Collaborated with business representatives to ensure fulfillment of requirements and implementation details that facilitated rapid response to evolving requirements"
+        ],
+        "skills": [
+            "Technical Leadership",
+            "Agile Methodologies",
+            "Cloud Computing",
+            "Software as a Service (SaaS)",
+            "C#",
+            "Git",
+            "JavaScript"
+        ]
+    },
+    {
+        "id": "83cac86a-99c4-4dab-8116-0fe128dc545e",
+        "startYear": 2009,
+        "endYear": 2012,
+        "organization": "Future Visions, Inc.",
+        "title": "ERP Implementation and Development Consultant",
+        "bullets": [
+            "Designed, specified and implemented customizations to business processes and data models implemented in existing enterprise resource planning systems",
+            "Managed project-oriented teams of software developers to provide complex system extensions on time, on budget to meet demanding customer expectations",
+            "Implemented Agile team and software management methodologies in an industry where traditional waterfall planning remains a de facto standard",
+            "Administered and troubleshot existing system installations",
+            "Performed end-user and administrator training seminars",
+            "Consulted on organizational implementation strategies and guided implementations through established, repeatable methodologies"
+        ],
+        "skills": [
+            "Team Management",
+            "Agile Methodologies",
+            "Project Management",
+            "C#",
+            "Git",
+            "Microsoft SQL Server",
+            "JavaScript"
+        ]
+    },
+    {
+        "id": "d569a555-dd4e-4d65-860f-b6b36b457363",
+        "startYear": 2005,
+        "endYear": 2009,
+        "organization": "University of Louisville, College of Business, Center for Non-Profit Information Technology",
+        "organizationURL": "https://business.louisville.edu",
+        "title": "Teaching Assistant / Software Developer",
+        "bullets": [
+            "Developed and delivered lectures on software design patterns, development technologies and system design for an undergraduate capstone course in software development methodology",
+            "Coordinated and evaluated the activities of groups of student developers organized into teams as large as twelve"
+        ],
+        "skills": [
+            "Agile Methodologies",
+            "C#",
+            "Git",
+            "Microsoft SQL Server",
+            "JavaScript"
+        ]
+    },
+    {
+        "id": "c090d4b0-4ca6-48f5-9ae3-6ca86c4588eb",
+        "startYear": 2000,
+        "endYear": 2005,
+        "organization": "EGi",
+        "title": "Software Development Consultant",
+        "bullets": [
+            "Performed systems analysis, project specification and project management for a variety of local and regional organizations",
+            "Acted as lead developer and manager for a small software development team",
+            "Prepared and delivered sales presentations to prospects",
+            "Managed existing account growth opportunities"
+        ],
+        "skills": [
+            "Project Management",
+            "C#",
+            "PostgreSQL",
+            "Microsoft SQL Server",
+            "Java",
+            "JavaScript"
+        ]
+    }
+]
