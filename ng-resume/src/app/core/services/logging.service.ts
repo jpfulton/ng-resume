@@ -58,6 +58,6 @@ export class LoggingService {
    */
   logError(message: string, stackTrace?: string) {
     this.applicationInsightsService.logException(new Error(message, { cause: stackTrace }));
-    console.error("LoggingService: [error]" + message);
+    console.error("LoggingService: [error] " + message);
   }
 }
