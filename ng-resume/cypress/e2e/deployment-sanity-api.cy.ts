@@ -3,8 +3,8 @@
 
 describe("Deployment Sanity Tests [API]", () => {
   
-    it("[API] Invoke the message test api function", () => {
-      cy.request("/api/messagetest?name=cypress")
+    it("[API] Invoke the test api function", () => {
+      cy.request("/api/test?name=cypress")
         .its("body")
         .should("include", "Hello, cypress.");
     });

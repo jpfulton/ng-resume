@@ -21,7 +21,7 @@ namespace Jpf.NgResume.Api
         /// <param name="req"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        [FunctionName("Test")]
+        [FunctionName("GetTest")]
         public static IActionResult Run(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
