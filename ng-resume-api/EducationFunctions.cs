@@ -23,7 +23,7 @@ namespace Jpf.NgResume.Api
             dataStore = new EducationDataStore();
         }
 
-        [FunctionName("GetAllEducation")]
+        [FunctionName("EducationGetAll")]
         public static async Task<IActionResult> GetAllEducation(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
@@ -37,7 +37,7 @@ namespace Jpf.NgResume.Api
             return new OkObjectResult(data);
         }
 
-        [FunctionName("GetEducationById")]
+        [FunctionName("EducationGetById")]
         public static async Task<IActionResult> GetEducation(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 

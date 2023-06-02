@@ -23,7 +23,7 @@ namespace Jpf.NgResume.Api
             dataStore = new WorkHistoryDataStore();
         }
 
-        [FunctionName("GetAllWorkHistory")]
+        [FunctionName("WorkHistoryGetAll")]
         public static async Task<IActionResult> GetAllWorkHistory(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
@@ -37,7 +37,7 @@ namespace Jpf.NgResume.Api
             return new OkObjectResult(data);
         }
 
-        [FunctionName("GetWorkHistoryById")]
+        [FunctionName("WorkHistoryGetById")]
         public static async Task<IActionResult> GetWorkHistory(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
