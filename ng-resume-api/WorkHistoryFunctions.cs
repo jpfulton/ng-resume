@@ -10,6 +10,10 @@ using Jpf.NgResume.Api.DataStore;
 
 namespace Jpf.NgResume.Api
 {
+    /// <summary>
+    /// A collection of Http triggered functions implementing the work history
+    /// noun in a RESTful API.
+    /// </summary>
     public static class WorkHistoryFunctions
     {
         private static readonly WorkHistoryDataStore dataStore;

@@ -10,6 +10,10 @@ using Jpf.NgResume.Api.DataStore;
 
 namespace Jpf.NgResume.Api
 {
+    /// <summary>
+    /// Collection of Http triggered functions implementing the education
+    /// noun in a RESTful API.
+    /// </summary>
     public static class EducationFunctions
     {
         private static readonly EducationDataStore dataStore;
