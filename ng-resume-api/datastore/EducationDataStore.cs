@@ -1,65 +1,41 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Jpf.NgResume.Api.Models;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace Jpf.NgResume.Api.DataStore
 {
-    public class EducationDataStore
+    public class EducationDataStore : BaseDataStore<Guid, Education>
     {
         private static readonly string JSON_EMBEDDED_RESOURCE = "api.resources.education.json";
 
-        private bool isInitialized = false;
-        private IDictionary<Guid, Education> educationMap;
-
-        public EducationDataStore()
+        public EducationDataStore() : base()
         {
-            this.educationMap = new Dictionary<Guid, Education>();
         }
 
-        public bool IsInitialized()
+        public override async Task Initialize()
         {
-            return this.isInitialized;
-        }
+            var dataList = await this.GetDataFromEmbeddedJsonResource(JSON_EMBEDDED_RESOURCE);
 
-        public async Task Initialize(ILogger log)
-        {
-            using (
-                Stream stream = Assembly
-                    .GetExecutingAssembly()
-                    .GetManifestResourceStream(JSON_EMBEDDED_RESOURCE)
-            )
-            using (
-                StreamReader reader = new StreamReader(stream)
-            )
+            foreach (var item in dataList)
             {
-                var jsonFileContent = await reader.ReadToEndAsync();
-                var educationList = JsonConvert.DeserializeObject<IList<Education>>(jsonFileContent);
-
-                foreach (var item in educationList)
-                {
-                    educationMap.Add(item.Id, item);
-                }
+                this.GetMap().Add(item.Id, item);
             }
 
-            this.isInitialized = true;
+            this.IsInitialized = true;
         }
 
-        public async Task<IList<Education>> GetAllEducationsAsync(ILogger log)
+        public async Task<IList<Education>> GetAllEducationsAsync()
         {
-            if (!isInitialized) await Initialize(log);
-            return educationMap.Values.ToList<Education>();
+            if (!IsInitialized) await Initialize();
+            return this.GetMap().Values.ToList<Education>();
         }
 
-        public async Task<Education> GetEducationAsync(Guid id, ILogger log)
+        public async Task<Education> GetEducationAsync(Guid id)
         {
-            if (!isInitialized) await Initialize(log);
-            return educationMap[id];
+            if (!IsInitialized) await Initialize();
+            return this.GetMap()[id];
         }
     }
 }

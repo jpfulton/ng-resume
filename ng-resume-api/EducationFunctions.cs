@@ -29,7 +29,7 @@ namespace Jpf.NgResume.Api
             ] HttpRequest request,
             ILogger log)
         {
-            var data = await educationDataStore.GetAllEducationsAsync(log);
+            var data = await educationDataStore.GetAllEducationsAsync();
             return new OkObjectResult(data);
         }
 
@@ -45,7 +45,7 @@ namespace Jpf.NgResume.Api
             ILogger log)
         {
             var idAsGuid = Guid.Parse(id);
-            var data = await educationDataStore.GetEducationAsync(idAsGuid, log);
+            var data = await educationDataStore.GetEducationAsync(idAsGuid);
             return new OkObjectResult(data);
         }
     }
