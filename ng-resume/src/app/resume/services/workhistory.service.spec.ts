@@ -3,13 +3,13 @@ import { TestBed } from '@angular/core/testing';
 
 import { WorkHistory } from '../models/workhistory';
 import { WorkHistoryService } from './workhistory.service';
-import { LocalDataSourceLocations } from '../enums/local-data-source-locations';
+import { RestApiLocations } from '../enums/rest-api-locations';
 
 describe("WorkhistoryService", () => {
   let httpTestingController: HttpTestingController;
   let service: WorkHistoryService;
 
-  const dataSourceLocation = LocalDataSourceLocations.WorkHistory;
+  const dataSourceLocation = RestApiLocations.WorkHistory;
   const responseData: WorkHistory[] = [
     {
       id: "874874ae-7b3b-44c7-b19a-9c3187f15835",
