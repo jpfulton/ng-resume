@@ -3,5 +3,5 @@
  */
 export enum RestApiLocations {
     Education = "./api/education",
-    WorkHistory = "./api//workhistory",
+    WorkHistory = "./api/workhistory",
 }
