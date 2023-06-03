@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { ResumeViewComponent } from './views/resume/resume-view.component';
-import { ErrorComponent } from './core/components/error/error.component';
+import { ErrorViewComponent } from './views/error/error-view.component';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 import { CookiePolicyViewComponent } from './views/cookie-policy/cookie-policy-view.component';
 import { PrivacyPolicyComponent } from './core/components/privacy-policy/privacy-policy.component';
@@ -23,7 +23,7 @@ const routeConfig: Routes = [
     },
     {
         path: 'error',
-        component: ErrorComponent,
+        component: ErrorViewComponent,
         title: TITLE_PREFIX + 'Error',
         data: {
             image: "/assets/images/mountains.jpg",

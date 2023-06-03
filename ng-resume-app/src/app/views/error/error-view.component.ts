@@ -3,11 +3,11 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
     selector: 'app-error',
-    templateUrl: './error.component.html',
-    styleUrls: ['./error.component.scss'],
+    templateUrl: './error-view.component.html',
+    styleUrls: ['./error-view.component.scss'],
     standalone: true,
     imports: [RouterLink, RouterLinkActive]
 })
-export class ErrorComponent {
+export class ErrorViewComponent {
 
 }

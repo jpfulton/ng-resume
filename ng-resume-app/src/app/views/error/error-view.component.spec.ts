@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ErrorComponent } from './error.component';
+import { ErrorViewComponent } from './error-view.component';
 import { RouterTestingModule } from '@angular/router/testing';
 
-describe('ErrorComponent', () => {
-  let component: ErrorComponent;
-  let fixture: ComponentFixture<ErrorComponent>;
+describe('ErrorViewComponent', () => {
+  let component: ErrorViewComponent;
+  let fixture: ComponentFixture<ErrorViewComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        ErrorComponent
+        ErrorViewComponent
       ]
     });
-    fixture = TestBed.createComponent(ErrorComponent);
+    fixture = TestBed.createComponent(ErrorViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
