@@ -8,7 +8,7 @@ import { ResumeViewComponent } from './resume-view.component';
 import { EducationService } from './services/education.service';
 import { WorkHistoryService } from './services/workhistory.service';
 
-describe('ResumeComponent', () => {
+describe('ResumeViewComponent', () => {
   let fixture: ComponentFixture<ResumeViewComponent>;
   let component: ResumeViewComponent;
 
