@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ServerModule } from '@angular/platform-server';
 
-import { AppModule } from '../app.module';
+//import { AppModule } from '../app.module';
 import { AppComponent } from '../app.component';
 
 import { ErrorService } from '../core/services/error.service';
@@ -11,10 +11,11 @@ import { ServerLoggingService } from '../core/services/server-logging.service';
 
 @NgModule({
   imports: [
-    AppModule,
+    //AppModule,
+    AppComponent,
     ServerModule,
   ],
-  bootstrap: [AppComponent],
+  //bootstrap: [AppComponent],
   providers: [
     { provide: ErrorService, useClass: ServerErrorService },
     { provide: LoggingService, useClass: ServerLoggingService }
