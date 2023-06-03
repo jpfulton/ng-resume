@@ -12,14 +12,14 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 describe('AppComponent', () => {
   beforeEach(() => TestBed.configureTestingModule({
-    declarations: [AppComponent],
     imports: [
         RouterTestingModule,
         NgcCookieConsentModule.forRoot(COOKIE_CONSENT_CONFIG),
         MatDialogModule,
         HeaderComponent,
         FooterComponent,
-        SpinnerComponent
+        SpinnerComponent,
+        AppComponent
     ]
 }));
 
