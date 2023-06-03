@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { ResumeViewComponent } from './views/resume/resume-view.component';
 import { ErrorComponent } from './core/components/error/error.component';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
-import { CookiePolicyComponent } from './core/components/cookie-policy/cookie-policy.component';
+import { CookiePolicyViewComponent } from './views/cookie-policy/cookie-policy-view.component';
 import { PrivacyPolicyComponent } from './core/components/privacy-policy/privacy-policy.component';
 
 const TITLE_PREFIX = "jpatrickfulton.com - ";
@@ -32,7 +32,7 @@ const routeConfig: Routes = [
     },
     {
         path: 'cookiepolicy',
-        component: CookiePolicyComponent,
+        component: CookiePolicyViewComponent,
         title: TITLE_PREFIX + 'Cookie Policy',
         data: {
             image: "/assets/images/cookie.jpg",

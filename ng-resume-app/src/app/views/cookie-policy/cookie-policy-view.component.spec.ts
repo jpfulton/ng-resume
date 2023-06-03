@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CookiePolicyComponent } from './cookie-policy.component';
+import { CookiePolicyViewComponent } from './cookie-policy-view.component';
 import { RouterTestingModule } from '@angular/router/testing';
 
-describe('CookiePolicyComponent', () => {
-  let component: CookiePolicyComponent;
-  let fixture: ComponentFixture<CookiePolicyComponent>;
+describe('CookiePolicyViewComponent', () => {
+  let component: CookiePolicyViewComponent;
+  let fixture: ComponentFixture<CookiePolicyViewComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        CookiePolicyComponent
+        CookiePolicyViewComponent
       ]
     });
-    fixture = TestBed.createComponent(CookiePolicyComponent);
+    fixture = TestBed.createComponent(CookiePolicyViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
