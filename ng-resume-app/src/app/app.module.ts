@@ -35,14 +35,7 @@ import { MatDialogModule } from '@angular/material/dialog';
  *  https://github.com/microsoft/applicationinsights-angularplugin-js/blob/main/projects/applicationinsights-angularplugin-js/src/lib/applicationinsights-angularplugin-error.service.ts
  */
 @NgModule({
-    declarations: [
-        AppComponent,
-        ErrorComponent,
-        NotFoundComponent,
-        CookiePolicyComponent,
-        PrivacyPolicyComponent,
-        SpinnerComponent,
-    ],
+    declarations: [AppComponent],
     providers: [
         provideRouter(routeConfig),
         { provide: ErrorHandler, useClass: ApplicationinsightsAngularpluginErrorService },
@@ -59,7 +52,12 @@ import { MatDialogModule } from '@angular/material/dialog';
         ErrorDialogComponent,
         HeaderComponent,
         FooterComponent,
-        ResumeComponent
+        ResumeComponent,
+        ErrorComponent,
+        NotFoundComponent,
+        CookiePolicyComponent,
+        PrivacyPolicyComponent,
+        SpinnerComponent
     ]
 })
 export class AppModule { }
