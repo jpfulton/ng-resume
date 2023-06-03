@@ -4,7 +4,7 @@ import { ResumeViewComponent } from './views/resume/resume-view.component';
 import { ErrorViewComponent } from './views/error/error-view.component';
 import { NotFoundViewComponent } from './views/not-found/not-found-view.component';
 import { CookiePolicyViewComponent } from './views/cookie-policy/cookie-policy-view.component';
-import { PrivacyPolicyComponent } from './core/components/privacy-policy/privacy-policy.component';
+import { PrivacyPolicyViewComponent } from './views/privacy-policy/privacy-policy-view.component';
 
 const TITLE_PREFIX = "jpatrickfulton.com - ";
 
@@ -43,7 +43,7 @@ const routeConfig: Routes = [
     },
     {
         path: 'privacy',
-        component: PrivacyPolicyComponent,
+        component: PrivacyPolicyViewComponent,
         title: TITLE_PREFIX + 'Privacy Policy',
         data: {
             image: "/assets/images/harbor.jpg",
