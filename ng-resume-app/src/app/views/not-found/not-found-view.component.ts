@@ -3,11 +3,11 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
     selector: 'app-not-found',
-    templateUrl: './not-found.component.html',
-    styleUrls: ['./not-found.component.scss'],
+    templateUrl: './not-found-view.component.html',
+    styleUrls: ['./not-found-view.component.scss'],
     standalone: true,
     imports: [RouterLink, RouterLinkActive]
 })
-export class NotFoundComponent {
+export class NotFoundViewComponent {
 
 }

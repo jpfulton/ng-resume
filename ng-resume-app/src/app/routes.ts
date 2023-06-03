@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 import { ResumeViewComponent } from './views/resume/resume-view.component';
 import { ErrorViewComponent } from './views/error/error-view.component';
-import { NotFoundComponent } from './core/components/not-found/not-found.component';
+import { NotFoundViewComponent } from './views/not-found/not-found-view.component';
 import { CookiePolicyViewComponent } from './views/cookie-policy/cookie-policy-view.component';
 import { PrivacyPolicyComponent } from './core/components/privacy-policy/privacy-policy.component';
 
@@ -54,7 +54,7 @@ const routeConfig: Routes = [
     },
     {
         path: '**',
-        component: NotFoundComponent,
+        component: NotFoundViewComponent,
         title: TITLE_PREFIX + 'Not Found',
         data: {
             image: "/assets/images/mountains.jpg",
