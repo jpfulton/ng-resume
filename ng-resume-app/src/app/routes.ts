@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { ResumeComponent } from './views/resume/resume.component';
+import { ResumeViewComponent } from './views/resume/resume.component';
 import { ErrorComponent } from './core/components/error/error.component';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 import { CookiePolicyComponent } from './core/components/cookie-policy/cookie-policy.component';
@@ -12,7 +12,7 @@ const routeConfig: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        component: ResumeComponent,
+        component: ResumeViewComponent,
         title: TITLE_PREFIX + 'Resume',
         data: {
             image: "/assets/images/riverwalk.png",

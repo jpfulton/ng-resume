@@ -32,7 +32,7 @@ import { LoggingService } from '../../core/services/logging.service';
     PlatformService
   ]
 })
-export class ResumeComponent implements OnInit, OnDestroy {
+export class ResumeViewComponent implements OnInit, OnDestroy {
   educationList: Education[] = [];
   workHistoryList: WorkHistory[] = [];
 

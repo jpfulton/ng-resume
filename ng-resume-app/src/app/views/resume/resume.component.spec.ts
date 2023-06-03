@@ -3,20 +3,20 @@ import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ResumeComponent } from './resume.component';
+import { ResumeViewComponent } from './resume.component';
 
 import { EducationService } from './services/education.service';
 import { WorkHistoryService } from './services/workhistory.service';
 
 describe('ResumeComponent', () => {
-  let fixture: ComponentFixture<ResumeComponent>;
-  let component: ResumeComponent;
+  let fixture: ComponentFixture<ResumeViewComponent>;
+  let component: ResumeViewComponent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        ResumeComponent
+        ResumeViewComponent
       ],
       providers: [
         { provide: EducationService, useValue: { getAllEducationItems: () => (of([])) } },
@@ -24,7 +24,7 @@ describe('ResumeComponent', () => {
       ]
     });
 
-    fixture = TestBed.createComponent(ResumeComponent);
+    fixture = TestBed.createComponent(ResumeViewComponent);
     component = fixture.componentInstance;
 
     fixture.detectChanges();
