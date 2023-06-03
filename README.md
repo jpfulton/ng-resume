@@ -1,6 +1,7 @@
 # ng-resume
 
-A personal resume implemented in [Angular v16](https://angular.io/). Static JSON files hosted from the assets folder provide a data source for the resume content and simulate a remote API backend.
+A personal resume implemented in [Angular v16](https://angular.io/) and
+[Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview?pivots=programming-language-csharp).
 
 ## Features
 
@@ -22,6 +23,7 @@ A personal resume implemented in [Angular v16](https://angular.io/). Static JSON
   * [Open Graph Previews](https://ogp.me)
 * Integration with [Azure Monitor (Application Insights)](https://learn.microsoft.com/en-us/azure/azure-monitor/overview)
 * [Angular Material](https://material.angular.io) component integration
+* RESTful backend API implemented in [C# 10](https://learn.microsoft.com/en-us/dotnet/csharp/) and [Azure Functions v4](https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview?pivots=programming-language-csharp)
 
 ## DevOps and Deployment
 
@@ -44,3 +46,16 @@ result in the preview environment being deleted from the Azure resource as a cle
 Following deployments to both preivew and production Azure environments, an end-to-end test suite is run to validate the sanity of the deployment. In the event of a test failure, screenshots of the
 website state following each individual test are uploaded as artifacts to the source workflow. After
 each test suite run, a video of the test suite run is always uploaded as a workflow artifact.
+
+## Building and Debugging
+
+### macOS and Visual Studio Code
+
+Primarily authored on [macOs](https://www.apple.com/macos/ventura/) in [Visual Studio Code](https://code.visualstudio.com),
+several tips and tricks apply in addition to using the recommended extensions:
+
+* Reference the workaround in [this](https://github.com/OmniSharp/omnisharp-vscode/issues/4903)
+  issue if the debugger fails to attach to the C# functions locally
+* Enable the setting `Editor: Format on Type` in VSCode
+* Utilize [this](https://github.com/isen-ng/homebrew-dotnet-sdk-versions)
+  [Homebrew](https://brew.sh) tap to install multiple versions of the dotnet SDK in parallel
