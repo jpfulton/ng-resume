@@ -25,6 +25,8 @@ import { SpinnerComponent } from './core/components/spinner/spinner.component';
 
 import { HeaderComponent } from './core/components/header/header.component';
 import { FooterComponent } from './core/components/footer/footer.component';
+import { ErrorDialogComponent } from './core/components/error-dialog/error-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 /**
  * Primary NgModule for app.
@@ -53,6 +55,8 @@ import { FooterComponent } from './core/components/footer/footer.component';
         RouterModule,
         BrowserAnimationsModule,
         NgcCookieConsentModule.forRoot(COOKIE_CONSENT_CONFIG),
+        MatDialogModule,
+        ErrorDialogComponent,
         HeaderComponent,
         FooterComponent,
         ResumeComponent

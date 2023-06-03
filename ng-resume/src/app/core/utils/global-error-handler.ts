@@ -5,6 +5,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { Router } from "@angular/router";
 
 import { IErrorService } from '@microsoft/applicationinsights-angularplugin-js';
+import { ErrorDialogService } from "../services/error-dialog.service";
 
 /**
  * Custom global error handler.
@@ -17,6 +18,7 @@ export class GlobalErrorHandler implements IErrorService {
     constructor(
         private errorService: ErrorService,
         private loggingService: LoggingService,
+        private errorDialogService: ErrorDialogService,
         private router: Router,
         private zone: NgZone
     ) {}
@@ -38,6 +40,9 @@ export class GlobalErrorHandler implements IErrorService {
         }
 
         this.loggingService.logError(message, stackTrace);
-        this.zone.run(() => this.router.navigate(['error'], { skipLocationChange: true }));
+        
+        this.zone.run(() => {
+            this.errorDialogService.openDialog();
+        });
     }
 }
