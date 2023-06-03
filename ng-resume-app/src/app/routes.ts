@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { ResumeComponent } from './resume/resume.component';
+import { ResumeComponent } from './views/resume/resume.component';
 import { ErrorComponent } from './core/components/error/error.component';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 import { CookiePolicyComponent } from './core/components/cookie-policy/cookie-policy.component';

@@ -10,8 +10,8 @@ import { WorkHistoryService } from './services/workhistory.service';
 import { Education } from './models/education';
 import { EducationService } from './services/education.service';
 import { EducationItemComponent } from './components/education-item/education-item.component';
-import { PlatformService } from '../core/services/platform.service';
-import { LoggingService } from '../core/services/logging.service';
+import { PlatformService } from '../../core/services/platform.service';
+import { LoggingService } from '../../core/services/logging.service';
 
 /**
  * Top level component for the resume view heirarchy.
