@@ -3,7 +3,7 @@ import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ResumeViewComponent } from './resume.component';
+import { ResumeViewComponent } from './resume-view.component';
 
 import { EducationService } from './services/education.service';
 import { WorkHistoryService } from './services/workhistory.service';

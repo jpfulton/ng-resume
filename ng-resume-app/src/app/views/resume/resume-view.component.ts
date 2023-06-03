@@ -24,8 +24,8 @@ import { LoggingService } from '../../core/services/logging.service';
     EducationItemComponent,
     WorkHistoryItemComponent,
   ],
-  templateUrl: './resume.component.html',
-  styleUrls: ['./resume.component.scss'],
+  templateUrl: './resume-view.component.html',
+  styleUrls: ['./resume-view.component.scss'],
   providers: [
     EducationService,
     WorkHistoryService,
