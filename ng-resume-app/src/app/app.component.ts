@@ -58,7 +58,7 @@ export class AppComponent implements OnInit, OnDestroy {
   { }
 
   ngOnInit(): void {
-    this.handleRouteEvents(); // needed for both SSR and SAP
+    this.handleRouteEvents(); // needed for both SSR and SPA
 
     if (this.platformService.isBrowser()) { // statements below don't work in SSR, not needed there
       const currentCookieConsent = this.cookieConsentService.hasConsented();
