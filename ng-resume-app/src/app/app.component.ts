@@ -13,6 +13,7 @@ import { LoggingService } from './core/services/logging.service';
 import { SpinnerComponent } from './core/components/spinner/spinner.component';
 import { FooterComponent } from './core/components/footer/footer.component';
 import { HeaderComponent } from './core/components/header/header.component';
+import { PlatformService } from './core/services/platform.service';
 
 /**
  * Root component for ng-resume application.
@@ -51,22 +52,25 @@ export class AppComponent implements OnInit, OnDestroy {
     private cookieConsentService: NgcCookieConsentService,
     private googleAnalyticsService: GoogleAnalyticsService,
     private seoService: SeoService,
-    private loggingService: LoggingService
+    private loggingService: LoggingService,
+    private platformService: PlatformService
     ) 
-  {
-  }
+  { }
 
   ngOnInit(): void {
-    const currentCookieConsent = this.cookieConsentService.hasConsented();
-    this.loggingService.logInfo(`Current cookie consent status: ${currentCookieConsent}.`);
+    this.handleRouteEvents(); // needed for both SSR and SAP
 
-    this.applicationInsightsService.initialize(
-      this.router, 
-      this.globalErrorHandler,
-      currentCookieConsent);
+    if (this.platformService.isBrowser()) { // statements below don't work in SSR, not needed there
+      const currentCookieConsent = this.cookieConsentService.hasConsented();
+      this.loggingService.logInfo(`Current cookie consent status: ${currentCookieConsent}.`);
 
-    this.handleConsentStatusEvents();
-    this.handleRouteEvents();
+      this.applicationInsightsService.initialize(
+        this.router, 
+        this.globalErrorHandler,
+        currentCookieConsent);
+
+      this.handleConsentStatusEvents();
+    }
   }
 
   /**
@@ -115,9 +119,8 @@ export class AppComponent implements OnInit, OnDestroy {
    * Route data property example:
    * `data: { image: "/assets/images/harbor.jpg", description: "Site privacy policy.", keywords: ["privacy policy", "Angular", "Angular Universal"], allowRobotIndexing: true }`
    */
-  private handleRouteEvents() : void {
+  private handleRouteEvents(): void {
     this.routerEventsSubscription = this.router.events.subscribe(event => {
-
       if (event instanceof ActivationEnd) { // route data snapshots are available at this stage
         const title = event.snapshot.title;
         const routeData : Data = event.snapshot.data;
