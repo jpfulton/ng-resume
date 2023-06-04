@@ -226,7 +226,8 @@
           "configurations": {
             "development": {
               "browserTarget": "ng-resume:build:development",
-              "serverTarget": "ng-resume:server:development"
+              "serverTarget": "ng-resume:server:development",
+              "proxyConfig": "src/proxy.conf.json"
             },
             "production": {
               "browserTarget": "ng-resume:build:production",
