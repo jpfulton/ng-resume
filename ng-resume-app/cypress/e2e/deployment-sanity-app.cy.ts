@@ -44,8 +44,8 @@ describe("Deployment Sanity Tests [APP]", () => {
       const contentType = response.headers["content-type"];
       expect(contentType).to.be.contains("text/html", "Should be html content.");
       
-      const body = response.body;
-      const dom = domParser.parseFromString(body, "text/html");
+      const body = response.body; // returned from cypress as a string
+      const dom = domParser.parseFromString(body, "text/html"); // parse into DOM
 
       const headTag = dom.head;
       const metaTags = headTag.getElementsByTagName("meta");
