@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
 
 import { HeaderComponent } from './header.component';
-import routeConfig from 'src/app/routes';
+import routeConfig from 'src/app/app.routes';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;

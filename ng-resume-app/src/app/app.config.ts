@@ -10,7 +10,7 @@ import { HTTP_INTERCEPTORS, withInterceptorsFromDi, provideHttpClient } from '@a
 import { ApplicationinsightsAngularpluginErrorService } from '@microsoft/applicationinsights-angularplugin-js';
 import { ErrorHandler, importProvidersFrom } from '@angular/core';
 import { provideRouter, RouterModule } from '@angular/router';
-import routeConfig from './routes';
+import routeConfig from './app.routes';
 
 export const appConfig: ApplicationConfig = {
     providers: [
