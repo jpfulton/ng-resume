@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 
-import { ResumeComponent } from './resume/resume.component';
-import { ErrorComponent } from './core/components/error/error.component';
-import { NotFoundComponent } from './core/components/not-found/not-found.component';
-import { CookiePolicyComponent } from './core/components/cookie-policy/cookie-policy.component';
-import { PrivacyPolicyComponent } from './core/components/privacy-policy/privacy-policy.component';
+import { ResumeViewComponent } from './views/resume/resume-view.component';
+import { ErrorViewComponent } from './views/error/error-view.component';
+import { NotFoundViewComponent } from './views/not-found/not-found-view.component';
+import { CookiePolicyViewComponent } from './views/cookie-policy/cookie-policy-view.component';
+import { PrivacyPolicyViewComponent } from './views/privacy-policy/privacy-policy-view.component';
 
 const TITLE_PREFIX = "jpatrickfulton.com - ";
 
@@ -12,7 +12,7 @@ const routeConfig: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        component: ResumeComponent,
+        component: ResumeViewComponent,
         title: TITLE_PREFIX + 'Resume',
         data: {
             image: "/assets/images/riverwalk.png",
@@ -23,7 +23,7 @@ const routeConfig: Routes = [
     },
     {
         path: 'error',
-        component: ErrorComponent,
+        component: ErrorViewComponent,
         title: TITLE_PREFIX + 'Error',
         data: {
             image: "/assets/images/mountains.jpg",
@@ -32,7 +32,7 @@ const routeConfig: Routes = [
     },
     {
         path: 'cookiepolicy',
-        component: CookiePolicyComponent,
+        component: CookiePolicyViewComponent,
         title: TITLE_PREFIX + 'Cookie Policy',
         data: {
             image: "/assets/images/cookie.jpg",
@@ -43,7 +43,7 @@ const routeConfig: Routes = [
     },
     {
         path: 'privacy',
-        component: PrivacyPolicyComponent,
+        component: PrivacyPolicyViewComponent,
         title: TITLE_PREFIX + 'Privacy Policy',
         data: {
             image: "/assets/images/harbor.jpg",
@@ -54,7 +54,7 @@ const routeConfig: Routes = [
     },
     {
         path: '**',
-        component: NotFoundComponent,
+        component: NotFoundViewComponent,
         title: TITLE_PREFIX + 'Not Found',
         data: {
             image: "/assets/images/mountains.jpg",

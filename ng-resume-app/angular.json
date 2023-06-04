@@ -16,6 +16,7 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
+          "standalone": true,
           "style": "scss"
         }
       },
@@ -238,7 +239,7 @@
           "builder": "@nguniversal/builders:prerender",
           "options": {
             "guessRoutes": false,
-            "routesFile": "src/app/ssr/prerender.routes.txt"
+            "routesFile": "prerender.routes.txt"
           },
           "configurations": {
             "production": {

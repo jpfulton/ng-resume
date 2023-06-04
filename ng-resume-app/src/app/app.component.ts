@@ -1,7 +1,7 @@
 import { Subscription } from 'rxjs';
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivationEnd, Data, NavigationEnd, Router } from '@angular/router';
+import { ActivationEnd, Data, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 
 import { NgcCookieConsentService, NgcStatusChangeEvent } from 'ngx-cookieconsent';
 
@@ -10,6 +10,9 @@ import { SeoService } from './core/services/seo.service';
 import { GlobalErrorHandler } from './core/utils/global-error-handler';
 import { ApplicationInsightsService } from './core/services/application-insights.service';
 import { LoggingService } from './core/services/logging.service';
+import { SpinnerComponent } from './core/components/spinner/spinner.component';
+import { FooterComponent } from './core/components/footer/footer.component';
+import { HeaderComponent } from './core/components/header/header.component';
 
 /**
  * Root component for ng-resume application.
@@ -25,9 +28,16 @@ import { LoggingService } from './core/services/logging.service';
  *  https://github.com/MicrosoftDocs/azure-docs/issues/109392
  */
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: true,
+    imports: [
+        HeaderComponent,
+        RouterOutlet,
+        FooterComponent,
+        SpinnerComponent,
+    ],
 })
 export class AppComponent implements OnInit, OnDestroy {
 

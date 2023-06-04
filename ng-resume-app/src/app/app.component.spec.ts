@@ -12,18 +12,16 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 describe('AppComponent', () => {
   beforeEach(() => TestBed.configureTestingModule({
-    declarations: [
-      AppComponent,
-      SpinnerComponent
-    ],
     imports: [
-      RouterTestingModule,
-      NgcCookieConsentModule.forRoot(COOKIE_CONSENT_CONFIG),
-      MatDialogModule,
-      HeaderComponent,
-      FooterComponent
+        RouterTestingModule,
+        NgcCookieConsentModule.forRoot(COOKIE_CONSENT_CONFIG),
+        MatDialogModule,
+        HeaderComponent,
+        FooterComponent,
+        SpinnerComponent,
+        AppComponent
     ]
-  }));
+}));
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);

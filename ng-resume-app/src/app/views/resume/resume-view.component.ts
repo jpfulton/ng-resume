@@ -10,8 +10,8 @@ import { WorkHistoryService } from './services/workhistory.service';
 import { Education } from './models/education';
 import { EducationService } from './services/education.service';
 import { EducationItemComponent } from './components/education-item/education-item.component';
-import { PlatformService } from '../core/services/platform.service';
-import { LoggingService } from '../core/services/logging.service';
+import { PlatformService } from '../../core/services/platform.service';
+import { LoggingService } from '../../core/services/logging.service';
 
 /**
  * Top level component for the resume view heirarchy.
@@ -24,15 +24,15 @@ import { LoggingService } from '../core/services/logging.service';
     EducationItemComponent,
     WorkHistoryItemComponent,
   ],
-  templateUrl: './resume.component.html',
-  styleUrls: ['./resume.component.scss'],
+  templateUrl: './resume-view.component.html',
+  styleUrls: ['./resume-view.component.scss'],
   providers: [
     EducationService,
     WorkHistoryService,
     PlatformService
   ]
 })
-export class ResumeComponent implements OnInit, OnDestroy {
+export class ResumeViewComponent implements OnInit, OnDestroy {
   educationList: Education[] = [];
   workHistoryList: WorkHistory[] = [];
 
