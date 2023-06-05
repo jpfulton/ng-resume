@@ -1,14 +1,12 @@
 import { Routes } from '@angular/router';
 
-import { ResumeViewComponent } from './views/resume/resume-view.component';
-
 const TITLE_PREFIX = "jpatrickfulton.com - ";
 
 const routeConfig: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        component: ResumeViewComponent,
+        loadComponent: () => import("./views/resume/resume-view.component").then(c => c.ResumeViewComponent),
         title: TITLE_PREFIX + 'Resume',
         data: {
             image: "/assets/images/riverwalk.png",
