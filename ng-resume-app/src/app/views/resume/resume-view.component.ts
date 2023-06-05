@@ -1,7 +1,7 @@
 import { Subscription } from 'rxjs';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgIf, NgFor } from '@angular/common';
 
 import { WorkHistoryItemComponent } from './components/work-history-item/work-history-item.component';
 import { WorkHistory } from './models/workhistory';
@@ -17,10 +17,11 @@ import { LoggingService } from '../../core/services/logging.service';
  * Top level component for the resume view heirarchy.
  */
 @Component({
-  selector: 'app-component-resume',
+  selector: 'app-resume',
   standalone: true,
   imports: [
-    CommonModule,
+    NgIf,
+    NgFor,
     EducationItemComponent,
     WorkHistoryItemComponent,
   ],

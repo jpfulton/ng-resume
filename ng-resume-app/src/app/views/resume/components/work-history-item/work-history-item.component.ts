@@ -7,7 +7,7 @@ import { WorkHistory } from '../../models/workhistory';
  * Component to render elements in the resume work history section.
  */
 @Component({
-  selector: 'app-component-work-history-item',
+  selector: 'app-work-history-item',
   standalone: true,
   imports: [
     CommonModule,
