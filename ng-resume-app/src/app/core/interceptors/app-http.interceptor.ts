@@ -11,9 +11,12 @@ import { LoadingService } from '../services/loading.service';
 
 /**
  * Interceptor for HTTP requests made by the HttpClient service.
+ * Provides retry logic on API GET requests, manages the loading component
+ * through a service and currenly allows errors to be passed to the global
+ * error handler.
  */
 @Injectable()
-export class HttpErrorInterceptor implements HttpInterceptor {
+export class AppHttpInterceptor implements HttpInterceptor {
 
   private totalRequests = 0;
 
