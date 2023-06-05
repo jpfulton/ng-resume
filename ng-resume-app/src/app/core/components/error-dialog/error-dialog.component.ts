@@ -1,10 +1,8 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject, NgZone } from '@angular/core';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
-
+import { ErrorDialogService } from '../../services/error-dialog.service';
 
 @Component({
   selector: 'app-error-dialog',
@@ -12,18 +10,23 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./error-dialog.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     MatIconModule,
     MatButtonModule
   ]
 })
 export class ErrorDialogComponent {
   constructor(
-    @Inject(MAT_DIALOG_DATA)
-    public data: { message: string; status?: number }
+    private errorDialogService: ErrorDialogService,
+    private zone: NgZone
   ) { }
 
   refresh(): void {
     window.location.href = "/";
+  }
+
+  close(): void {
+    this.zone.run(() => {
+      this.errorDialogService.closeDialog();
+    });
   }
 }

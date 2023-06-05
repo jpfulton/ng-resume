@@ -1,18 +1,12 @@
 import { Routes } from '@angular/router';
 
-import { ResumeViewComponent } from './views/resume/resume-view.component';
-import { ErrorViewComponent } from './views/error/error-view.component';
-import { NotFoundViewComponent } from './views/not-found/not-found-view.component';
-import { CookiePolicyViewComponent } from './views/cookie-policy/cookie-policy-view.component';
-import { PrivacyPolicyViewComponent } from './views/privacy-policy/privacy-policy-view.component';
-
 const TITLE_PREFIX = "jpatrickfulton.com - ";
 
 const routeConfig: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        component: ResumeViewComponent,
+        loadComponent: () => import("./views/resume/resume-view.component").then(c => c.ResumeViewComponent),
         title: TITLE_PREFIX + 'Resume',
         data: {
             image: "/assets/images/riverwalk.png",
@@ -23,7 +17,7 @@ const routeConfig: Routes = [
     },
     {
         path: 'error',
-        component: ErrorViewComponent,
+        loadComponent: () => import("./views/error/error-view.component").then(c => c.ErrorViewComponent),
         title: TITLE_PREFIX + 'Error',
         data: {
             image: "/assets/images/mountains.jpg",
@@ -32,7 +26,7 @@ const routeConfig: Routes = [
     },
     {
         path: 'cookiepolicy',
-        component: CookiePolicyViewComponent,
+        loadComponent: () => import("./views/cookie-policy/cookie-policy-view.component").then(c => c.CookiePolicyViewComponent),
         title: TITLE_PREFIX + 'Cookie Policy',
         data: {
             image: "/assets/images/cookie.jpg",
@@ -43,7 +37,7 @@ const routeConfig: Routes = [
     },
     {
         path: 'privacy',
-        component: PrivacyPolicyViewComponent,
+        loadComponent: () => import("./views/privacy-policy/privacy-policy-view.component").then(c => c.PrivacyPolicyViewComponent),
         title: TITLE_PREFIX + 'Privacy Policy',
         data: {
             image: "/assets/images/harbor.jpg",
@@ -54,7 +48,7 @@ const routeConfig: Routes = [
     },
     {
         path: '**',
-        component: NotFoundViewComponent,
+        loadComponent: () => import("./views/not-found/not-found-view.component").then(c => c.NotFoundViewComponent),
         title: TITLE_PREFIX + 'Not Found',
         data: {
             image: "/assets/images/mountains.jpg",

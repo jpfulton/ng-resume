@@ -6,6 +6,11 @@
     }
 
     .dialog-actions {
-        text-align: center;
+        text-align: right;
+
+        button {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
     }
 }

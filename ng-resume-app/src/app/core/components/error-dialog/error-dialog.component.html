@@ -4,9 +4,14 @@
         <p>An internal error occurred.</p>
     </div>
     <div mat-dialog-actions class="dialog-actions">
-        <button mat-raised-button color="primary" (click)="refresh()">
+        <button mat-raised-button color="secondary" (click)="refresh()">
             <mat-icon>refresh</mat-icon>
             <span>Refresh</span>
+        </button>
+
+        <button mat-raised-button color="primary" (click)="close()">
+            <mat-icon>close</mat-icon>
+            <span>Close</span>
         </button>
     </div>
 </div>

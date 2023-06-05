@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ApplicationRef, NgZone } from '@angular/core';
 import { ActivationEnd, Data, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 
 import { NgcCookieConsentService, NgcStatusChangeEvent } from 'ngx-cookieconsent';
@@ -41,11 +41,14 @@ import { PlatformService } from './core/services/platform.service';
     ],
 })
 export class AppComponent implements OnInit, OnDestroy {
+  private stabilityStatus = false;
 
   private routerEventsSubscription: Subscription | undefined;
   private cookieConsentStatusChangeSubscription: Subscription | undefined;
 
   constructor(
+    private app: ApplicationRef,
+    private zone: NgZone,
     private router: Router,
     private globalErrorHandler: GlobalErrorHandler,
     private applicationInsightsService: ApplicationInsightsService,
@@ -58,18 +61,33 @@ export class AppComponent implements OnInit, OnDestroy {
   { }
 
   ngOnInit(): void {
+    this.app.isStable.subscribe((isStable) => {
+      if (isStable && !this.stabilityStatus) {
+        this.loggingService.logDebug("Application has emitted isStable: " + isStable);
+        this.stabilityStatus = isStable;
+      }
+    });
+
     this.handleRouteEvents(); // needed for both SSR and SPA
 
     if (this.platformService.isBrowser()) { // statements below don't work in SSR, not needed there
+
       const currentCookieConsent = this.cookieConsentService.hasConsented();
       this.loggingService.logInfo(`Current cookie consent status: ${currentCookieConsent}.`);
 
-      this.applicationInsightsService.initialize(
-        this.router, 
-        this.globalErrorHandler,
-        currentCookieConsent);
+      this.zone.runOutsideAngular(() => { // this is long running and can prevent an emit of the isStable = true event
+        this.handleConsentStatusEvents();
+      });
 
-      this.handleConsentStatusEvents();
+      this.zone.runOutsideAngular(() => { // this is long running and can prevent an emit of the isStable = true event
+        this.applicationInsightsService.initialize(
+          this.router, 
+          this.globalErrorHandler,
+          currentCookieConsent);
+        
+        this.loggingService.logDebug("Application insights service initialization complete.");
+      });
+
     }
   }
 
