@@ -30,13 +30,15 @@ namespace Jpf.NgResume.Api.DataStore
         }
 
         /// <summary>
-        /// Returns all eduction items in the store.
+        /// Returns all eduction items in the store ordered by title.
         /// </summary>
         /// <returns>A list of education items.</returns>
         public async Task<IList<Education>> GetAllEducationsAsync()
         {
             if (!IsInitialized) await InitializeAsync();
-            return this.Data.Values.ToList<Education>();
+            return this.Data.Values
+                .OrderBy(item => item.Title)
+                .ToList<Education>();
         }
 
         /// <summary>

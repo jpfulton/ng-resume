@@ -59,3 +59,5 @@ several tips and tricks apply in addition to using the recommended extensions:
 * Enable the setting `Editor: Format on Type` in VSCode
 * Utilize [this](https://github.com/isen-ng/homebrew-dotnet-sdk-versions)
   [Homebrew](https://brew.sh) tap to install multiple versions of the dotnet SDK in parallel
+* When debugging in Chrome Dev Tools, the 
+  [Angular DevTools Extension](https://angular.io/guide/devtools) comes in handy

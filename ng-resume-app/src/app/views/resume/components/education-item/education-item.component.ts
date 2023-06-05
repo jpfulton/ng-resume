@@ -6,7 +6,7 @@ import { Education } from '../../models/education';
  * Component to render elements in the resume education and certification section.
  */
 @Component({
-  selector: 'app-component-education-item',
+  selector: 'app-education-item',
   standalone: true,
   imports: [
     CommonModule,

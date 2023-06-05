@@ -30,13 +30,16 @@ namespace Jpf.NgResume.Api.DataStore
         }
 
         /// <summary>
-        /// Returns a list of all work history items in the store.
+        /// Returns a list of all work history items in the store ordered
+        /// by start year descending.
         /// </summary>
         /// <returns>List of work history items.</returns>
         public async Task<IList<WorkHistory>> GetAllWorkHistoriesAsync()
         {
             if (!IsInitialized) await InitializeAsync();
-            return this.Data.Values.ToList<WorkHistory>();
+            return this.Data.Values
+                .OrderByDescending(item => item.StartYear)
+                .ToList<WorkHistory>();
         }
 
         /// <summary>
