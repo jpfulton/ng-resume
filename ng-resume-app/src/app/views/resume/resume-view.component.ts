@@ -49,6 +49,14 @@ export class ResumeViewComponent implements OnInit, OnDestroy {
   {
   }
 
+  trackEductionById(index: number, item: Education) {
+    return item.id;
+  }
+
+  trackWorkHistoryById(index: number, item: WorkHistory) {
+    return item.id;
+  }
+
   ngOnInit(): void {
     if (this.platformService.isBrowser()) {
       this.loggingService.logDebug("Platform is browser.");
