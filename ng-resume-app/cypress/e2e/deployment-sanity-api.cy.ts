@@ -39,6 +39,13 @@ describe("Deployment Sanity Tests [API]", () => {
       });
     });
   
+    it("[API] Visit Swagger api documentation", () => {
+      cy.visit("/api/swagger/ui");
+      cy.contains("ng-resume API Documentation");
+
+      cy.screenshot();
+    });
+  
     function expectJsonResponseBody(response: Cypress.Response<any>) : void {
       expect(response.headers["content-type"])
         .to.be.contains("application/json", "Should be JSON content.");
