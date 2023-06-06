@@ -24,7 +24,7 @@
         <div class="divider"></div>
 
         <app-work-history-item 
-            *ngFor="let workHistory of workHistoryList"
+            *ngFor="let workHistory of workHistoryList; trackBy: trackWorkHistoryById"
             [workHistory]="workHistory">
         </app-work-history-item>
 
@@ -35,7 +35,7 @@
         <div class="divider"></div>
 
         <app-education-item
-            *ngFor="let education of educationList"
+            *ngFor="let education of educationList; trackBy: trackEductionById"
             [education]="education">
         </app-education-item>
     </section>
