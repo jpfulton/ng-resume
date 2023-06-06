@@ -6,6 +6,14 @@ using Microsoft.OpenApi.Models;
 
 namespace Jpf.NgResume.Api
 {
+    /// <summary>
+    /// Configuration options for OpenAPI and Swagger.
+    /// 
+    /// References:
+    ///     https://github.com/Azure/azure-functions-openapi-extension/tree/main
+    ///     https://github.com/Azure/azure-functions-openapi-extension/blob/main/src/Microsoft.Azure.WebJobs.Extensions.OpenApi.Core/Configurations/DefaultOpenApiConfigurationOptions.cs
+    ///     https://github.com/Azure/azure-functions-openapi-extension/blob/main/docs/openapi.md#configure-custom-base-urls
+    /// </summary>
     public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
     {
         private List<OpenApiServer> servers;
