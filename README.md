@@ -1,5 +1,7 @@
 # ng-resume
 
+[![continous-integration-and-deployment](https://github.com/jpfulton/ng-resume/actions/workflows/ci-and-cd.yml/badge.svg)](https://github.com/jpfulton/ng-resume/actions/workflows/ci-and-cd.yml)
+
 A personal resume implemented in [Angular v16](https://angular.io/) and
 [Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview?pivots=programming-language-csharp).
 

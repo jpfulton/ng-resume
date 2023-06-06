@@ -1,12 +1,11 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using System.Net;
+using Microsoft.OpenApi.Models;
 
 namespace Jpf.NgResume.Api
 {
@@ -22,7 +21,19 @@ namespace Jpf.NgResume.Api
         /// <param name="log"></param>
         /// <returns></returns>
         [FunctionName("TestGet")]
-        public static IActionResult Run(
+        [OpenApiOperation(operationId: "TestGet", tags: new[] { "test" })]
+        [OpenApiParameter(
+            name: "name", 
+            Required = false, 
+            In = ParameterLocation.Query, 
+            Type = typeof(string))]
+        [OpenApiResponseWithBody(
+            statusCode: HttpStatusCode.OK,
+            contentType: "text/plain; charset=utf-8",
+            bodyType: typeof(string),
+            Description = "A formatted test string."
+        )]
+        public static IActionResult GetTest(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "get", 
