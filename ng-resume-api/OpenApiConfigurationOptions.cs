@@ -27,7 +27,7 @@ namespace Jpf.NgResume.Api
 
         public List<OpenApiServer> Servers { get; set; } = new();
 
-        public OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V2;
+        public OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V3;
 
         public bool IncludeRequestingHostName { get; set; } = false;
         public bool ForceHttp { get; set; } = false;
