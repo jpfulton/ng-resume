@@ -29,7 +29,7 @@ namespace Jpf.NgResume.Api
 
         public OpenApiVersionType OpenApiVersion { get; set; } = OpenApiVersionType.V2;
 
-        public bool IncludeRequestingHostName { get; set; } = false;
+        public bool IncludeRequestingHostName { get; set; } = true;
         public bool ForceHttp { get; set; } = true;
         public bool ForceHttps { get; set; } = false;
         public List<IDocumentFilter> DocumentFilters { get; set; } = new();
