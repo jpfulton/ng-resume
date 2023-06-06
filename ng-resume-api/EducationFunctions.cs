@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 using Jpf.NgResume.Api.DataStore;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.OpenApi.Models;
+using System.Net;
+using System.Collections.Generic;
+using Jpf.NgResume.Api.Models;
 
 namespace Jpf.NgResume.Api
 {
@@ -24,6 +29,13 @@ namespace Jpf.NgResume.Api
         }
 
         [FunctionName("EducationGetAll")]
+        [OpenApiOperation(operationId: "EducationGetAll", tags: new[] { "education" })]
+        [OpenApiResponseWithBody(
+            statusCode: HttpStatusCode.OK,
+            contentType: "application/json; charset=utf-8",
+            bodyType: typeof(IList<Education>),
+            Description = "An array of all education items."
+        )]
         public static async Task<IActionResult> GetAllEducation(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
@@ -38,6 +50,18 @@ namespace Jpf.NgResume.Api
         }
 
         [FunctionName("EducationGetById")]
+        [OpenApiOperation(operationId: "EducationGetById", tags: new[] { "education" })]
+        [OpenApiParameter(
+            name: "id", 
+            Required = true, 
+            In = ParameterLocation.Path, 
+            Type = typeof(Guid))]
+        [OpenApiResponseWithBody(
+            statusCode: HttpStatusCode.OK,
+            contentType: "application/json; charset=utf-8",
+            bodyType: typeof(Education),
+            Description = "An education item by its id property."
+        )]
         public static async Task<IActionResult> GetEducation(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
@@ -48,7 +72,17 @@ namespace Jpf.NgResume.Api
             string id, 
             ILogger log)
         {
-            var idAsGuid = Guid.Parse(id);
+            if ( string.IsNullOrEmpty(id))
+                throw new ArgumentNullException("id", "Id is a required parameter.");
+
+            Guid idAsGuid;
+            try {
+                idAsGuid = Guid.Parse(id);
+            }
+            catch (FormatException fe) {
+                throw new ArgumentException("Id parameter is not in the form of a guid.", "id", fe);
+            }
+            
             var data = await dataStore.GetEducationAsync(idAsGuid);
             return new OkObjectResult(data);
         }
