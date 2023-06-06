@@ -22,7 +22,11 @@ namespace Jpf.NgResume.Api
         /// <returns></returns>
         [FunctionName("TestGet")]
         [OpenApiOperation(operationId: "TestGet", tags: new[] { "test" })]
-        [OpenApiParameter(name: "name", Required = false, In = ParameterLocation.Query)]
+        [OpenApiParameter(
+            name: "name", 
+            Required = false, 
+            In = ParameterLocation.Query, 
+            Type = typeof(string))]
         [OpenApiResponseWithBody(
             statusCode: HttpStatusCode.OK,
             contentType: "text/plain; charset=utf-8",
