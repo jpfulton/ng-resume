@@ -6,7 +6,10 @@
             <div class="work-history-org">
 
                 <span *ngIf="workHistory.organizationURL !== undefined; else noLinkBlock">
-                    <a href="{{workHistory.organizationURL}}">{{workHistory.organization}}</a>
+                    <a class="ext-link" href="{{workHistory.organizationURL}}" target="_blank">
+                        {{workHistory.organization}}
+                        <mat-icon>open_in_new</mat-icon>
+                    </a>
                 </span>
                 <ng-template #noLinkBlock>
                     <span class="no-org-url">{{workHistory.organization}}</span>

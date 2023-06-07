@@ -1,5 +1,7 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { MatIconModule } from '@angular/material/icon';
 
 import { WorkHistory } from '../../models/workhistory';
 
@@ -11,6 +13,7 @@ import { WorkHistory } from '../../models/workhistory';
   standalone: true,
   imports: [
     CommonModule,
+    MatIconModule
   ],
   templateUrl: './work-history-item.component.html',
   styleUrls: ['./work-history-item.component.scss'],
