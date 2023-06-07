@@ -1,6 +1,6 @@
-import { Subscription } from 'rxjs';
+import { Subscription, delay } from 'rxjs';
 
-import { Component, OnInit, OnDestroy, ApplicationRef, NgZone, HostBinding, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ApplicationRef, NgZone, HostBinding, ViewChild, AfterViewInit, AfterContentInit } from '@angular/core';
 import { ActivationEnd, Data, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 
 import { OverlayContainer } from '@angular/cdk/overlay';
@@ -16,6 +16,7 @@ import { SpinnerComponent } from './core/components/spinner/spinner.component';
 import { FooterComponent } from './core/components/footer/footer.component';
 import { HeaderComponent } from './core/components/header/header.component';
 import { PlatformService } from './core/services/platform.service';
+import { ThemeService } from './core/services/theme.service';
 
 /**
  * Root component for ng-resume application.
@@ -43,7 +44,7 @@ import { PlatformService } from './core/services/platform.service';
     ],
 })
 export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
-  @HostBinding("class") classAttribute = "";
+  @HostBinding("class") classAttribute = "mat-app-background";
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
 
   private stabilityStatus = false;
@@ -62,8 +63,9 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     private googleAnalyticsService: GoogleAnalyticsService,
     private seoService: SeoService,
     private loggingService: LoggingService,
-    private platformService: PlatformService
-    ) 
+    private platformService: PlatformService,
+    private themeService: ThemeService
+  ) 
   { }
 
   ngOnInit(): void {
@@ -98,21 +100,34 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    this.themeService.theme
+      .pipe(delay(0)) // Reference: https://blog.angular-university.io/angular-debugging/
+      .subscribe((theme: string) => {
+      this.loggingService.logInfo("Theme service reports preference of " + theme + " theme.");
+
+      const isDarkMode = (theme === this.themeService.DARK_MODE);
+      this.headerComponent.darkModeToggle.checked = isDarkMode;
+      this.toggleDarkModeClasses(isDarkMode);
+    });
+
     this.headerComponent.darkModeToggle.change.subscribe((darkMode) => {
-      const matAppBackgroundClassName = "mat-app-background";
-      const darkClassName = "darkMode";
-
-      this.classAttribute = darkMode.checked ? matAppBackgroundClassName + " " + darkClassName : matAppBackgroundClassName;
-
-      if (darkMode.checked) {
-        this.overlay.getContainerElement().classList.add(darkClassName);
-      }
-      else {
-        this.overlay.getContainerElement().classList.remove(darkClassName);
-      }
-
+      this.toggleDarkModeClasses(darkMode.checked);
       this.applicationInsightsService.logEvent("ToggleDarkMode", { enabled: darkMode.checked });
     });
+  }
+
+  private toggleDarkModeClasses(darkMode: boolean) {
+    const matAppBackgroundClassName = "mat-app-background";
+    const darkClassName = "darkMode";
+
+    this.classAttribute = darkMode ? matAppBackgroundClassName + " " + darkClassName : matAppBackgroundClassName;
+
+    if (darkMode) {
+      this.overlay.getContainerElement().classList.add(darkClassName);
+    }
+    else {
+      this.overlay.getContainerElement().classList.remove(darkClassName);
+    }
   }
 
   /**
