@@ -1,7 +1,9 @@
 import { Subscription } from 'rxjs';
 
-import { Component, OnInit, OnDestroy, ApplicationRef, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, ApplicationRef, NgZone, HostBinding, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivationEnd, Data, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 import { NgcCookieConsentService, NgcStatusChangeEvent } from 'ngx-cookieconsent';
 
@@ -40,7 +42,10 @@ import { PlatformService } from './core/services/platform.service';
         SpinnerComponent,
     ],
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
+  @HostBinding("class") classAttribute = "";
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
+
   private stabilityStatus = false;
 
   private routerEventsSubscription: Subscription | undefined;
@@ -50,6 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private app: ApplicationRef,
     private zone: NgZone,
     private router: Router,
+    private overlay: OverlayContainer,
     private globalErrorHandler: GlobalErrorHandler,
     private applicationInsightsService: ApplicationInsightsService,
     private cookieConsentService: NgcCookieConsentService,
@@ -89,6 +95,22 @@ export class AppComponent implements OnInit, OnDestroy {
       });
 
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.headerComponent.darkModeToggle.change.subscribe((darkMode) => {
+      const matAppBackgroundClassName = "mat-app-background";
+      const darkClassName = "darkMode";
+
+      this.classAttribute = darkMode.checked ? matAppBackgroundClassName + " " + darkClassName : matAppBackgroundClassName;
+
+      if (darkMode.checked) {
+        this.overlay.getContainerElement().classList.add(darkClassName);
+      }
+      else {
+        this.overlay.getContainerElement().classList.remove(darkClassName);
+      }
+    });
   }
 
   /**
