@@ -1,3 +1,4 @@
+@use "sass:map";
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
@@ -14,8 +15,8 @@
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 // $ng-resume-primary: mat.define-palette(mat.$indigo-palette);
-$ng-resume-primary: mat.define-palette($ng-resume-palette, 900, 900, 900);
-$ng-resume-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$ng-resume-primary: mat.define-palette($ng-resume-palette, 500, 300, 900);
+$ng-resume-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
 $ng-resume-warn: mat.define-palette(mat.$red-palette);
@@ -43,9 +44,25 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif; 
 
-  // background style for the cookie consent widget in minimized state
+  // cookie consent widget style overrides
   .cc-revoke {
-    background-color: darkgrey !important;
+    background-color: map.get($ng-resume-accent, 500) !important;
+  }
+  .cc-window {
+    background-color: map.get($ng-resume-accent, 500) !important;
+
+    .cc-highlight {
+      background-color: map.get($ng-resume-accent, 700) !important;
+
+      .cc-allow {
+        background-color: map.get($ng-resume-accent, 900) !important;
+        color: white !important;
+
+        &:hover {
+          text-decoration: underline !important;
+        }
+      }
+    }
   }
 }
 
@@ -55,13 +72,13 @@ main {
 
 a, a:hover, a:visited {
     text-decoration: none;
-    color: steelblue;
+    color: map.get($ng-resume-accent, 500);
 }
 
 .divider {
     width: 100%;
     display: block;
-    border-top: 2px solid black;
+    border-top: 2px solid map.get($ng-resume-primary, 900);
     margin-top: 4px;
     margin-bottom: 4px;
 }

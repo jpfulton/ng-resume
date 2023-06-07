@@ -1,4 +1,6 @@
-// Reference: https://m2.material.io/design/color/the-color-system.html#tools-for-picking-colors
+// References: 
+//  https://m1.material.io/style/color.html#color-color-system
+//  https://m2.material.io/design/color/the-color-system.html#tools-for-picking-colors
 
 $ng-resume-palette: (
   50: #f5f5f5,
@@ -11,6 +13,10 @@ $ng-resume-palette: (
   700: #434343,
   800: #262626,
   900: #000000,
+  A100: rgba(blue, 0.87),
+  A200: rgba(blue, 0.66),
+  A300: rgba(blue, 0.50),
+  A400: rgba(blue, 0.40),
   contrast: (
     50: rgba(black, 0.87),
     100: rgba(black, 0.87),
