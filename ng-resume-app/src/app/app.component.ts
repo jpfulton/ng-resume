@@ -67,16 +67,16 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
   { }
 
   ngOnInit(): void {
-    this.app.isStable.subscribe((isStable) => {
-      if (isStable && !this.stabilityStatus) {
-        this.loggingService.logDebug("Application has emitted isStable: " + isStable);
-        this.stabilityStatus = isStable;
-      }
-    });
-
     this.handleRouteEvents(); // needed for both SSR and SPA
 
     if (this.platformService.isBrowser()) { // statements below don't work in SSR, not needed there
+      
+      this.app.isStable.subscribe((isStable) => {
+        if (isStable && !this.stabilityStatus) {
+          this.loggingService.logDebug("Application has emitted isStable: " + isStable);
+          this.stabilityStatus = isStable;
+        }
+      });
 
       const currentCookieConsent = this.cookieConsentService.hasConsented();
       this.loggingService.logInfo(`Current cookie consent status: ${currentCookieConsent}.`);
