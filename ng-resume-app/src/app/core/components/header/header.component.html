@@ -1,11 +1,18 @@
 <mat-toolbar id="header-toolbar" color="primary">
-    <a mat-icon-button class="home-button" routerLink="/" routerLinkActive="active">
+    <a mat-icon-button
+       class="home-button" 
+       routerLink="/" 
+       routerLinkActive="active">
         <mat-icon>home</mat-icon>
     </a>
 
     <span class="toolbar-spacer"></span>
  
-    <mat-slide-toggle #darkModeToggle class="dark-mode-toggle"></mat-slide-toggle>
+    <mat-slide-toggle 
+        #darkModeToggle 
+        matTooltip="Toggle Dark Mode" 
+        class="dark-mode-toggle">
+    </mat-slide-toggle>
 
     <a mat-icon-button class="linkedin-button" href="https://www.linkedin.com/in/jpatrickfulton/">
         <mat-icon>
