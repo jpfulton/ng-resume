@@ -51,7 +51,7 @@ $ng-resume-dark-theme: mat.define-dark-theme((
 
   a, a:hover, a:visited {
     text-decoration: none;
-    color: map.get($ng-resume-accent, 100);
+    color: map.get($ng-resume-accent, 200);
   }
 
   .divider {
@@ -74,9 +74,11 @@ body {
 
   // cookie consent widget style overrides
   .cc-revoke {
+    @include mat.elevation(20);
     background-color: map.get($ng-resume-accent, 500) !important;
   }
   .cc-window {
+    @include mat.elevation(20);
     background-color: map.get($ng-resume-accent, 500) !important;
 
     .cc-highlight {
