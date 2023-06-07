@@ -1,5 +1,6 @@
 import { ApplicationConfig } from '@angular/core';
 
+import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { COOKIE_CONSENT_CONFIG } from './core/constants/cookieconsent-constants';
 import { NgcCookieConsentModule } from 'ngx-cookieconsent';
@@ -17,6 +18,7 @@ export const appConfig: ApplicationConfig = {
         importProvidersFrom(
             BrowserModule,
             NgcCookieConsentModule.forRoot(COOKIE_CONSENT_CONFIG),
+            MatRippleModule,
             MatDialogModule
         ),
         provideClientHydration(),
