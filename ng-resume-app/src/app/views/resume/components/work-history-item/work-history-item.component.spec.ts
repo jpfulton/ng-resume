@@ -88,7 +88,7 @@ describe('WorkHistoryItemComponent', () => {
 
     expect(dateRangeElement?.textContent).toEqual(workHistoryItem.startYear + " - " + workHistoryItem.endYear);
     expect(titleElement?.textContent).toEqual(workHistoryItem.title);
-    expect(organizationAnchorElement?.textContent).toEqual(workHistoryItem.organization);
+    expect(organizationAnchorElement?.textContent).toEqual(" " + workHistoryItem.organization + " open_in_new");
     expect(new URL(organizationAnchorElement?.attributes.getNamedItem("href")?.value ?? "")).toEqual(workHistoryItem?.organizationURL ?? new URL(""));
 
     expect(bulletsLiNodeList?.length).toEqual(2);

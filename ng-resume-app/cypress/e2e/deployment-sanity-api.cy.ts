@@ -46,6 +46,14 @@ describe("Deployment Sanity Tests [API]", () => {
       cy.screenshot();
     });
   
+    it("[API] Access OpenAPI descriptor", () => {
+      cy.request("/api/openapi/v3.json").then((response) => {
+        expectJsonResponseBody(response);
+        assert.isObject(response.body, "Body shouodl be an OpenAPI object.");
+        expect(response.body.openapi).to.be.equals("3.0.1", "Should be OpenAPI version 3.0.1.");
+      });
+    });
+  
     function expectJsonResponseBody(response: Cypress.Response<any>) : void {
       expect(response.headers["content-type"])
         .to.be.contains("application/json", "Should be JSON content.");

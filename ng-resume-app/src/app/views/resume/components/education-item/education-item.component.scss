@@ -1,14 +1,5 @@
-@use '@angular/material' as mat;
-
 .education-item {
     padding: 10px;
-    border-radius: 15px;
-    @include mat.elevation-transition();
-    @include mat.elevation(0);
-
-    &:hover {
-        @include mat.elevation(5);
-    }
 
     .education-item-title {
         font-weight: bold;

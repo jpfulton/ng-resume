@@ -17,15 +17,17 @@ A personal resume implemented in [Angular v16](https://angular.io/) and
 * Continuous integration workflow implemented in [GitHub Actions](https://github.com/features/actions)
 * E2E automated test suite for deployment santity implemented in [Cypress](https://docs.cypress.io/guides/overview/why-cypress)
 * [Google Analytics](https://analytics.google.com/) integration that pushes page views based on [Angular Router](https://angular.io/api/router/Router) events
+* Integration with [Azure Monitor (Application Insights)](https://learn.microsoft.com/en-us/azure/azure-monitor/overview)
 * User cookie consent banner implementation
 * Build-time prerendering using [Angular Universal](https://github.com/angular/universal)
 * SEO head and meta tag generation through dynamically configured route data with support for:
   * [iMessage Previews](https://developer.apple.com/library/archive/technotes/tn2444/_index.html)
   * [Twitter Cards](https://developer.twitter.com/en/docs/twitter-for-websites/cards/guides/getting-started)
   * [Open Graph Previews](https://ogp.me)
-* Integration with [Azure Monitor (Application Insights)](https://learn.microsoft.com/en-us/azure/azure-monitor/overview)
 * [Angular Material](https://material.angular.io) component integration
 * RESTful backend API implemented in [C# 10](https://learn.microsoft.com/en-us/dotnet/csharp/) and [Azure Functions v4](https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview?pivots=programming-language-csharp)
+  * [OpenAPI v3](https://www.openapis.org) backend API descriptors
+  * [Swagger](https://swagger.io) interactive backend API documentation and harness
 
 ## DevOps and Deployment
 
