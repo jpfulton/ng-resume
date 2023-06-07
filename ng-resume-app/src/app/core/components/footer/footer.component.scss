@@ -1,0 +1,5 @@
+@use '@angular/material' as mat;
+
+#footer-toolbar {
+    @include mat.elevation(10);
+}
