@@ -3,7 +3,7 @@
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
 // Plus imports for other components in your app.
-@import 'styles/pallete';
+@import 'styles/palette';
 @import 'styles/spinner.scss';
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -16,6 +16,8 @@
 // hue. Available color palettes: https://material.io/design/color/
 // $ng-resume-primary: mat.define-palette(mat.$indigo-palette);
 $ng-resume-primary: mat.define-palette($ng-resume-palette, 500, 300, 900);
+$ng-resume-dark-primary: mat.define-palette($ng-resume-palette, 700, 100, 900);
+
 $ng-resume-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
@@ -30,11 +32,37 @@ $ng-resume-theme: mat.define-light-theme((
     warn: $ng-resume-warn,
   )
 ));
+$ng-resume-dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $ng-resume-dark-primary,
+    accent: $ng-resume-accent,
+    warn: $ng-resume-warn,
+  )
+));
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include mat.all-component-themes($ng-resume-theme);
+
+// dark mode theming
+.darkMode {
+  @include mat.all-component-colors($ng-resume-dark-theme);
+
+  a, a:hover, a:visited {
+    text-decoration: none;
+    color: map.get($ng-resume-accent, 200);
+  }
+
+  .divider {
+      width: 100%;
+      display: block;
+      border-top: 2px solid map.get($ng-resume-primary, 100);
+      margin-top: 4px;
+      margin-bottom: 4px;
+}
+}
+
 
 html, body { 
   height: 100%; 
@@ -46,9 +74,11 @@ body {
 
   // cookie consent widget style overrides
   .cc-revoke {
+    @include mat.elevation(20);
     background-color: map.get($ng-resume-accent, 500) !important;
   }
   .cc-window {
+    @include mat.elevation(20);
     background-color: map.get($ng-resume-accent, 500) !important;
 
     .cc-highlight {
