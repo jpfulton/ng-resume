@@ -110,6 +110,8 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
       else {
         this.overlay.getContainerElement().classList.remove(darkClassName);
       }
+
+      this.applicationInsightsService.logEvent("ToggleDarkMode", { enabled: darkMode.checked });
     });
   }
 
