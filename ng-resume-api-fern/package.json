@@ -1,0 +1,9 @@
+{
+  "name": "ng-resume-api-fern",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "fern-api": "^0.10.9"
+  }
+}
