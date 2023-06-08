@@ -9,6 +9,9 @@ groups:
           path: ../../generated/openapi
       - name: fernapi/fern-typescript-browser-sdk
         version: 0.6.4
+        config:
+          bundle: true
+          private: true
         output:
           location: local-file-system
           path: ../../generated/typescript-browser-sdk
