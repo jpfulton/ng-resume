@@ -8,7 +8,8 @@
 
     <span class="toolbar-spacer"></span>
  
-    <mat-slide-toggle 
+    <mat-slide-toggle
+        *ngIf="!isHandset"
         #darkModeToggle 
         matTooltip="Toggle Dark Mode" 
         class="dark-mode-toggle">
@@ -40,6 +41,12 @@
         <mat-icon>menu</mat-icon>
     </button>
     <mat-menu #mainMenu="matMenu">
+        <span *ngIf="isHandset" mat-menu-item>
+            <mat-slide-toggle
+                #darkModeToggle>
+                Dark Mode
+            </mat-slide-toggle>
+        </span>
         <button mat-menu-item [matMenuTriggerFor]="policyMenu">
             Policies
         </button>
