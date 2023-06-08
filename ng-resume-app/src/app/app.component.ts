@@ -1,6 +1,15 @@
 import { Subscription, delay } from 'rxjs';
 
-import { Component, OnInit, OnDestroy, ApplicationRef, NgZone, HostBinding, ViewChild, AfterViewInit, AfterContentInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ApplicationRef,
+  NgZone,
+  HostBinding,
+  ViewChild,
+  AfterViewInit
+} from '@angular/core';
 import { ActivationEnd, Data, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 
 import { OverlayContainer } from '@angular/cdk/overlay';
@@ -51,6 +60,9 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private routerEventsSubscription: Subscription | undefined;
   private cookieConsentStatusChangeSubscription: Subscription | undefined;
+  private themeSubscription: Subscription | undefined;
+  private stabilitySubscription: Subscription | undefined;
+  private toggleSubscription: Subscription | undefined;
 
   constructor(
     private app: ApplicationRef,
@@ -73,7 +85,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
 
     if (this.platformService.isBrowser()) { // statements below don't work in SSR, not needed there
       
-      this.app.isStable.subscribe((isStable) => {
+      this.stabilitySubscription = this.app.isStable.subscribe((isStable) => {
         if (isStable && !this.stabilityStatus) {
           this.loggingService.logDebug("Application has emitted isStable: " + isStable);
           this.stabilityStatus = isStable;
@@ -99,8 +111,12 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     }
   }
 
+  /**
+   * At this point in the lifecycle, variables that are host bound attributes or
+   * variables from view children become accessible.
+   */
   ngAfterViewInit(): void {
-    this.themeService.theme
+    this.themeSubscription = this.themeService.theme
       .pipe(delay(0)) // Reference: https://blog.angular-university.io/angular-debugging/
       .subscribe((theme: string) => {
       this.loggingService.logInfo("Theme service reports preference of " + theme + " theme.");
@@ -110,7 +126,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
       this.toggleDarkModeClasses(isDarkMode);
     });
 
-    this.headerComponent.darkModeToggle.change.subscribe((darkMode) => {
+    this.toggleSubscription = this.headerComponent.darkModeToggle.change.subscribe((darkMode) => {
       this.toggleDarkModeClasses(darkMode.checked);
       this.applicationInsightsService.logEvent("ToggleDarkMode", { enabled: darkMode.checked });
     });
@@ -136,6 +152,9 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.routerEventsSubscription?.unsubscribe();
     this.cookieConsentStatusChangeSubscription?.unsubscribe();
+    this.themeSubscription?.unsubscribe();
+    this.stabilitySubscription?.unsubscribe();
+    this.toggleSubscription?.unsubscribe();
   }
 
   /**
