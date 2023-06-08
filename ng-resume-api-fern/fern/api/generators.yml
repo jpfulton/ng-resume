@@ -10,7 +10,7 @@ groups:
       - name: fernapi/fern-typescript-browser-sdk
         version: 0.6.4
         config:
-          bundle: true
+          bundle: false
           private: true
         output:
           location: local-file-system
