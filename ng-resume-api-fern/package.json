@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.6.0",
     "fern-api": "^0.10.9"
   }
 }
