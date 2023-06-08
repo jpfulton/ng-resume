@@ -25,6 +25,7 @@ A personal resume implemented in [Angular v16](https://angular.io/) and
   * [Twitter Cards](https://developer.twitter.com/en/docs/twitter-for-websites/cards/guides/getting-started)
   * [Open Graph Previews](https://ogp.me)
 * [Angular Material](https://material.angular.io) component integration
+* Light and dark themes that respect operating system preferences and switching via user interaction
 * RESTful backend API implemented in [C# 10](https://learn.microsoft.com/en-us/dotnet/csharp/) and [Azure Functions v4](https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview?pivots=programming-language-csharp)
   * [OpenAPI v3](https://www.openapis.org) backend API descriptors
   * [Swagger](https://swagger.io) interactive backend API documentation and harness
