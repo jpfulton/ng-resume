@@ -7,6 +7,6 @@
     "fern-init": "./scripts/init-fern.sh"
   },
   "devDependencies": {
-    "fern-api": "^0.10.12"
+    "fern-api": "^0.10.13"
   }
 }

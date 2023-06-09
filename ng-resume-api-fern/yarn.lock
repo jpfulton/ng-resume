@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-fern-api@^0.10.12:
-  version "0.10.12"
-  resolved "https://registry.yarnpkg.com/fern-api/-/fern-api-0.10.12.tgz#077f9d8c58695cabfedca63ddda1ebc2758f0013"
-  integrity sha512-/n8YY0E2DK7bfxwbpGR1dLjMrasqPR7/fcunWPoqsHoPaGaa8OEO3gXNg0ffpDDzGaPBBy8SFVHQFJAdhC2Rpg==
+fern-api@^0.10.13:
+  version "0.10.13"
+  resolved "https://registry.yarnpkg.com/fern-api/-/fern-api-0.10.13.tgz#43057f4150c7b31a6ba9471b5c1f9c521d5df228"
+  integrity sha512-5JCb2eLGUSzwUpB/oWrX5cjOtMupiM3pj3GcVvDBGn1YHTub2t7hDWCoeohwD5TlMrvwJAjV1FLkHDprF4FORQ==
