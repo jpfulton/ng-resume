@@ -119,11 +119,13 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     this.themeSubscription = this.themeService.theme
       .pipe(delay(0)) // Reference: https://blog.angular-university.io/angular-debugging/
       .subscribe((theme: string) => {
-      this.loggingService.logInfo("Theme service reports preference of " + theme + " theme.");
+        this.loggingService.logInfo("Theme service reports preference of " + theme + " theme.");
+        this.applicationInsightsService.logEvent("PlatformThemePreference", { theme: theme });
 
-      const isDarkMode = (theme === this.themeService.DARK_MODE);
-      this.headerComponent.darkModeToggle.checked = isDarkMode;
-      this.toggleDarkModeClasses(isDarkMode);
+        const isDarkMode = (theme === this.themeService.DARK_MODE);
+
+        this.headerComponent.darkModeToggle.checked = isDarkMode;
+        this.toggleDarkModeClasses(isDarkMode);
     });
 
     this.toggleSubscription = this.headerComponent.darkModeToggle.change.subscribe((darkMode) => {
