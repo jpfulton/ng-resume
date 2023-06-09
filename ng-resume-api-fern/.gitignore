@@ -1,0 +1,5 @@
+# Ignore fern directory
+fern
+
+# Ignore generated directory
+generated
