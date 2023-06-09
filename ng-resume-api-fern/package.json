@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "fern-init": "./scripts/init-fern.sh"
+  },
   "devDependencies": {
     "fern-api": "^0.10.12"
   }
