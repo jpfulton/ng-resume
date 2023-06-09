@@ -1,5 +1,7 @@
 default-group: local
+
 groups:
+
   local:
     generators:
       - name: fernapi/fern-openapi
@@ -8,7 +10,7 @@ groups:
           location: local-file-system
           path: ../../generated/openapi
       - name: fernapi/fern-typescript-browser-sdk
-        version: 0.6.4
+        version: 0.7.0
         config:
           useBrandedStringAliases: false # default: false
           private: true # default: true
@@ -24,8 +26,32 @@ groups:
           timeoutInSeconds: 10 # optional
           skipResponseValidation: false # default: false
           #extraDependencies: # default: {}
-          #treatUnknownAsAny: false # default: false [not in 0.6.4]
-          #includeContentHeadersOnFileDownloadResponse: false # default: false [not in 0.6.4]
+          treatUnknownAsAny: false # default: false
+          includeContentHeadersOnFileDownloadResponse: false # default: false
         output:
           location: local-file-system
           path: ../../generated/typescript-browser-sdk
+  
+  publish:
+    generators:
+      - name: fernapi/fern-typescript-browser-sdk
+        version: 0.7.0
+        config:
+          useBrandedStringAliases: false # default: false
+          private: true # default: true
+          neverThrowErrors: false #default: false
+          #namespaceExport:  # optional
+          outputEsm: true # default: false
+          includeCredentialsOnCrossOriginRequests: false # default: false
+          bundle: false # default: false
+          allowCustomFetcher: true # default: false
+          includeUtilsOnUnionMembers: false # default: false
+          includeOtherInUnionTypes: false # default: false
+          requireDefaultEnvironment: false # default: false
+          timeoutInSeconds: 10 # optional
+          skipResponseValidation: false # default: false
+          #extraDependencies: # default: {}
+          treatUnknownAsAny: false # default: false
+          includeContentHeadersOnFileDownloadResponse: false # default: false
+        github:
+          repository: jpfulton/ng-resume-api-broswer-sdk
