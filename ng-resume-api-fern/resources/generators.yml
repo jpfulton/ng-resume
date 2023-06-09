@@ -54,4 +54,4 @@ groups:
           treatUnknownAsAny: false # default: false
           includeContentHeadersOnFileDownloadResponse: false # default: false
         github:
-          repository: jpfulton/ng-resume-api-broswer-sdk
+          repository: jpfulton/ng-resume-api-browser-sdk
