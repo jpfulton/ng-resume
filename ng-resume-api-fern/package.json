@@ -1,10 +1,9 @@
 {
   "name": "ng-resume-api-fern",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
+  "private": true,
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.6.0",
-    "fern-api": "^0.10.9"
+    "fern-api": "^0.10.12"
   }
 }
