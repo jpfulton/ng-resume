@@ -20,10 +20,10 @@ namespace Jpf.NgResume.Api.Models
         [OpenApiProperty(Description = "Title of the degree or certification.")]
         public string Title {get; set;}
 
-        [OpenApiProperty(Description = "Subtitle of the degree or certification.")]
+        [OpenApiProperty(Description = "Subtitle of the degree or certification.", Nullable = true)]
         public string Subtitle {get; set;}
 
-        [OpenApiProperty(Description = "Issuing organization for the education item.")]
+        [OpenApiProperty(Description = "Issuing organization for the education item.", Nullable = true)]
         public string Organization {get; set;}
     }
 
