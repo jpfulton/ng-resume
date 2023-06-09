@@ -10,8 +10,22 @@ groups:
       - name: fernapi/fern-typescript-browser-sdk
         version: 0.6.4
         config:
-          bundle: false
-          private: true
+          useBrandedStringAliases: false # default: false
+          private: true # default: true
+          neverThrowErrors: false #default: false
+          #namespaceExport:  # optional
+          outputEsm: true # default: false
+          includeCredentialsOnCrossOriginRequests: false # default: false
+          bundle: false # default: false
+          allowCustomFetcher: true # default: false
+          includeUtilsOnUnionMembers: false # default: false
+          includeOtherInUnionTypes: false # default: false
+          requireDefaultEnvironment: false # default: false
+          timeoutInSeconds: 10 # optional
+          skipResponseValidation: false # default: false
+          #extraDependencies: # default: {}
+          #treatUnknownAsAny: false # default: false [not in 0.6.4]
+          #includeContentHeadersOnFileDownloadResponse: false # default: false [not in 0.6.4]
         output:
           location: local-file-system
           path: ../../generated/typescript-browser-sdk
