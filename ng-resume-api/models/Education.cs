@@ -10,7 +10,7 @@ namespace Jpf.NgResume.Api.Models
     /// <summary>
     /// Model class to represent education objects.
     /// </summary>
-    [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
+    [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore, NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     [OpenApiExample(typeof(EducationExample))]
     public class Education
     {
