@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "fern-init": "./scripts/init-fern.sh",
-    "fern-publish": "./scripts/publish-fern.sh"
+    "fern-publish": "./scripts/publish-fern.sh",
+    "clean": "./scripts/clean.sh"
   },
   "devDependencies": {
     "fern-api": "^0.10.13"
