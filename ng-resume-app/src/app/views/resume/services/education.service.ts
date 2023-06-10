@@ -18,6 +18,6 @@ export class EducationService {
    */
   getAllEducationItems() : Observable<Education[]> {
     const client = new JpfultonApiClient({});
-    return from(client.education.educationGetAll());
+    return from(client.education.getAll());
   }
 }
