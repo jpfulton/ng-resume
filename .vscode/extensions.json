@@ -3,6 +3,7 @@
   "recommendations": [
     "angular.ng-template",
     "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
     "github.vscode-github-actions",
     "github.vscode-pull-request-github",
     "zainchen.json"
