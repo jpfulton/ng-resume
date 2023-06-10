@@ -15,6 +15,10 @@
     {
       "name": "ng-resume-api-fern",
       "path": "../ng-resume-api-fern"
+    },
+    {
+      "name": "ng-resume-api-browser-sdk",
+      "path": "../ng-resume-api-browser-sdk"
     }
   ],
   "settings": {
@@ -24,7 +28,8 @@
       "**/Thumbs.db": true,
       "ng-resume-app/": true,
       "ng-resume-api/": true,
-      "ng-resume-api-fern/": true
+      "ng-resume-api-fern/": true,
+      "ng-resume-api-browser-sdk": true
     }
   }
 }
