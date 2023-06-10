@@ -12,12 +12,13 @@ import { Education } from '@jpfulton/ng-resume-api-browser-sdk/api';
 })
 export class EducationService {
 
+  private client: JpfultonApiClient = new JpfultonApiClient({});
+
   /**
    * Get all education objects from remote datasource.
    * @returns {Observable<Education[]>} An observable array of Education objects.
    */
   getAllEducationItems() : Observable<Education[]> {
-    const client = new JpfultonApiClient({});
-    return from(client.education.getAll());
+    return from(this.client.education.getAll());
   }
 }
