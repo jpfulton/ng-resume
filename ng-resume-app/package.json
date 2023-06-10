@@ -30,7 +30,7 @@
     "@angular/platform-browser-dynamic": "^16.0.2",
     "@angular/platform-server": "^16.0.2",
     "@angular/router": "^16.0.2",
-    "@jpfulton/ng-resume-api-browser-sdk": "^0.0.60",
+    "@jpfulton/ng-resume-api-browser-sdk": "^0.1.0",
     "@microsoft/applicationinsights-angularplugin-js": "^3.0.2",
     "@microsoft/applicationinsights-web": "^2.8.12",
     "@nguniversal/express-engine": "^16.0.2",

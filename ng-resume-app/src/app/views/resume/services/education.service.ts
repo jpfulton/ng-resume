@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, from } from 'rxjs';
 
-import { JpfultonApiClient } from '@jpfulton/ng-resume-api-browser-sdk';
+import { NgResumeApiClient } from '@jpfulton/ng-resume-api-browser-sdk';
 import { Education } from '@jpfulton/ng-resume-api-browser-sdk/api';
 
 /**
@@ -12,13 +12,13 @@ import { Education } from '@jpfulton/ng-resume-api-browser-sdk/api';
 })
 export class EducationService {
 
-  private client: JpfultonApiClient = new JpfultonApiClient({});
+  private apiClient: NgResumeApiClient = new NgResumeApiClient({});
 
   /**
    * Get all education objects from remote datasource.
    * @returns {Observable<Education[]>} An observable array of Education objects.
    */
   getAllEducationItems() : Observable<Education[]> {
-    return from(this.client.education.getAll());
+    return from(this.apiClient.education.getAll());
   }
 }
