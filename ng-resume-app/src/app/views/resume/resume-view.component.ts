@@ -6,7 +6,6 @@ import { NgIf, NgFor } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
 import { WorkHistoryItemComponent } from './components/work-history-item/work-history-item.component';
-import { WorkHistory } from './models/workhistory';
 import { WorkHistoryService } from './services/workhistory.service';
 
 import { EducationService } from './services/education.service';
@@ -15,6 +14,7 @@ import { PlatformService } from '../../core/services/platform.service';
 import { LoggingService } from '../../core/services/logging.service';
 
 import { Education } from '@jpfulton/ng-resume-api-browser-sdk/api';
+import { WorkHistory } from '@jpfulton/ng-resume-api-browser-sdk/api';
 
 /**
  * Top level component for the resume view heirarchy.
