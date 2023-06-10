@@ -1,6 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Education } from '../../models/education';
+
+import { Education } from '@jpfulton/ng-resume-api-browser-sdk/api';
 
 /**
  * Component to render elements in the resume education and certification section.

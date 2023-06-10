@@ -29,7 +29,7 @@ namespace Jpf.NgResume.Api
         }
 
         [FunctionName("EducationGetAll")]
-        [OpenApiOperation(operationId: "EducationGetAll", tags: new[] { "education" })]
+        [OpenApiOperation(operationId: "GetAll", tags: new[] { "education" })]
         [OpenApiResponseWithBody(
             statusCode: HttpStatusCode.OK,
             contentType: "application/json; charset=utf-8",
@@ -50,7 +50,7 @@ namespace Jpf.NgResume.Api
         }
 
         [FunctionName("EducationGetById")]
-        [OpenApiOperation(operationId: "EducationGetById", tags: new[] { "education" })]
+        [OpenApiOperation(operationId: "GetById", tags: new[] { "education" })]
         [OpenApiParameter(
             name: "id", 
             Required = true, 

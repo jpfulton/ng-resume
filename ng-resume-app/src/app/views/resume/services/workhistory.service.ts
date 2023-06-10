@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { WorkHistory } from '../models/workhistory';
 import { Observable } from 'rxjs';
-import { RestApiLocations } from '../enums/rest-api-locations';
+
+import { NgResumeApiClient } from '@jpfulton/ng-resume-api-browser-sdk';
+import { WorkHistory } from '@jpfulton/ng-resume-api-browser-sdk/api';
+import { LoadingService } from 'src/app/core/services/loading.service';
+import { apiPromiseToObservable } from 'src/app/core/utils/api-helpers';
 
 /**
  * Service to access WorkHistory objects from a remote source.
@@ -11,13 +13,15 @@ import { RestApiLocations } from '../enums/rest-api-locations';
   providedIn: 'root'
 })
 export class WorkHistoryService {
-  constructor(private httpClient: HttpClient) {}
+  private apiClient: NgResumeApiClient = new NgResumeApiClient({});
+
+  constructor(private loadingService: LoadingService) { }
 
   /**
    * Get all work history objects from a remote data source.
    * @returns {Observable<WorkHistory[]>} An observable array of WorkHistory objects.
    */
-  getAllWorkHistoryItems() : Observable<WorkHistory[]> {
-    return this.httpClient.get<WorkHistory[]>(RestApiLocations.WorkHistory);
+  getAllWorkHistoryItems(): Observable<WorkHistory[]> {
+    return apiPromiseToObservable(() => this.apiClient.workhistory.getAll(), this.loadingService);
   }
 }

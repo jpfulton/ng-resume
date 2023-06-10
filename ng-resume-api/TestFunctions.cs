@@ -21,7 +21,7 @@ namespace Jpf.NgResume.Api
         /// <param name="log"></param>
         /// <returns></returns>
         [FunctionName("TestGet")]
-        [OpenApiOperation(operationId: "TestGet", tags: new[] { "test" })]
+        [OpenApiOperation(operationId: "Get", tags: new[] { "test" })]
         [OpenApiParameter(
             name: "name", 
             Required = false, 

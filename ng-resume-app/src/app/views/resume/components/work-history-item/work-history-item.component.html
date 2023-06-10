@@ -5,8 +5,8 @@
         <div>
             <div class="work-history-org">
 
-                <span *ngIf="workHistory.organizationURL !== undefined; else noLinkBlock">
-                    <a class="ext-link" href="{{workHistory.organizationURL}}" target="_blank">
+                <span *ngIf="workHistory.organizationUrl !== undefined; else noLinkBlock">
+                    <a class="ext-link" href="{{workHistory.organizationUrl}}" target="_blank">
                         {{workHistory.organization}}
                         <mat-icon>open_in_new</mat-icon>
                     </a>

@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Education } from '../models/education';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { RestApiLocations } from '../enums/rest-api-locations';
+
+import { NgResumeApiClient } from '@jpfulton/ng-resume-api-browser-sdk';
+import { Education } from '@jpfulton/ng-resume-api-browser-sdk/api';
+import { LoadingService } from 'src/app/core/services/loading.service';
+import { apiPromiseToObservable } from 'src/app/core/utils/api-helpers';
 
 /**
  * Service to access Education objects from a remote source.
@@ -11,13 +13,15 @@ import { RestApiLocations } from '../enums/rest-api-locations';
   providedIn: 'root'
 })
 export class EducationService {
-  constructor(private httpClient: HttpClient) {}
+  private apiClient: NgResumeApiClient = new NgResumeApiClient({});
+
+  constructor(private loadingService: LoadingService) { }
 
   /**
    * Get all education objects from remote datasource.
    * @returns {Observable<Education[]>} An observable array of Education objects.
    */
-  getAllEducationItems() : Observable<Education[]> {
-    return this.httpClient.get<Education[]>(RestApiLocations.Education);
+  getAllEducationItems(): Observable<Education[]> {
+    return apiPromiseToObservable(() => this.apiClient.education.getAll(), this.loadingService);
   }
 }

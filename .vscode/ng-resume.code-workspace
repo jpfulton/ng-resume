@@ -12,6 +12,10 @@
       "name": "ng-resume-api",
       "path": "../ng-resume-api"
     },
+    {
+      "name": "ng-resume-api-fern",
+      "path": "../ng-resume-api-fern"
+    }
   ],
   "settings": {
     "files.exclude": {
@@ -19,7 +23,8 @@
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
       "ng-resume-app/": true,
-      "ng-resume-api/": true
+      "ng-resume-api/": true,
+      "ng-resume-api-fern/": true
     }
   }
 }
