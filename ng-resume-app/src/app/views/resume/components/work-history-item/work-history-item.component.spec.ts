@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WorkHistoryItemComponent } from './work-history-item.component';
-import { WorkHistory } from '../../models/workhistory';
+import { WorkHistory } from '@jpfulton/ng-resume-api-browser-sdk/api';
 
 describe('WorkHistoryItemComponent', () => {
   let component: WorkHistoryItemComponent;
@@ -57,7 +57,7 @@ describe('WorkHistoryItemComponent', () => {
       "startYear": 0,
       "endYear": 0,
       "organization": "Mock org",
-      "organizationURL": new URL("https://www.google.com"),
+      "organizationUrl": "https://www.google.com",
       "title": "Mock title",
       "bullets": [
         "Mock bullet one",
@@ -89,21 +89,21 @@ describe('WorkHistoryItemComponent', () => {
     expect(dateRangeElement?.textContent).toEqual(workHistoryItem.startYear + " - " + workHistoryItem.endYear);
     expect(titleElement?.textContent).toEqual(workHistoryItem.title);
     expect(organizationAnchorElement?.textContent).toEqual(" " + workHistoryItem.organization + " open_in_new");
-    expect(new URL(organizationAnchorElement?.attributes.getNamedItem("href")?.value ?? "")).toEqual(workHistoryItem?.organizationURL ?? new URL(""));
+    expect(organizationAnchorElement?.attributes.getNamedItem("href")?.value ?? "").toEqual(workHistoryItem?.organizationUrl ?? "");
 
     expect(bulletsLiNodeList?.length).toEqual(2);
-    expect(bulletsLiNodeList?.item(0).textContent).toEqual(workHistoryItem.bullets[0]);
-    expect(bulletsLiNodeList?.item(1).textContent).toEqual(workHistoryItem.bullets[1]);
+    expect(bulletsLiNodeList?.item(0).textContent).toEqual(workHistoryItem.bullets && workHistoryItem.bullets[0]);
+    expect(bulletsLiNodeList?.item(1).textContent).toEqual(workHistoryItem.bullets && workHistoryItem.bullets[1]);
 
     expect(skillsLiNodeList?.length).toEqual(2);
-    expect(skillsLiNodeList?.item(0).textContent?.trim()).toEqual(workHistoryItem.skills[0]);
-    expect(skillsLiNodeList?.item(1).textContent?.trim()).toEqual("| " + workHistoryItem.skills[1]);
+    expect(skillsLiNodeList?.item(0).textContent?.trim()).toEqual(workHistoryItem.skills && workHistoryItem.skills[0]);
+    expect(skillsLiNodeList?.item(1).textContent?.trim()).toEqual("| " + (workHistoryItem.skills && workHistoryItem.skills[1]));
   });
 
   it("should have values in all child elements with no organization URL", () => {
     populateComponentInputs();
 
-    component.workHistory.organizationURL = undefined; // uninitialize org url
+    component.workHistory.organizationUrl = undefined; // uninitialize org url
     populateElementsAndDetectChanges();
 
     expect(dateRangeElement).toBeTruthy();
@@ -116,11 +116,11 @@ describe('WorkHistoryItemComponent', () => {
     expect(organizationWithoutAnchorElement?.textContent).toEqual(workHistoryItem.organization);
     
     expect(bulletsLiNodeList?.length).toEqual(2);
-    expect(bulletsLiNodeList?.item(0).textContent).toEqual(workHistoryItem.bullets[0]);
-    expect(bulletsLiNodeList?.item(1).textContent).toEqual(workHistoryItem.bullets[1]);
+    expect(bulletsLiNodeList?.item(0).textContent).toEqual(workHistoryItem.bullets && workHistoryItem.bullets[0]);
+    expect(bulletsLiNodeList?.item(1).textContent).toEqual(workHistoryItem.bullets && workHistoryItem.bullets[1]);
 
     expect(skillsLiNodeList?.length).toEqual(2);
-    expect(skillsLiNodeList?.item(0).textContent?.trim()).toEqual(workHistoryItem.skills[0]);
-    expect(skillsLiNodeList?.item(1).textContent?.trim()).toEqual("| " + workHistoryItem.skills[1]);
+    expect(skillsLiNodeList?.item(0).textContent?.trim()).toEqual(workHistoryItem.skills && workHistoryItem.skills[0]);
+    expect(skillsLiNodeList?.item(1).textContent?.trim()).toEqual("| " + (workHistoryItem.skills && workHistoryItem.skills[1]));
   });
 });
