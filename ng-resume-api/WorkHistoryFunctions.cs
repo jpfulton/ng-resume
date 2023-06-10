@@ -29,7 +29,7 @@ namespace Jpf.NgResume.Api
         }
 
         [FunctionName("WorkHistoryGetAll")]
-        [OpenApiOperation(operationId: "WorkHistoryGetAll", tags: new[] { "workhistory" })]
+        [OpenApiOperation(operationId: "GetAll", tags: new[] { "workhistory" })]
         [OpenApiResponseWithBody(
             statusCode: HttpStatusCode.OK,
             contentType: "application/json; charset=utf-8",
@@ -50,7 +50,7 @@ namespace Jpf.NgResume.Api
         }
 
         [FunctionName("WorkHistoryGetById")]
-        [OpenApiOperation(operationId: "WorkHistoryGetById", tags: new[] { "workhistory" })]
+        [OpenApiOperation(operationId: "GetById", tags: new[] { "workhistory" })]
         [OpenApiParameter(
             name: "id", 
             Required = true, 
