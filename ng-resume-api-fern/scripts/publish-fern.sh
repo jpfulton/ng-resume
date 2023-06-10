@@ -3,8 +3,6 @@
 WORKING_DIR=$( pwd; )
 FERN_BIN="./node_modules/.bin/fern"
 
-echo "Initializing Fern from live API"
-echo "---"
 echo "Current working directory: $WORKING_DIR"
 echo "---"
 
