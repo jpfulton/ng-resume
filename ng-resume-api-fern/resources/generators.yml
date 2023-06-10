@@ -19,7 +19,7 @@ groups:
           outputEsm: false # default: false
           includeCredentialsOnCrossOriginRequests: false # default: false
           bundle: false # default: false
-          allowCustomFetcher: true # default: false
+          allowCustomFetcher: false # default: false
           includeUtilsOnUnionMembers: false # default: false
           includeOtherInUnionTypes: false # default: false
           requireDefaultEnvironment: false # default: false
@@ -44,7 +44,7 @@ groups:
           outputEsm: false # default: false
           includeCredentialsOnCrossOriginRequests: false # default: false
           bundle: false # default: false
-          allowCustomFetcher: true # default: false
+          allowCustomFetcher: false # default: false
           includeUtilsOnUnionMembers: false # default: false
           includeOtherInUnionTypes: false # default: false
           requireDefaultEnvironment: false # default: false
