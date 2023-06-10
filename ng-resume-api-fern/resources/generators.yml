@@ -13,10 +13,10 @@ groups:
         version: 0.7.0
         config:
           useBrandedStringAliases: false # default: false
-          private: true # default: true
+          private: false # default: true
           neverThrowErrors: false #default: false
           #namespaceExport:  # optional
-          outputEsm: true # default: false
+          outputEsm: false # default: false
           includeCredentialsOnCrossOriginRequests: false # default: false
           bundle: false # default: false
           allowCustomFetcher: true # default: false
@@ -38,10 +38,10 @@ groups:
         version: 0.7.0
         config:
           useBrandedStringAliases: false # default: false
-          private: true # default: true
+          private: false # default: true
           neverThrowErrors: false #default: false
           #namespaceExport:  # optional
-          outputEsm: true # default: false
+          outputEsm: false # default: false
           includeCredentialsOnCrossOriginRequests: false # default: false
           bundle: false # default: false
           allowCustomFetcher: true # default: false
@@ -53,5 +53,9 @@ groups:
           #extraDependencies: # default: {}
           treatUnknownAsAny: false # default: false
           includeContentHeadersOnFileDownloadResponse: false # default: false
+        output:
+          location: npm
+          package-name: "@jpfulton/ng-resume-api-browser-sdk"
+          # token: ${JPFULTON_NPM_TOKEN} # optional
         github:
           repository: jpfulton/ng-resume-api-browser-sdk
