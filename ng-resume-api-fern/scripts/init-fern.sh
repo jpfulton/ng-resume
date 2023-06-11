@@ -19,7 +19,13 @@ rm -rf $FERN_DIR
 echo "---"
 
 echo "Downloading OpenAPI document from local API..."
-curl -s -o $TARGET_API_YML_FILE $LOCAL_API_URL
+curl --silent --fail -o $TARGET_API_YML_FILE $LOCAL_API_URL
+exit_status=$?
+if [ $exit_status != 0 ]
+    then
+        echo "Unable to download OpenAPI document. Is the local API running? Exiting."
+        exit $exit_status
+fi
 echo "---"
 
 echo "Initializing fern from downloaded OpenAPI document"
