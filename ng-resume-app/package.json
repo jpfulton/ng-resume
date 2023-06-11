@@ -35,6 +35,7 @@
     "@microsoft/applicationinsights-web": "^2.8.12",
     "@nguniversal/express-engine": "^16.0.2",
     "@types/gtag.js": "^0.0.12",
+    "angular-oauth2-oidc": "^15.0.1",
     "cookieconsent": "^3.1.1",
     "eslint-plugin-jsdoc": "^44.2.4",
     "express": "^4.18.2",
