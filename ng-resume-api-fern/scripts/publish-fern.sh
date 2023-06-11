@@ -8,7 +8,7 @@ echo "---"
 
 echo "Using fern version: $( $FERN_BIN --version; )"
 
-echo "Running fern generate with publish group..."
+echo "Running fern generate on publish group..."
 $FERN_BIN generate publish --log-level="debug"
 
 echo "Complete."
