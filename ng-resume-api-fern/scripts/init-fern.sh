@@ -36,8 +36,8 @@ echo "Replacing generated fern artifacts with versioned resource files..."
 cp -f -p $REPLACEMENT_FERN_CONFIG $FERN_DIR
 cp -f -p $REPLACMENT_GENERATORS_YML $FERN_GENERATORS_DIR
 
-echo "Running fern generate..."
-$FERN_BIN generate --log-level="debug"
+echo "Running fern generate on local group..."
+$FERN_BIN generate local --log-level="debug"
 
 echo "---"
 echo "Removing temporary copy of OpenAPI document..."
