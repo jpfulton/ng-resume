@@ -1,0 +1,22 @@
+{
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Locally Generate Fern SDK",
+        "type": "node-terminal",
+        "request": "launch",
+        "preLaunchTask": "initialize (fern)",
+        "cwd": "${workspaceFolder}",
+        "command": "echo 'Fern local generation complete.'"
+      },
+      {
+        "name": "Publish Fern SDK",
+        "type": "node-terminal",
+        "request": "launch",
+        "preLaunchTask": "publish (fern)",
+        "cwd": "${workspaceFolder}",
+        "command": "echo 'Fern publish complete.'"
+      }
+    ]
+  }

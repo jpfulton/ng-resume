@@ -19,7 +19,13 @@ rm -rf $FERN_DIR
 echo "---"
 
 echo "Downloading OpenAPI document from local API..."
-curl -s -o $TARGET_API_YML_FILE $LOCAL_API_URL
+curl --silent --fail -o $TARGET_API_YML_FILE $LOCAL_API_URL
+exit_status=$?
+if [ $exit_status != 0 ]
+    then
+        echo "Unable to download OpenAPI document. Is the local API running? Exiting."
+        exit $exit_status
+fi
 echo "---"
 
 echo "Initializing fern from downloaded OpenAPI document"
@@ -30,8 +36,8 @@ echo "Replacing generated fern artifacts with versioned resource files..."
 cp -f -p $REPLACEMENT_FERN_CONFIG $FERN_DIR
 cp -f -p $REPLACMENT_GENERATORS_YML $FERN_GENERATORS_DIR
 
-echo "Running fern generate..."
-$FERN_BIN generate --log-level="debug"
+echo "Running fern generate on local group..."
+$FERN_BIN generate local --log-level="debug"
 
 echo "---"
 echo "Removing temporary copy of OpenAPI document..."

@@ -9,6 +9,6 @@
     "clean": "./scripts/clean.sh"
   },
   "devDependencies": {
-    "fern-api": "^0.10.13"
+    "fern-api": "^0.10.15"
   }
 }
