@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, ViewChild } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -10,6 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
  
 import { FocusableDirective } from '../../directives/focusable.directive';
+import { PlatformService } from '../../services/platform.service';
 
 @Component({
   selector: 'app-header',
@@ -30,4 +32,17 @@ import { FocusableDirective } from '../../directives/focusable.directive';
 })
 export class HeaderComponent {
   @ViewChild("darkModeToggle") darkModeToggle!: MatSlideToggle;
+
+  constructor(
+    private platformService: PlatformService
+  ) { }
+
+  logout(): void {
+    throw new Error("Not implemented.");
+  }
+
+  login(): void {
+    throw new Error("Not implemented.");
+  }
+
 }

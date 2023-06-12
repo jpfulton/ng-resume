@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Subscription, delay } from 'rxjs';
 
 import {
@@ -76,9 +78,11 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     private seoService: SeoService,
     private loggingService: LoggingService,
     private platformService: PlatformService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
   ) 
-  { }
+  {
+    
+  }
 
   ngOnInit(): void {
     this.handleRouteEvents(); // needed for both SSR and SPA

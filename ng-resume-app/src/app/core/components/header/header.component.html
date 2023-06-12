@@ -13,6 +13,16 @@
         <mat-icon>menu</mat-icon>
     </button>
     <mat-menu #mainMenu="matMenu">
+        <button mat-menu-item (click)="login()">
+            <mat-icon>login</mat-icon>
+            Log In or Sign Up...
+        </button>
+        <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Log Out
+        </button>
+
+        <mat-divider></mat-divider>
 
         <div mat-menu-item appFocusable
             (click)="$event.stopPropagation()" 
