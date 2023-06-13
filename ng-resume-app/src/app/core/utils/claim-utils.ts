@@ -11,8 +11,9 @@ import { Claim } from "../models/claim";
  * @param {Record} claims ID token claims
  * @returns claimsTable
  */
-export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
+export const createClaimsTable = (claims: Record<string, string> | undefined): Claim[] => {
     const claimsTable: Claim[] = [];
+    if (!claims) return claimsTable;
 
     Object.keys(claims).map((key) => {
         switch (key) {
@@ -221,5 +222,4 @@ const changeDateFormat = (date: number) => {
     const dateObj = new Date(date * 1000);
     return `${date} - [${dateObj.toString()}]`;
 };
-export { Claim };
 

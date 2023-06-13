@@ -1,6 +1,6 @@
 export interface Claim {
     name: string;
-    value: string;
+    value: unknown;
     humanValue: string;
     description: string;
 }
