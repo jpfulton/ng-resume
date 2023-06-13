@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Subject, Subscription, catchError, delay, filter, of, takeUntil, throwError } from 'rxjs';
+import { Subject, Subscription, delay, filter, takeUntil } from 'rxjs';
 
 import {
   Component,
@@ -13,7 +13,7 @@ import {
   AfterViewInit,
   Inject
 } from '@angular/core';
-import { ActivationEnd, Data, EventType, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { ActivationEnd, Data, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 
 import { OverlayContainer } from '@angular/cdk/overlay';
 
@@ -109,7 +109,7 @@ export class AppComponent extends MsalRedirectComponent implements AfterViewInit
     this.handleRouteEvents(); // needed for both SSR and SPA
 
     if (this.platformService.isBrowser()) { // statements below don't work in SSR, not needed there
-      
+
       this.stabilitySubscription = this.app.isStable.subscribe((isStable) => {
         if (isStable && !this.stabilityStatus) {
           this.loggingService.logDebug("Application has emitted isStable: " + isStable);

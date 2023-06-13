@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit, ViewChild } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -17,7 +17,6 @@ import { b2cPolicies } from '../../constants/auth-constants';
 import { AuthenticationResult, PromptValue } from '@azure/msal-common';
 import { filter } from 'rxjs';
 
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -26,13 +25,16 @@ import { filter } from 'rxjs';
   imports: [
     NgIf,
     RouterModule,
-    MatToolbarModule, 
+    MatToolbarModule,
     MatButtonModule,
     MatSlideToggleModule,
     MatIconModule,
     MatMenuModule,
     MatDividerModule,
     FocusableDirective
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ]
 })
 export class HeaderComponent implements OnInit {
@@ -60,8 +62,10 @@ export class HeaderComponent implements OnInit {
               filter((status: InteractionStatus) => status === InteractionStatus.None)
           )
           .subscribe(() => {
-              this.setLoginDisplay();
+            this.setLoginDisplay();
           })
+    
+    
   }
 
   setLoginDisplay() {
