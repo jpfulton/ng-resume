@@ -2,6 +2,7 @@
     "navigationFallback": {
       "rewrite": "/index.html",
       "exclude": [
+        "/.well-known/*.json",
         "/error/index.html",
         "/cookiepolicy/index.html",
         "/privacy/index.html",

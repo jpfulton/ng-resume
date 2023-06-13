@@ -9,6 +9,8 @@ import { SpinnerComponent } from './core/components/spinner/spinner.component';
 import { HeaderComponent } from './core/components/header/header.component';
 import { FooterComponent } from './core/components/footer/footer.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MSAL_GUARD_CONFIG, MSAL_INSTANCE, MsalModule, MsalService } from '@azure/msal-angular';
+import { MSALInstanceFactory, MSALGuardConfigFactory } from './app.config';
 
 describe('AppComponent', () => {
   beforeEach(() => TestBed.configureTestingModule({
@@ -19,7 +21,13 @@ describe('AppComponent', () => {
         HeaderComponent,
         FooterComponent,
         SpinnerComponent,
-        AppComponent
+        AppComponent,
+        MsalModule
+    ],
+    providers: [
+      MsalService,
+      { provide: MSAL_INSTANCE, useFactory: MSALInstanceFactory },
+      { provide: MSAL_GUARD_CONFIG, useFactory: MSALGuardConfigFactory },
     ]
 }));
 

@@ -47,6 +47,17 @@ const routeConfig: Routes = [
         }
     },
     {
+        path: 'claims',
+        loadComponent: () => import("./views/claims/claims-view.component").then(c => c.ClaimsViewComponent),
+        title: TITLE_PREFIX + 'Token Claims',
+        data: {
+            image: "/assets/images/harbor.jpg",
+            description: "Token claims.",
+            keywords: ["Angular", "Angular Universal"],
+            allowRobotIndexing: true
+        }
+    },
+    {
         path: '**',
         loadComponent: () => import("./views/not-found/not-found-view.component").then(c => c.NotFoundViewComponent),
         title: TITLE_PREFIX + 'Not Found',
