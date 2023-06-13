@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Inject, Injectable } from '@angular/core';
 import { MSAL_GUARD_CONFIG, MsalGuardConfiguration, MsalService, MsalBroadcastService } from '@azure/msal-angular';
 import { Subject, filter, takeUntil } from 'rxjs';
@@ -6,6 +8,9 @@ import { LoggingService } from './logging.service';
 import { EventMessage, EventType as MsalEventType, InteractionStatus, SsoSilentRequest, RedirectRequest, PopupRequest, InteractionType } from '@azure/msal-browser';
 import { AuthenticationResult, AccountInfo, PromptValue, IdTokenClaims } from '@azure/msal-common';
 import { b2cPolicies } from '../constants/auth-constants';
+import { User } from '../models/user';
+import { createClaimsTable } from '../utils/claim-utils';
+import { Claim } from '../models/claim';
 
 type IdTokenClaimsWithPolicyId = IdTokenClaims & {
   acr?: string,
@@ -83,6 +88,28 @@ export class AuthService {
 
   logout() {
       this.msalAuthService.logout();
+  }
+
+  getActiveUser(): User | undefined {
+    if (!this.isLoggedIn) return undefined;
+
+    const account = this.msalAuthService.instance.getActiveAccount()!;
+    const claims: Claim[] = createClaimsTable(account?.idTokenClaims as any);
+    
+    const claimsMap = new Map<string, Claim>(claims.map(i => [i.name, i]));
+
+    const user: User = {
+      oid: claimsMap.get("oid")!.value as string,
+      username: account.username,
+      emails: claimsMap.get("emails")!.value as string[],
+      identityProvider: claimsMap.get("idp")!.value as string,
+      identityProviderAccessToken: claimsMap.get("idp_access_token")!.value as string,
+      name: claimsMap.get("name")!.value as string,
+      claimsMap: claimsMap,
+      account: account,
+    };
+    
+    return user;
   }
 
   destroy(): void {
