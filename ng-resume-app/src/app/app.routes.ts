@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { MsalGuard } from '@azure/msal-angular';
 
 const TITLE_PREFIX = "jpatrickfulton.com - ";
 
@@ -50,6 +51,7 @@ const routeConfig: Routes = [
         path: 'claims',
         loadComponent: () => import("./views/claims/claims-view.component").then(c => c.ClaimsViewComponent),
         title: TITLE_PREFIX + 'Token Claims',
+        canActivate: [MsalGuard],
         data: {
             image: "/assets/images/harbor.jpg",
             description: "Token claims.",
