@@ -9,14 +9,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
  
 import { FocusableDirective } from '../../directives/focusable.directive';
-import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { EventType, EventMessage, InteractionStatus, PopupRequest, RedirectRequest } from '@azure/msal-browser';
-import { b2cPolicies } from '../../constants/auth-constants';
-import { AuthenticationResult, PromptValue } from '@azure/msal-common';
-import { filter } from 'rxjs';
-
+import { AuthService } from '../../services/auth.service';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-header',
@@ -26,60 +23,41 @@ import { filter } from 'rxjs';
   imports: [
     NgIf,
     RouterModule,
-    MatToolbarModule, 
+    MatToolbarModule,
     MatButtonModule,
     MatSlideToggleModule,
     MatIconModule,
     MatMenuModule,
     MatDividerModule,
+    MatCardModule,
     FocusableDirective
   ]
 })
 export class HeaderComponent implements OnInit {
   @ViewChild("darkModeToggle") darkModeToggle!: MatSlideToggle;
 
-  loginDisplay = false;
+  user: User | undefined;
 
   constructor(
-    private msalAuthService: MsalService,
-    private msalBroadcastService: MsalBroadcastService
-  ) { }
-
-  ngOnInit(): void {
-    this.msalBroadcastService.msalSubject$
-          .pipe(
-              filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),
-          )
-          .subscribe((result: EventMessage) => {
-              const payload = result.payload as AuthenticationResult;
-              this.msalAuthService.instance.setActiveAccount(payload.account);
-          });
-
-      this.msalBroadcastService.inProgress$
-          .pipe(
-              filter((status: InteractionStatus) => status === InteractionStatus.None)
-          )
-          .subscribe(() => {
-              this.setLoginDisplay();
-          })
+    public authService: AuthService
+  )
+  { 
   }
 
-  setLoginDisplay() {
-    this.loginDisplay = this.msalAuthService.instance.getAllAccounts().length > 0;
+  ngOnInit(): void {
+    if (this.authService.isLoggedIn) {
+      this.user = this.authService.getActiveUser();
+    }
   }
 
   logout(): void {
-    this.msalAuthService.logoutRedirect();
+    this.authService.logout();
+    this.user = undefined;
   }
 
   login(): void {
-    const signUpSignInFlowRequest: RedirectRequest | PopupRequest = {
-      authority: b2cPolicies.authorities.signUpSignIn.authority,
-      prompt: PromptValue.LOGIN,
-      scopes: []
-    };
-
-    this.msalAuthService.loginRedirect(signUpSignInFlowRequest);
+    this.authService.login();
+    this.user = this.authService.getActiveUser();
   }
 
 }
