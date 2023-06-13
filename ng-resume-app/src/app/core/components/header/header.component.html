@@ -15,11 +15,11 @@
         <mat-icon>menu</mat-icon>
     </button>
     <mat-menu #mainMenu="matMenu">
-        <button mat-menu-item (click)="login()" *ngIf="!loginDisplay">
+        <button mat-menu-item (click)="login()" *ngIf="!authService.isLoggedIn">
             <mat-icon>login</mat-icon>
             Log In or Sign Up...
         </button>
-        <button mat-menu-item (click)="logout()" *ngIf="loginDisplay">
+        <button mat-menu-item (click)="logout()" *ngIf="authService.isLoggedIn">
             <mat-icon>logout</mat-icon>
             Log Out
         </button>
@@ -80,7 +80,7 @@
                 <mat-icon>open_in_new</mat-icon>
                 OpenAPI v3 Description
             </a>
-            <a mat-menu-item routerLink="/claims" routerLinkActive="active" *ngIf="loginDisplay">
+            <a mat-menu-item routerLink="/claims" routerLinkActive="active" *ngIf="authService.isLoggedIn">
                 <mat-icon>code</mat-icon>
                 Token Claims
             </a>

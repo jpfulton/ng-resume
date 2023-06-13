@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -11,11 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
  
 import { FocusableDirective } from '../../directives/focusable.directive';
-import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { EventType, EventMessage, InteractionStatus, PopupRequest, RedirectRequest } from '@azure/msal-browser';
-import { b2cPolicies } from '../../constants/auth-constants';
-import { AuthenticationResult, PromptValue } from '@azure/msal-common';
-import { filter } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -32,58 +28,21 @@ import { filter } from 'rxjs';
     MatMenuModule,
     MatDividerModule,
     FocusableDirective
-  ],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
   ]
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   @ViewChild("darkModeToggle") darkModeToggle!: MatSlideToggle;
 
-  loginDisplay = false;
-
   constructor(
-    private msalAuthService: MsalService,
-    private msalBroadcastService: MsalBroadcastService
+    public authService: AuthService
   ) { }
 
-  ngOnInit(): void {
-    this.msalBroadcastService.msalSubject$
-          .pipe(
-              filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),
-          )
-          .subscribe((result: EventMessage) => {
-              const payload = result.payload as AuthenticationResult;
-              this.msalAuthService.instance.setActiveAccount(payload.account);
-          });
-
-      this.msalBroadcastService.inProgress$
-          .pipe(
-              filter((status: InteractionStatus) => status === InteractionStatus.None)
-          )
-          .subscribe(() => {
-            this.setLoginDisplay();
-          })
-    
-    
-  }
-
-  setLoginDisplay() {
-    this.loginDisplay = this.msalAuthService.instance.getAllAccounts().length > 0;
-  }
-
   logout(): void {
-    this.msalAuthService.logoutRedirect();
+    this.authService.logout();
   }
 
   login(): void {
-    const signUpSignInFlowRequest: RedirectRequest | PopupRequest = {
-      authority: b2cPolicies.authorities.signUpSignIn.authority,
-      prompt: PromptValue.LOGIN,
-      scopes: []
-    };
-
-    this.msalAuthService.loginRedirect(signUpSignInFlowRequest);
+    this.authService.login();
   }
 
 }
