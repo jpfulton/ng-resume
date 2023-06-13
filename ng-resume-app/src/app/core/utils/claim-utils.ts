@@ -15,7 +15,7 @@ export interface Claim {
  * @param {Record} claims ID token claims
  * @returns claimsTable
  */
-export const createClaimsTable = (claims: Record<string, string>): any[] => {
+export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
     const claimsTable: Claim[] = [];
 
     Object.keys(claims).map((key) => {
