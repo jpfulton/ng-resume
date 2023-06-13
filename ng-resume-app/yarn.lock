@@ -352,24 +352,24 @@
   resolved "https://registry.yarnpkg.com/@assemblyscript/loader/-/loader-0.10.1.tgz#70e45678f06c72fa2e350e8553ec4a4d72b92e06"
   integrity sha512-H71nDOOL8Y7kWRLqf6Sums+01Q5msqBW2KhDUTemh1tvY04eSkSXrK0uj/4mmY0Xr16/3zyZmsrxN7CKuRbNRg==
 
-"@azure/msal-angular@^2.5.8":
-  version "2.5.8"
-  resolved "https://registry.yarnpkg.com/@azure/msal-angular/-/msal-angular-2.5.8.tgz#61af1c7ed8b820df4f73b933ec590878d5c9b2b6"
-  integrity sha512-/yxCZ8tA+QpUCg67ORBlXpA7M3kyICMB6lUC5Hqq8AqGh55diCwO+FkmK47lRkRjhKch0r8xOTLzK1esF699Ng==
+"@azure/msal-angular@3.0.0-alpha.2":
+  version "3.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@azure/msal-angular/-/msal-angular-3.0.0-alpha.2.tgz#e02803a7fd7dd6b77816c766df19d75703097135"
+  integrity sha512-oVTJ44nO5Nf1Lqx16TvFLN1BWZVY853RfemnCaFriMjnGSAAo+mr+gEUVFtwhXpt9/HzoerZUArPfSRI5w2r+Q==
   dependencies:
-    tslib "^2.0.0"
+    tslib "^2.3.0"
 
-"@azure/msal-browser@^2.37.1":
-  version "2.37.1"
-  resolved "https://registry.yarnpkg.com/@azure/msal-browser/-/msal-browser-2.37.1.tgz#7e3fa7df9c6e74eb1fb640e73ef3b5b4407ee98d"
-  integrity sha512-EoKQISEpIY39Ru1OpWkeFZBcwp6Y0bG81bVmdyy4QJebPPDdVzfm62PSU0XFIRc3bqjZ4PBKBLMYLuo9NZYAow==
+"@azure/msal-browser@3.0.0-alpha.2":
+  version "3.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@azure/msal-browser/-/msal-browser-3.0.0-alpha.2.tgz#16d729533e03f785d6201cd2a1e82c22c797c462"
+  integrity sha512-so8T8RCUEMfm8XHcaxkR2QN7+In7YPPZF6/9Re0V6XhAD2njRyhlLw/zxnc7RXKl808FTvm4b+mzcD6umC6IXw==
   dependencies:
-    "@azure/msal-common" "13.1.0"
+    "@azure/msal-common" "14.0.0-alpha.2"
 
-"@azure/msal-common@13.1.0":
-  version "13.1.0"
-  resolved "https://registry.yarnpkg.com/@azure/msal-common/-/msal-common-13.1.0.tgz#73a787ec1e7880c30b187cf451404af547d95339"
-  integrity sha512-wj+ULrRB0HTuMmtrMjg8j3guCx32GE2BCPbsMCZkHgL1BZetC3o/Su5UJEQMX1HNc9CrIaQNx5WaKWHygYDe0g==
+"@azure/msal-common@14.0.0-alpha.2":
+  version "14.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@azure/msal-common/-/msal-common-14.0.0-alpha.2.tgz#3193d73cebc70481e7088b6cc16c1518483381d0"
+  integrity sha512-+eoUegrlM0ABUgycgjR84knBc6UqwP6chKQLUg1uL9zjGrvtZV+mxOGwtsvoxpddZotPqtpLLXhsyc/gR9YpXA==
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.18.6", "@babel/code-frame@^7.21.4", "@babel/code-frame@^7.22.5":
   version "7.22.5"
