@@ -4,11 +4,7 @@
 /* eslint-disable jsdoc/require-returns-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export interface Claim {
-    name: string;
-    value: string;
-    description: string;
-}
+import { Claim } from "../models/claim";
 
 /**
  * Populate claims table with appropriate description
@@ -24,6 +20,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
                 populateClaim(
                     key,
                     claims[key],
+                    claims[key],
                     "Identifies the intended recipient of the token. In ID tokens, the audience is your app's Application ID, assigned to your app in the Azure portal.",
                     claimsTable
                 );
@@ -32,6 +29,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
                 populateClaim(
                     key,
                     claims[key],
+                    claims[key],
                     'Identifies the issuer, or authorization server that constructs and returns the token. It also identifies the Azure AD tenant for which the user was authenticated. If the token was issued by the v2.0 endpoint, the URI will end in /v2.0.',
                     claimsTable
                 );
@@ -39,6 +37,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
             case 'iat':
                 populateClaim(
                     key,
+                    claims[key],
                     changeDateFormat(+claims[key]),
                     '"Issued At" indicates the timestamp (UNIX timestamp) when the authentication for this user occurred.',
                     claimsTable
@@ -47,6 +46,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
             case 'nbf':
                 populateClaim(
                     key,
+                    claims[key],
                     changeDateFormat(+claims[key]),
                     'The nbf (not before) claim dictates the time (as UNIX timestamp) before which the JWT must not be accepted for processing.',
                     claimsTable
@@ -55,6 +55,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
             case 'exp':
                 populateClaim(
                     key,
+                    claims[key],
                     changeDateFormat(+claims[key]),
                     "The exp (expiration time) claim dictates the expiration time (as UNIX timestamp) on or after which the JWT must not be accepted for processing. It's important to note that in certain circumstances, a resource may reject the token before this time. For example, if a change in authentication is required or a token revocation has been detected.",
                     claimsTable
@@ -64,6 +65,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
                 populateClaim(
                     key,
                     claims[key],
+                    claims[key],
                     "The name claim provides a human-readable value that identifies the subject of the token. The value isn't guaranteed to be unique, it can be changed, and it's designed to be used only for display purposes. The 'profile' scope is required to receive this claim.",
                     claimsTable
                 );
@@ -71,6 +73,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
             case 'preferred_username':
                 populateClaim(
                     key,
+                    claims[key],
                     claims[key],
                     'The primary username that represents the user. It could be an email address, phone number, or a generic username without a specified format. Its value is mutable and might change over time. Since it is mutable, this value must not be used to make authorization decisions. It can be used for username hints, however, and in human-readable UI as a username. The profile scope is required in order to receive this claim.',
                     claimsTable
@@ -80,6 +83,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
                 populateClaim(
                     key,
                     claims[key],
+                    claims[key],
                     'The nonce matches the parameter included in the original /authorize request to the IDP.',
                     claimsTable
                 );
@@ -87,6 +91,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
             case 'oid':
                 populateClaim(
                     key,
+                    claims[key],
                     claims[key],
                     'The oid (user object id) is the only claim that should be used to uniquely identify a user in an Azure AD tenant.',
                     claimsTable
@@ -96,6 +101,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
                 populateClaim(
                     key,
                     claims[key],
+                    claims[key],
                     'The id of the tenant where this application resides. You can use this claim to ensure that only users from the current Azure AD tenant can access this app.',
                     claimsTable
                 );
@@ -103,6 +109,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
             case 'upn':
                 populateClaim(
                     key,
+                    claims[key],
                     claims[key],
                     'upn (user principal name) might be unique amongst the active set of users in a tenant but tend to get reassigned to new employees as employees leave the organization and others take their place or might change to reflect a personal change like marriage.',
                     claimsTable
@@ -112,6 +119,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
                 populateClaim(
                     key,
                     claims[key],
+                    claims[key],
                     'Email might be unique amongst the active set of users in a tenant but tend to get reassigned to new employees as employees leave the organization and others take their place.',
                     claimsTable
                 );
@@ -119,6 +127,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
             case 'acct':
                 populateClaim(
                     key,
+                    claims[key],
                     claims[key],
                     'Available as an optional claim, it lets you know what the type of user (homed, guest) is. For example, for an individual’s access to their data you might not care for this claim, but you would use this along with tenant id (tid) to control access to say a company-wide dashboard to just employees (homed users) and not contractors (guest users).',
                     claimsTable
@@ -128,6 +137,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
                 populateClaim(
                     key,
                     claims[key],
+                    claims[key],
                     'Session ID, used for per-session user sign-out.',
                     claimsTable
                 );
@@ -135,6 +145,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
             case 'sub':
                 populateClaim(
                     key,
+                    claims[key],
                     claims[key],
                     'The principal about which the token asserts information, such as the user of an application. This value is immutable and can nott be reassigned or reused. It can be used to perform authorization checks safely, such as when the token is used to access a resource. By default, the subject claim is populated with the object ID of the user in the directory.',
                     claimsTable
@@ -144,6 +155,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
                 populateClaim(
                     key,
                     claims[key],
+                    claims[key],
                     'Version of the token issued by the Microsoft identity platform',
                     claimsTable
                 );
@@ -151,6 +163,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
             case "login_hint":
                 populateClaim(
                     key,
+                    claims[key],
                     claims[key],
                     'An opaque, reliable login hint claim. This claim is the best value to use for the login_hint OAuth parameter in all flows to get SSO.',
                     claimsTable
@@ -160,6 +173,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
                 populateClaim(
                     key,
                     claims[key],
+                    claims[key],
                     'Value is app when the token is an app-only token. This is the most accurate way for an API to determine if a token is an app token or an app+user token',
                     claimsTable
                 );
@@ -168,7 +182,7 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
             case 'rh':
                 break;
             default:
-                populateClaim(key, claims[key], '', claimsTable);
+                populateClaim(key, claims[key], claims[key], '', claimsTable);
         }
     });
 
@@ -179,13 +193,21 @@ export const createClaimsTable = (claims: Record<string, string>): Claim[] => {
  * Populates claim, description, and value into an claimsObject
  * @param {string} claim
  * @param {string} value
+ * @param {string} humanValue
  * @param {string} description
  * @param {Array} claimsTable
  */
-const populateClaim = (claim: string, value: string, description: string, claimsTable: Claim[]): void => {
+const populateClaim = (
+    claim: string,
+    value: string,
+    humanValue: string,
+    description: string,
+    claimsTable: Claim[]
+): void => {
     claimsTable.push({
         name: claim,
         value: value,
+        humanValue: humanValue,
         description: description
     });
 };
@@ -199,3 +221,5 @@ const changeDateFormat = (date: number) => {
     const dateObj = new Date(date * 1000);
     return `${date} - [${dateObj.toString()}]`;
 };
+export { Claim };
+

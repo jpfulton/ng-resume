@@ -8,7 +8,8 @@ import { MsalService, MsalBroadcastService } from '@azure/msal-angular';
 import { EventMessage, InteractionStatus } from '@azure/msal-browser';
 import { AuthenticationResult } from '@azure/msal-common';
 import { filter } from 'rxjs';
-import { Claim, createClaimsTable } from 'src/app/core/utils/claim-utils';
+import { Claim } from 'src/app/core/models/claim';
+import { createClaimsTable } from 'src/app/core/utils/claim-utils';
 
 @Component({
   selector: 'app-claims-view',
@@ -22,7 +23,7 @@ import { Claim, createClaimsTable } from 'src/app/core/utils/claim-utils';
 })
 export class ClaimsViewComponent implements OnInit {
   loginDisplay = false;
-  displayedColumns: string[] = ['name', 'value', 'description'];
+  displayedColumns: string[] = ['name', 'humanValue', 'description'];
   dataSource: Claim[] = [];
 
   constructor(private authService: MsalService, private msalBroadcastService: MsalBroadcastService) { }
