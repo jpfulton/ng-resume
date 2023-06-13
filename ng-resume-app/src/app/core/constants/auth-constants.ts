@@ -40,9 +40,8 @@ export const b2cPolicies = {
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md
  */
 export const msalConfig: Configuration = {
-    auth: {
-        // clientId: '350c6199-8611-4437-b38f-2d2270a50052', // This is the ONLY mandatory field that you need to supply.
-        clientId: "1e252383-1c48-435a-aec9-df0ef58744b6",
+    auth: { 
+        clientId: "1e252383-1c48-435a-aec9-df0ef58744b6", // This is the ONLY mandatory field that you need to supply.
         authority: b2cPolicies.authorities.signUpSignIn.authority, // Defaults to "https://login.microsoftonline.com/common"
         knownAuthorities: [b2cPolicies.authorityDomain], // Mark your B2C tenant's domain as trusted.
         // redirectUri: '/auth', // Points to window.location.origin by default. You must register this URI on Azure portal/App Registration.
