@@ -13,11 +13,11 @@
         <mat-icon>menu</mat-icon>
     </button>
     <mat-menu #mainMenu="matMenu">
-        <button mat-menu-item (click)="login()">
+        <button mat-menu-item (click)="login()" *ngIf="!loginDisplay">
             <mat-icon>login</mat-icon>
             Log In or Sign Up...
         </button>
-        <button mat-menu-item (click)="logout()">
+        <button mat-menu-item (click)="logout()" *ngIf="loginDisplay">
             <mat-icon>logout</mat-icon>
             Log Out
         </button>
@@ -77,6 +77,10 @@
             <a mat-menu-item href="/api/openapi/v3.yml" target="_blank">
                 <mat-icon>open_in_new</mat-icon>
                 OpenAPI v3 Description
+            </a>
+            <a mat-menu-item routerLink="/claims" routerLinkActive="active" *ngIf="loginDisplay">
+                <mat-icon>code</mat-icon>
+                Token Claims
             </a>
         </mat-menu>
     </mat-menu>
