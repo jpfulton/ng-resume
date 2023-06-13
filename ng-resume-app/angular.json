@@ -54,6 +54,7 @@
               "src/mstile-150x150.png",
               "src/safari-pinned-tab.svg",
               "src/site.webmanifest",
+              "src/.well-known",
               "src/assets"
             ],
             "styles": [
