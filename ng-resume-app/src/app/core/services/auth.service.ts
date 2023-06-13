@@ -103,11 +103,12 @@ export class AuthService {
         .pipe(
             filter((msg: EventMessage) => msg.eventType === MsalEventType.ACCOUNT_ADDED || msg.eventType === MsalEventType.ACCOUNT_REMOVED),
         )
-        .subscribe((result: EventMessage) => {
+        .subscribe(() => {
             if (this.msalAuthService.instance.getAllAccounts().length === 0) {
                 window.location.pathname = "/";
             } else {
-                this.setIsLoggedIn();
+              this.setIsLoggedIn();
+              this.loggingService.logInfo("Login sucess. ");
             }
         });
 
