@@ -5,7 +5,7 @@
  * in app.module.ts file.
  */
 
-import { LogLevel, Configuration, BrowserCacheLocation, ProtocolMode } from '@azure/msal-browser';
+import { LogLevel, Configuration, BrowserCacheLocation } from '@azure/msal-browser';
 
 // const isIE = window.navigator.userAgent.indexOf("MSIE ") > -1 || window.navigator.userAgent.indexOf("Trident/") > -1;
 
@@ -46,7 +46,6 @@ export const msalConfig: Configuration = {
         knownAuthorities: [b2cPolicies.authorityDomain], // Mark your B2C tenant's domain as trusted.
         // redirectUri: '/auth', // Points to window.location.origin by default. You must register this URI on Azure portal/App Registration.
         postLogoutRedirectUri: '/', // Points to window.location.origin by default.
-        // protocolMode: ProtocolMode.AAD,
     },
     cache: {
         cacheLocation: BrowserCacheLocation.LocalStorage, // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
