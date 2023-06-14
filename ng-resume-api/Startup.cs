@@ -18,14 +18,17 @@ namespace Jpf.NgResume.Api
         {
             var configuration = builder.GetContext().Configuration;
 
+            
             builder.Services.AddFunctionAuthentication(sharedOptions =>
             {
-                sharedOptions.DefaultScheme = "Bearer";
-                sharedOptions.DefaultChallengeScheme = "Bearer";
+                sharedOptions.DefaultScheme = "CustomBearer";
+                sharedOptions.DefaultChallengeScheme = "CustomBearer";
             })
             .AddMicrosoftIdentityWebApi(configuration)
             .EnableTokenAcquisitionToCallDownstreamApi()
             .AddInMemoryTokenCaches();
+
+            IdentityModelEventSource.ShowPII = true;
         }
     }
 }

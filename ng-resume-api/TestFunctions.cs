@@ -109,6 +109,8 @@ namespace Jpf.NgResume.Api
             var (status, response) = await req.HttpContext.AuthenticateAzureFunctionAsync();
             if (!status) return response;
 
+            log.LogInformation(req.HttpContext.User.GetMsalAccountId());
+
             test.Id = Guid.NewGuid();
             test.Message = test.Message + " (Recieved by API.)";
 

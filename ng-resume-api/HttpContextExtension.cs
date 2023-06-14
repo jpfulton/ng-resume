@@ -23,7 +23,7 @@ namespace Jpf.NgResume.Api
             }
 
             AuthenticateResult? result =
-                await httpContext.AuthenticateAsync("Bearer").ConfigureAwait(false);
+                await httpContext.AuthenticateAsync("CustomBearer").ConfigureAwait(false);
             
             if (result.Succeeded)
             {
