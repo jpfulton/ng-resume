@@ -30,7 +30,7 @@ export class TestService {
     }
 
     return new NgResumeApiClient({
-      token: () => this.authService.getActiveIdToken()
+      token: () => this.authService.getActiveAccessToken()
     });
   }
 }
