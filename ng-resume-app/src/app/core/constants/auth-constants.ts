@@ -5,7 +5,9 @@
  * in app.module.ts file.
  */
 
+import { inject } from '@angular/core';
 import { LogLevel, Configuration, BrowserCacheLocation } from '@azure/msal-browser';
+import { LoggingService } from '../services/logging.service';
 
 // const isIE = window.navigator.userAgent.indexOf("MSIE ") > -1 || window.navigator.userAgent.indexOf("Trident/") > -1;
 
@@ -40,7 +42,7 @@ export const b2cPolicies = {
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md
  */
 export const msalConfig: Configuration = {
-    auth: { 
+    auth: {
         clientId: "1e252383-1c48-435a-aec9-df0ef58744b6", // This is the ONLY mandatory field that you need to supply.
         authority: b2cPolicies.authorities.signUpSignIn.authority, // Defaults to "https://login.microsoftonline.com/common"
         knownAuthorities: [b2cPolicies.authorityDomain], // Mark your B2C tenant's domain as trusted.
@@ -58,10 +60,39 @@ export const msalConfig: Configuration = {
          */
         loggerOptions: {
             loggerCallback(logLevel: LogLevel, message: string) {
-                console.log(message);
+                try {
+                    const PREFIX = "[MSAL] ";
+                    const loggingService = new LoggingService(null);
+
+                    switch (logLevel) {
+                        case LogLevel.Verbose: {
+                            loggingService.logDebug(PREFIX + message);
+                            break;
+                        }
+                        case LogLevel.Info: {
+                            loggingService.logInfo(PREFIX + message);
+                            break;
+                        }
+                        case LogLevel.Error: {
+                            loggingService.logError(PREFIX + message);
+                            break;
+                        }
+                        case LogLevel.Trace: {
+                            loggingService.logTrace(PREFIX + message);
+                            break;
+                        }
+                        case LogLevel.Warning: {
+                            loggingService.logWarn(PREFIX + message);
+                            break;
+                        }
+                    }
+                }
+                catch (error) {
+                    console.log(message);
+                }
             },
             logLevel: LogLevel.Verbose,
-            piiLoggingEnabled: false
+            piiLoggingEnabled: true // TODO: change me later
         }
     }
 }

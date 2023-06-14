@@ -1,6 +1,6 @@
 /* eslint-disable jsdoc/require-jsdoc */
 /* eslint-disable jsdoc/require-returns */
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, ModuleWithProviders } from '@angular/core';
 
 import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -21,28 +21,30 @@ import { CommonModule } from '@angular/common';
 
 function getClientApp(): IPublicClientApplication {
     const clientApp = new PublicClientApplication(msalConfig);
-
     return clientApp;
 }
 
-const msalModule = MsalModule.forRoot(getClientApp(),
-    {
-        interactionType: InteractionType.Redirect,
-        authRequest: {
+function getMsalModuleProviders(): ModuleWithProviders<MsalModule> {
+    return MsalModule.forRoot(getClientApp(),
+        {
+            interactionType: InteractionType.Redirect,
+            authRequest: {
             
-        }
-    },
-    {
-        interactionType: InteractionType.Redirect,
-        protectedResourceMap: new Map()
-    });
+            }
+        },
+        {
+            interactionType: InteractionType.Redirect,
+            protectedResourceMap: new Map()
+        });
+}
 
     /**
      * Here we pass the configuration parameters to create an MSAL instance.
      * For more info, visit: https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-angular/docs/v2-docs/configuration.md
      */
     export function MSALInstanceFactory(): IPublicClientApplication {
-        return new PublicClientApplication(msalConfig);
+        const client = new PublicClientApplication(msalConfig);
+        return client;
     }
     
     /**
@@ -61,7 +63,7 @@ export const appConfig: ApplicationConfig = {
         importProvidersFrom(
             CommonModule,
             BrowserModule,
-            msalModule,
+            getMsalModuleProviders(),
             NgcCookieConsentModule.forRoot(COOKIE_CONSENT_CONFIG),
             MatRippleModule,
             MatDialogModule
