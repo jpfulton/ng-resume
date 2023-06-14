@@ -6,7 +6,7 @@ import { Subject, filter, takeUntil } from 'rxjs';
 import { PlatformService } from './platform.service';
 import { LoggingService } from './logging.service';
 import { EventMessage, EventType as MsalEventType, InteractionStatus, SsoSilentRequest, RedirectRequest, PopupRequest, InteractionType } from '@azure/msal-browser';
-import { AuthenticationResult, AccountInfo, PromptValue, IdTokenClaims } from '@azure/msal-common';
+import { AuthenticationResult, AccountInfo, PromptValue, IdTokenClaims, InteractionRequiredAuthError } from '@azure/msal-common';
 import { b2cPolicies } from '../constants/auth-constants';
 import { User } from '../models/user';
 import { createClaimsTable } from '../utils/claim-utils';
@@ -93,12 +93,25 @@ export class AuthService {
   async getActiveAccessToken(): Promise<string | undefined> {
     if (!this.isLoggedIn) return undefined;
 
-    const response = await this.msalAuthService.instance.acquireTokenSilent({
+    const request = {
       scopes: ["https://jpatrickfulton.onmicrosoft.com/api/test.write"],
       account: this.msalAuthService.instance.getActiveAccount()!
-    });
+    };
 
-    return response.accessToken;
+    let interactionRequired = false;
+
+    let response = await this.msalAuthService.instance.acquireTokenSilent(request)
+      .catch((error) => {
+        if (error instanceof InteractionRequiredAuthError) {
+          interactionRequired = true;
+        }
+      });
+    
+    if (interactionRequired) {
+      response = await this.msalAuthService.instance.acquireTokenRedirect(request);
+    }
+
+    return response?.accessToken;
   }
 
   getActiveIdToken(): string | undefined {
