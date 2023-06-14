@@ -106,6 +106,7 @@ namespace Jpf.NgResume.Api
             {
                 var token = req.Headers["Authorization"][0];
                 log.LogInformation($"Unauthorized bearer token submitted: [{token}]");
+                
                 return response;
             }
 
