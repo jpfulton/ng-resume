@@ -90,6 +90,22 @@ export class AuthService {
       this.msalAuthService.logout();
   }
 
+  async getActiveAccessToken(): Promise<string | undefined> {
+    if (!this.isLoggedIn) return undefined;
+
+    const response = await this.msalAuthService.instance.acquireTokenSilent({
+      scopes: ["https://jpatrickfulton.onmicrosoft.com/1e252383-1c48-435a-aec9-df0ef58744b6/test.write"],
+      account: this.msalAuthService.instance.getActiveAccount()!
+    });
+
+    return response.accessToken;
+  }
+
+  getActiveIdToken(): string | undefined {
+    if (!this.isLoggedIn) return undefined;
+    return this.msalAuthService.instance.getActiveAccount()!.idToken;
+  }
+
   getActiveUser(): User | undefined {
     if (!this.isLoggedIn) return undefined;
 

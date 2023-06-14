@@ -1,0 +1,10 @@
+<section>
+    <div>
+        <button mat-raised-button color="accent" (click)="sendTestPost()">
+            Test POST
+        </button>
+    </div>
+    <div *ngIf="test">
+        [ {{test.id}} ] {{test.message}}
+    </div>
+</section>
