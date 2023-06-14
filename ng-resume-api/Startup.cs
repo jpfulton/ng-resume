@@ -64,12 +64,14 @@ namespace Jpf.NgResume.Api
 
         private void ConfigureServices(IServiceCollection services)
         {
-             services.AddFunctionAuthentication(sharedOptions =>
+            services.AddFunctionAuthentication(sharedOptions =>
             {
-                sharedOptions.DefaultScheme = Microsoft.Identity.Web.Constants.Bearer;
-                sharedOptions.DefaultChallengeScheme = Microsoft.Identity.Web.Constants.Bearer;
+               sharedOptions.DefaultScheme = Microsoft.Identity.Web.Constants.Bearer;
+               sharedOptions.DefaultChallengeScheme = Microsoft.Identity.Web.Constants.Bearer;
             })
-                .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAdB2C"));
+           .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAdB2C"))
+           .EnableTokenAcquisitionToCallDownstreamApi()
+           .AddInMemoryTokenCaches();
 
             IdentityModelEventSource.ShowPII = true;
         }
