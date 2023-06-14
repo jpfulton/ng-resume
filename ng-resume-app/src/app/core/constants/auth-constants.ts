@@ -60,38 +60,43 @@ export const msalConfig: Configuration = {
          */
         loggerOptions: {
             loggerCallback(logLevel: LogLevel, message: string) {
+                let loggingService: LoggingService;
                 try {
-                    const PREFIX = "[MSAL] ";
-                    const loggingService = new LoggingService(null);
+                    // attempt to inject if there is an injection context
+                    // this allows ApplicationInsights to work internally
+                    loggingService = inject(LoggingService);
+                }
+                catch (_) {
+                    // no injection context, no ApplicationInsights
+                    loggingService = new LoggingService(null);
+                }
 
-                    switch (logLevel) {
-                        case LogLevel.Verbose: {
-                            loggingService.logDebug(PREFIX + message);
-                            break;
-                        }
-                        case LogLevel.Info: {
-                            loggingService.logInfo(PREFIX + message);
-                            break;
-                        }
-                        case LogLevel.Error: {
-                            loggingService.logError(PREFIX + message);
-                            break;
-                        }
-                        case LogLevel.Trace: {
-                            loggingService.logTrace(PREFIX + message);
-                            break;
-                        }
-                        case LogLevel.Warning: {
-                            loggingService.logWarn(PREFIX + message);
-                            break;
-                        }
+                const PREFIX = "[MSAL] ";
+                
+                switch (logLevel) {
+                    case LogLevel.Verbose: {
+                        loggingService.logDebug(PREFIX + message);
+                        break;
+                    }
+                    case LogLevel.Info: {
+                        loggingService.logInfo(PREFIX + message);
+                        break;
+                    }
+                    case LogLevel.Error: {
+                        loggingService.logError(PREFIX + message);
+                        break;
+                    }
+                    case LogLevel.Trace: {
+                        loggingService.logTrace(PREFIX + message);
+                        break;
+                    }
+                    case LogLevel.Warning: {
+                        loggingService.logWarn(PREFIX + message);
+                        break;
                     }
                 }
-                catch (error) {
-                    console.log(message);
-                }
             },
-            logLevel: LogLevel.Verbose,
+            logLevel: LogLevel.Verbose, // TODO: turn down later
             piiLoggingEnabled: true // TODO: change me later
         }
     }
