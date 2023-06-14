@@ -96,10 +96,6 @@ body {
   }
 }
 
-main {
-  padding: 10px 10px 45px 10px;
-}
-
 a, a:hover, a:visited {
     text-decoration: none;
     color: map.get($ng-resume-accent, 500);

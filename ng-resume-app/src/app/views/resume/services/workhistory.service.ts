@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { NgResumeApiClient } from '@jpfulton/ng-resume-api-browser-sdk';
 import { WorkHistory } from '@jpfulton/ng-resume-api-browser-sdk/api';
 import { LoadingService } from 'src/app/core/services/loading.service';
-import { apiPromiseToObservable } from 'src/app/core/utils/api-helpers';
+import { apiPromiseToObservableWithRetry } from 'src/app/core/utils/api-helpers';
 
 /**
  * Service to access WorkHistory objects from a remote source.
@@ -22,6 +22,6 @@ export class WorkHistoryService {
    * @returns {Observable<WorkHistory[]>} An observable array of WorkHistory objects.
    */
   getAllWorkHistoryItems(): Observable<WorkHistory[]> {
-    return apiPromiseToObservable(() => this.apiClient.workhistory.getAll(), this.loadingService);
+    return apiPromiseToObservableWithRetry(() => this.apiClient.workhistory.getAll(), this.loadingService);
   }
 }

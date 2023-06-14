@@ -1,0 +1,12 @@
+<section>
+    <button mat-raised-button color="accent" (click)="sendTestPost()">
+        Test POST
+    </button>
+</section>
+
+<mat-divider></mat-divider>
+
+<section *ngIf="test">
+    <h2>Result</h2>
+    <pre>{{getTestAsJson()}}</pre>
+</section>

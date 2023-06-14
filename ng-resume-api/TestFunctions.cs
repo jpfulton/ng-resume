@@ -6,16 +6,24 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using System.Net;
 using Microsoft.OpenApi.Models;
+using Jpf.NgResume.Api.Models;
+using System.Threading.Tasks;
+using System;
+using System.Text.Json;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.Resource;
 
 namespace Jpf.NgResume.Api
 {
     /// <summary>
     /// Host class for test functions.
     /// </summary>
-    public static class MessageTestFunction
+    public static class TestFunctions
     {
+
         /// <summary>
-        /// Simple message processing function for API tests.
+        /// Simple GET message processing function for API tests.
         /// </summary>
         /// <param name="req"></param>
         /// <param name="log"></param>
@@ -50,6 +58,63 @@ namespace Jpf.NgResume.Api
                 : $"Hello, {name}. This HTTP triggered function executed successfully.";
 
             return new OkObjectResult(responseMessage);
+        }
+
+        /// <summary>
+        /// Simple POST message processing function for API tests.
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        [FunctionName("TestPost")]
+        [OpenApiOperation(operationId: "Add", tags: new[] { "test" })]
+        [OpenApiSecurity(
+            "Bearer", 
+            SecuritySchemeType.Http, 
+            Scheme = OpenApiSecuritySchemeType.Bearer, 
+            BearerFormat = "JWT",
+            In = OpenApiSecurityLocationType.Header)]
+        [OpenApiRequestBody(
+            contentType: "application/json; charset=utf-8",
+            bodyType: typeof(Test)
+        )]
+        [OpenApiResponseWithBody(
+            statusCode: HttpStatusCode.OK,
+            contentType:  "application/json; charset=utf-8",
+            bodyType: typeof(Test),
+            Description = "A response with a formatted message string and assigned Id property."
+        )]
+        [OpenApiResponseWithBody(
+            statusCode: HttpStatusCode.Unauthorized,
+            contentType:  "application/problem+json; charset=utf-8",
+            bodyType: typeof(CustomProblemDetails),
+            Description = "Problem details of an unauthorized access result."
+        )]
+        public static async Task<IActionResult> PostTestAsync(
+            [HttpTrigger(
+                AuthorizationLevel.Function, 
+                "post", 
+                Route = "test"
+                )
+            ]
+            Test test,
+            HttpRequest req,
+            ILogger log)
+        {
+            var (status, response) = await req.HttpContext.AuthenticateAzureFunctionAsync();
+            if (!status) return response;
+
+            var scopes = new string[] {"test.write"};
+            req.HttpContext.VerifyUserHasAnyAcceptedScope(scopes);
+
+            var user = req.HttpContext.User;
+            var displayName = user.GetDisplayName();
+            var userId = user.GetObjectId();
+
+            test.Id = Guid.NewGuid();
+            test.Message = test.Message + $" (Recieved by API from user: {displayName} [{userId}])";
+
+            return new OkObjectResult(test);
         }
     }
 }

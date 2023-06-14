@@ -99,6 +99,10 @@
                 <mat-icon>code</mat-icon>
                 Token Claims
             </a>
+            <a mat-menu-item routerLink="/test" routerLinkActive="active" *ngIf="authService.isLoggedIn">
+                <mat-icon>code</mat-icon>
+                Test Harness
+            </a>
         </mat-menu>
     </mat-menu>
 

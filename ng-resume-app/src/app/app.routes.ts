@@ -56,7 +56,19 @@ const routeConfig: Routes = [
             image: "/assets/images/harbor.jpg",
             description: "Token claims.",
             keywords: ["Angular", "Angular Universal"],
-            allowRobotIndexing: true
+            allowRobotIndexing: false
+        }
+    },
+    {
+        path: 'test',
+        loadComponent: () => import("./views/test/test-view.component").then(c => c.TestViewComponent),
+        title: TITLE_PREFIX + 'Test Harness',
+        canActivate: [MsalGuard],
+        data: {
+            image: "/assets/images/harbor.jpg",
+            description: "Test harness.",
+            keywords: ["Angular", "Angular Universal"],
+            allowRobotIndexing: false
         }
     },
     {

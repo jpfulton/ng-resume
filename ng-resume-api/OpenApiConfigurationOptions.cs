@@ -46,7 +46,7 @@ namespace Jpf.NgResume.Api
         public bool IncludeRequestingHostName { get; set; } = false;
         public bool ForceHttp { get; set; } = false;
         public bool ForceHttps { get; set; } = false;
-        public List<IDocumentFilter> DocumentFilters { get; set; } = new();
+        public List<IDocumentFilter> DocumentFilters { get; set; }
 
         private static List<OpenApiServer> GetServerList() {
             var list = new List<OpenApiServer>();
