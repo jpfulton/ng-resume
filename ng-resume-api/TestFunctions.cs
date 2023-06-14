@@ -11,14 +11,22 @@ using System.Threading.Tasks;
 using System;
 using System.Text.Json;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.Identity.Web;
 
 namespace Jpf.NgResume.Api
 {
     /// <summary>
     /// Host class for test functions.
     /// </summary>
-    public static class MessageTestFunction
+    public class TestFunctions
     {
+        private readonly ITokenAcquisition tokenAcquisition;
+
+        public TestFunctions(ITokenAcquisition tokenAcquisition)
+        {
+            this.tokenAcquisition = tokenAcquisition;
+        }
+
         /// <summary>
         /// Simple GET message processing function for API tests.
         /// </summary>
@@ -38,7 +46,7 @@ namespace Jpf.NgResume.Api
             bodyType: typeof(string),
             Description = "A formatted test string."
         )]
-        public static IActionResult GetTest(
+        public IActionResult GetTest(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "get", 
@@ -81,7 +89,13 @@ namespace Jpf.NgResume.Api
             bodyType: typeof(Test),
             Description = "A response with a formatted message string and assigned Id property."
         )]
-        public static IActionResult PostTest(
+        [OpenApiResponseWithBody(
+            statusCode: HttpStatusCode.Unauthorized,
+            contentType:  "application/problem+json; charset=utf-8",
+            bodyType: typeof(ProblemDetails),
+            Description = "Problem details of an unauthorized access result."
+        )]
+        public async Task<IActionResult> PostTestAsync(
             [HttpTrigger(
                 AuthorizationLevel.Function, 
                 "post", 
@@ -89,8 +103,12 @@ namespace Jpf.NgResume.Api
                 )
             ]
             Test test,
+            HttpRequest req,
             ILogger log)
         {
+            var (status, response) = await req.HttpContext.AuthenticateAzureFunctionAsync();
+            if (!status) return response;
+
             test.Id = Guid.NewGuid();
             test.Message = test.Message + " (Recieved by API.)";
 
