@@ -127,18 +127,24 @@ export class AuthService {
     
     const claimsMap = new Map<string, Claim>(claims.map(i => [i.name, i]));
 
-    const user: User = {
-      oid: claimsMap.get("oid")!.value as string,
-      username: account.username,
-      emails: claimsMap.get("emails")!.value as string[],
-      identityProvider: claimsMap.get("idp")!.value as string,
-      identityProviderAccessToken: claimsMap.get("idp_access_token")!.value as string,
-      name: claimsMap.get("name")!.value as string,
-      claimsMap: claimsMap,
-      account: account,
-    };
+    try {
+      const user: User = {
+        oid: claimsMap.get("oid")!.value as string,
+        username: account.username,
+        emails: claimsMap.get("emails")!.value as string[],
+        identityProvider: claimsMap.get("idp")!.value as string,
+        identityProviderAccessToken: claimsMap.get("idp_access_token")!.value as string,
+        name: claimsMap.get("name")!.value as string,
+        claimsMap: claimsMap,
+        account: account,
+      };
     
-    return user;
+      return user;
+    }
+    catch (error) {
+      this.loggingService.logError("Unable to covert claims to User object.");
+      return undefined;
+    }
   }
 
   destroy(): void {
