@@ -14,7 +14,7 @@ import { ApplicationInsightsService } from './application-insights.service';
 export class LoggingService {
 
   constructor(
-    private applicationInsightsService: ApplicationInsightsService
+    private applicationInsightsService: ApplicationInsightsService | null
   )
   { }
 
@@ -47,7 +47,7 @@ export class LoggingService {
    * @param {string} message Message for trace.
    */
   logTrace(message: string) {
-    this.applicationInsightsService.logTrace(message);
+    if (this.applicationInsightsService) this.applicationInsightsService.logTrace(message);
     console.trace("LoggingService: [trace] " + message);
   }
 
@@ -57,7 +57,7 @@ export class LoggingService {
    * @param {string} stackTrace Optional stack trace.
    */
   logError(message: string, stackTrace?: string) {
-    this.applicationInsightsService.logException(new Error(message, { cause: stackTrace }));
+    if (this.applicationInsightsService) this.applicationInsightsService.logException(new Error(message, { cause: stackTrace }));
     console.error("LoggingService: [error] " + message);
   }
 }
