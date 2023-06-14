@@ -102,7 +102,12 @@ namespace Jpf.NgResume.Api
             ILogger log)
         {
             var (status, response) = await req.HttpContext.AuthenticateAzureFunctionAsync();
-            if (!status) return response;
+            if (!status)
+            {
+                var token = req.Headers["Authorization"][0];
+                log.LogInformation($"Unauthorized bearer token submitted: [{token}]");
+                return response;
+            }
 
             var scopes = new string[] {"test.write"};
             req.HttpContext.VerifyUserHasAnyAcceptedScope(scopes);
