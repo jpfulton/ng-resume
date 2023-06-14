@@ -94,7 +94,7 @@ export class AuthService {
     if (!this.isLoggedIn) return undefined;
 
     const response = await this.msalAuthService.instance.acquireTokenSilent({
-      scopes: ["https://jpatrickfulton.onmicrosoft.com/1e252383-1c48-435a-aec9-df0ef58744b6/test.write"],
+      scopes: ["https://jpatrickfulton.onmicrosoft.com/api/test.write"],
       account: this.msalAuthService.instance.getActiveAccount()!
     });
 
