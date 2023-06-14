@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+#nullable enable
 namespace Jpf.NgResume.Api
 {
     public static class HttpContextExtension
@@ -38,3 +39,4 @@ namespace Jpf.NgResume.Api
         }
     }
 }
+#nullable disable
