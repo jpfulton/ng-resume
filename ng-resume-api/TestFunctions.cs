@@ -92,7 +92,7 @@ namespace Jpf.NgResume.Api
         [OpenApiResponseWithBody(
             statusCode: HttpStatusCode.Unauthorized,
             contentType:  "application/problem+json; charset=utf-8",
-            bodyType: typeof(ProblemDetails),
+            bodyType: typeof(CustomProblemDetails),
             Description = "Problem details of an unauthorized access result."
         )]
         public async Task<IActionResult> PostTestAsync(

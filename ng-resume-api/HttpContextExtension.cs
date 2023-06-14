@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -31,12 +32,17 @@ namespace Jpf.NgResume.Api
             }
             else
             {
-                return (false, new UnauthorizedObjectResult(new ProblemDetails {
+                return (false, new UnauthorizedObjectResult(new CustomProblemDetails {
                     Title = "Authorization failed.",
-                    Detail = result.Failure?.Message,
+                    Detail = result.Failure?.Message
                 }));
             }
         }
+    }
+
+    public class CustomProblemDetails : ProblemDetails
+    {
+        new private IDictionary<string, object?>? Extensions { get; }
     }
 }
 #nullable disable
