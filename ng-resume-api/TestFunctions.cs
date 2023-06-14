@@ -12,20 +12,15 @@ using System;
 using System.Text.Json;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.Resource;
 
 namespace Jpf.NgResume.Api
 {
     /// <summary>
     /// Host class for test functions.
     /// </summary>
-    public class TestFunctions
+    public static class TestFunctions
     {
-        private readonly ITokenAcquisition tokenAcquisition;
-
-        public TestFunctions(ITokenAcquisition tokenAcquisition)
-        {
-            this.tokenAcquisition = tokenAcquisition;
-        }
 
         /// <summary>
         /// Simple GET message processing function for API tests.
@@ -46,7 +41,7 @@ namespace Jpf.NgResume.Api
             bodyType: typeof(string),
             Description = "A formatted test string."
         )]
-        public IActionResult GetTest(
+        public static IActionResult GetTest(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "get", 
@@ -95,7 +90,7 @@ namespace Jpf.NgResume.Api
             bodyType: typeof(CustomProblemDetails),
             Description = "Problem details of an unauthorized access result."
         )]
-        public async Task<IActionResult> PostTestAsync(
+        public static async Task<IActionResult> PostTestAsync(
             [HttpTrigger(
                 AuthorizationLevel.Function, 
                 "post", 
@@ -109,10 +104,15 @@ namespace Jpf.NgResume.Api
             var (status, response) = await req.HttpContext.AuthenticateAzureFunctionAsync();
             if (!status) return response;
 
-            log.LogInformation(req.HttpContext.User.GetMsalAccountId());
+            var scopes = new string[] {"test.write"};
+            req.HttpContext.VerifyUserHasAnyAcceptedScope(scopes);
+
+            var user = req.HttpContext.User;
+            var displayName = user.GetDisplayName();
+            var userId = user.GetObjectId();
 
             test.Id = Guid.NewGuid();
-            test.Message = test.Message + " (Recieved by API.)";
+            test.Message = test.Message + $" (Recieved by API from user: {displayName} [{userId}])";
 
             return new OkObjectResult(test);
         }
