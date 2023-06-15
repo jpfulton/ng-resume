@@ -47,7 +47,7 @@ namespace Jpf.NgResume.Api
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplicationInsightsTelemetry();
+            services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddLogging(options =>
             {
