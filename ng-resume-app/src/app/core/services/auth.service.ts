@@ -6,7 +6,7 @@ import { Subject, filter, takeUntil } from 'rxjs';
 import { PlatformService } from './platform.service';
 import { LoggingService } from './logging.service';
 import { EventMessage, EventType as MsalEventType, InteractionStatus, SsoSilentRequest, RedirectRequest, PopupRequest, InteractionType } from '@azure/msal-browser';
-import { AuthenticationResult, AccountInfo, PromptValue, IdTokenClaims, InteractionRequiredAuthError, Logger, LogLevel } from '@azure/msal-common';
+import { AuthenticationResult, AccountInfo, PromptValue, IdTokenClaims, InteractionRequiredAuthError } from '@azure/msal-common';
 import { b2cPolicies } from '../constants/auth-constants';
 import { User } from '../models/user';
 import { createClaimsTable } from '../utils/claim-utils';

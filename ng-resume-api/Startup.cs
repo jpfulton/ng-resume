@@ -17,25 +17,6 @@ namespace Jpf.NgResume.Api
         {
         }
 
-        /*
-        public override void Configure(IFunctionsHostBuilder builder)
-        {
-            var configuration = builder.GetContext().Configuration;
-
-            
-            builder.Services.AddFunctionAuthentication(sharedOptions =>
-            {
-                sharedOptions.DefaultScheme = "CustomBearer";
-                sharedOptions.DefaultChallengeScheme = "CustomBearer";
-            })
-            .AddMicrosoftIdentityWebApi(configuration)
-            .EnableTokenAcquisitionToCallDownstreamApi()
-            .AddInMemoryTokenCaches();
-
-            IdentityModelEventSource.ShowPII = true;
-        }
-        */
-
         IConfiguration Configuration { get; set; }
 
         public override void Configure(IFunctionsHostBuilder builder)
