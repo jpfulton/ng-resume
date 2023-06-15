@@ -13,14 +13,21 @@ using System.Text.Json;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.Resource;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
 namespace Jpf.NgResume.Api
 {
     /// <summary>
     /// Host class for test functions.
     /// </summary>
-    public static class TestFunctions
+    public class TestFunctions
     {
+        private IConfiguration configuration;
+        
+        public TestFunctions(IConfiguration configuration) {
+            this.configuration = configuration;
+        }
 
         /// <summary>
         /// Simple GET message processing function for API tests.
@@ -41,7 +48,7 @@ namespace Jpf.NgResume.Api
             bodyType: typeof(string),
             Description = "A formatted test string."
         )]
-        public static IActionResult GetTest(
+        public IActionResult GetTest(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "get", 
@@ -90,7 +97,7 @@ namespace Jpf.NgResume.Api
             bodyType: typeof(CustomProblemDetails),
             Description = "Problem details of an unauthorized access result."
         )]
-        public static async Task<IActionResult> PostTestAsync(
+        public async Task<IActionResult> PostTestAsync(
             [HttpTrigger(
                 AuthorizationLevel.Function, 
                 "post", 
@@ -121,6 +128,27 @@ namespace Jpf.NgResume.Api
             test.Message = test.Message + $" (Recieved by API from user: {displayName} [{userId}])";
 
             return new OkObjectResult(test);
+        }
+
+        [FunctionName("TestConfigurationGet")]
+        public IActionResult GetConfigurationValues(
+            [HttpTrigger(
+                AuthorizationLevel.Function,
+                "get",
+                Route = "test/configuration"
+                )
+            ]
+            Test test,
+            HttpRequest req,
+            ILogger log)
+        {
+            var data = new Dictionary<string, string>();
+
+            foreach(KeyValuePair<string, string> pair in configuration.AsEnumerable()) {
+                data.Add(pair.Key, pair.Value);
+            }
+
+            return new OkObjectResult(data);
         }
     }
 }
