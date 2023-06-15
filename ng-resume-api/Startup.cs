@@ -36,6 +36,7 @@ namespace Jpf.NgResume.Api
                 .SetBasePath(currentDirectory)
                 .AddConfiguration(configuration) // Add the original function configuration 
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables() // include settings from the environment
                 .Build();
 
             // Replace the Azure Function configuration with our new one
