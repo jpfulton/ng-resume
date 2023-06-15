@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Web;
@@ -47,6 +48,7 @@ namespace Jpf.NgResume.Api
 
         private void ConfigureServices(IServiceCollection services)
         {
+            /*
             services.AddApplicationInsightsTelemetry(config =>
             {
                 config.ConnectionString = Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING");
@@ -56,6 +58,7 @@ namespace Jpf.NgResume.Api
             {
                 options.AddApplicationInsights();
             });
+            */
 
             services.AddFunctionAuthentication(sharedOptions =>
             {
