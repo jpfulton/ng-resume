@@ -45,6 +45,8 @@ namespace Jpf.NgResume.Api
 
         private void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging();
+
             services.AddFunctionAuthentication(sharedOptions =>
             {
                sharedOptions.DefaultScheme = Microsoft.Identity.Web.Constants.Bearer;
