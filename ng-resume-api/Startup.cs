@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Logging;
 using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 [assembly: FunctionsStartup(typeof(Jpf.NgResume.Api.Startup))]
 
@@ -45,7 +46,10 @@ namespace Jpf.NgResume.Api
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddLogging();
+            services.AddLogging(options =>
+            {
+                options.AddApplicationInsights();
+            });
 
             services.AddFunctionAuthentication(sharedOptions =>
             {
