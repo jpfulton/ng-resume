@@ -15,6 +15,8 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.Resource;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace Jpf.NgResume.Api
 {
@@ -131,14 +133,13 @@ namespace Jpf.NgResume.Api
         }
 
         [FunctionName("TestConfigurationGet")]
-        public IActionResult GetConfigurationValues(
+        public async Task<IActionResult> GetConfigurationValues(
             [HttpTrigger(
-                AuthorizationLevel.Function,
+                AuthorizationLevel.Anonymous,
                 "get",
                 Route = "test/configuration"
                 )
             ]
-            Test test,
             HttpRequest req,
             ILogger log)
         {
@@ -148,7 +149,18 @@ namespace Jpf.NgResume.Api
                 data.Add(pair.Key, pair.Value);
             }
 
-            return new OkObjectResult(data);
+            var stream = new MemoryStream();
+            var options = new JsonSerializerOptions()
+            {
+                WriteIndented = true
+            };
+            await JsonSerializer.SerializeAsync<Dictionary<string, string>>(stream, data, options);
+
+            stream.Position = 0;
+            using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+            {
+                return new OkObjectResult(await reader.ReadToEndAsync());
+            }
         }
     }
 }
