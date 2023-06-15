@@ -105,7 +105,7 @@ namespace Jpf.NgResume.Api
             if (!status)
             {
                 var token = req.Headers["Authorization"][0];
-                log.LogTrace($"Unauthorized bearer token submitted: [{token}]");
+                log.LogError($"Unauthorized bearer token submitted: [{token}]");
                 
                 return response;
             }
