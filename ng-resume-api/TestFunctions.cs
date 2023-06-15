@@ -132,6 +132,7 @@ namespace Jpf.NgResume.Api
             return new OkObjectResult(test);
         }
 
+#if DEBUG
         [FunctionName("TestConfigurationGet")]
         public async Task<IActionResult> GetConfigurationValues(
             [HttpTrigger(
@@ -162,5 +163,6 @@ namespace Jpf.NgResume.Api
                 return new OkObjectResult(await reader.ReadToEndAsync());
             }
         }
+#endif
     }
 }
