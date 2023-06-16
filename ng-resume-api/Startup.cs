@@ -48,12 +48,10 @@ namespace Jpf.NgResume.Api
 
         private void ConfigureServices(IServiceCollection services)
         {
-            /*
             services.AddApplicationInsightsTelemetry(config =>
             {
                 config.ConnectionString = Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING");
             });
-            */
             
             services.AddLogging(options =>
             {
@@ -66,6 +64,7 @@ namespace Jpf.NgResume.Api
                 // options.DefaultChallengeScheme = Microsoft.Identity.Web.Constants.Bearer;
                 options.DefaultScheme = "CustomBearer";
                 options.DefaultChallengeScheme = "CustomBearer";
+                
             })
            .AddMicrosoftIdentityWebApi(
                 Configuration.GetSection("AzureAdB2C"),
