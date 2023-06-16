@@ -105,7 +105,7 @@ namespace Jpf.NgResume.Api
         )]
         public async Task<IActionResult> PostTestAsync(
             [HttpTrigger(
-                AuthorizationLevel.Function, 
+                AuthorizationLevel.Anonymous, 
                 "post", 
                 Route = "test"
                 )
@@ -114,6 +114,8 @@ namespace Jpf.NgResume.Api
             HttpRequest req,
             ILogger log)
         {
+            log.LogInformation("Running test post function.");
+
             var (status, response) = await req.HttpContext.AuthenticateAzureFunctionAsync();
             if (!status)
             {
