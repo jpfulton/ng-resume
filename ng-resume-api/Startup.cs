@@ -53,17 +53,19 @@ namespace Jpf.NgResume.Api
             {
                 config.ConnectionString = Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING");
             });
+            */
             
             services.AddLogging(options =>
             {
                 options.AddApplicationInsights();
             });
-            */
 
             services.AddFunctionAuthentication(options =>
             {
-               // options.DefaultScheme = Microsoft.Identity.Web.Constants.Bearer;
-               // options.DefaultChallengeScheme = Microsoft.Identity.Web.Constants.Bearer;
+                // options.DefaultScheme = Microsoft.Identity.Web.Constants.Bearer;
+                // options.DefaultChallengeScheme = Microsoft.Identity.Web.Constants.Bearer;
+                options.DefaultScheme = "CustomBearer";
+                options.DefaultChallengeScheme = "CustomBearer";
             })
            .AddMicrosoftIdentityWebApi(
                 Configuration.GetSection("AzureAdB2C"),
