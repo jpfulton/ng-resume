@@ -17,6 +17,9 @@ using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Reflection;
+using System.Linq;
+using System.Collections;
 
 namespace Jpf.NgResume.Api
 {
@@ -25,6 +28,7 @@ namespace Jpf.NgResume.Api
     /// </summary>
     public class TestFunctions
     {
+        private static readonly string ARROW = "--> ";
         private IConfiguration configuration;
         
         public TestFunctions(IConfiguration configuration) {
@@ -130,6 +134,104 @@ namespace Jpf.NgResume.Api
             test.Message = test.Message + $" (Recieved by API from user: {displayName} [{userId}])";
 
             return new OkObjectResult(test);
+        }
+
+        [FunctionName("TestLoggerDiagnosticsGet")]
+        public IActionResult GetLoggerDiagnostics(
+            [HttpTrigger(
+                AuthorizationLevel.Anonymous,
+                "get",
+                Route = "test/logger"
+                )
+            ]
+            HttpRequest req,
+            ILogger log)
+        {
+            var data = new StringBuilder();
+
+            var logType = log.GetType();
+            var logTypeName = logType.AssemblyQualifiedName;
+
+            data.AppendLine($"ILogger Concrete Implementation [{logTypeName}]");
+            data.AppendLine();
+
+            RenderProperties("log", log, data);
+
+            return new OkObjectResult(data.ToString());
+        }
+
+        private static void RenderProperties(
+            string name,
+            object obj, 
+            StringBuilder data, 
+            string prefix = "", 
+            int depth = 0)
+        {
+            var objType = obj.GetType();
+            var line = $"{prefix}({objType.FullName}) {name} = \"{obj.ToString()}\"";
+            data.AppendLine(line);
+
+            if (depth > 10) return;
+
+            if (objType.IsPrimitive || 
+                objType.Equals(typeof(string)) ||
+                objType.Equals(typeof(Type)) ||
+                objType.Name.Equals("RuntimeType") ||
+                objType.FullName.StartsWith("System.Reflection")
+                )
+            {
+                return;
+            }
+
+            prefix = prefix + ARROW;
+
+            var properties = objType.GetProperties(
+                            BindingFlags.Instance |
+                            BindingFlags.Static |
+                            BindingFlags.Public |
+                            BindingFlags.NonPublic
+                        );
+            foreach (var property in properties)
+            {
+                line = $"{prefix}({property.PropertyType.FullName}) {property.Name} = ";
+                object value;
+                try
+                {
+                    value = property.GetValue(obj);
+                }
+                catch (Exception) {
+                    data.AppendLine(line + "<exception>");
+                    continue; 
+                }
+
+                if (value == null) {
+                    data.AppendLine(line + "[null]");
+                    continue;
+                }
+                else {
+                    data.AppendLine($"{line} \"{value.ToString()}\"");
+                }
+
+                var valueType = value.GetType();
+                if (valueType.Equals(typeof(string)))
+                {
+                    continue;
+                }
+
+                if (valueType.GetMethods().Any(m => m.Name.Equals("GetEnumerator")))
+                {
+                    var enumeratorMethod = valueType.GetMethod("GetEnumerator");
+
+                    var valueEnumerator = enumeratorMethod.Invoke(value, null) as IEnumerator;
+                    if (valueEnumerator == null) valueEnumerator = enumeratorMethod.Invoke(value, null) as IEnumerator<object>;
+
+                    while (valueEnumerator.MoveNext())
+                    {
+                        var dataValue = valueEnumerator.Current;
+                        RenderProperties(property.Name, dataValue, data, prefix + ARROW, depth + 1);
+                    }
+                }
+            }
         }
 
 #if DEBUG
