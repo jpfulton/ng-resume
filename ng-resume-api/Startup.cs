@@ -60,10 +60,10 @@ namespace Jpf.NgResume.Api
             });
             */
 
-            services.AddFunctionAuthentication(sharedOptions =>
+            services.AddFunctionAuthentication(options =>
             {
-               sharedOptions.DefaultScheme = Microsoft.Identity.Web.Constants.Bearer;
-               sharedOptions.DefaultChallengeScheme = Microsoft.Identity.Web.Constants.Bearer;
+               options.DefaultScheme = Microsoft.Identity.Web.Constants.Bearer;
+               options.DefaultChallengeScheme = Microsoft.Identity.Web.Constants.Bearer;
             })
            .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAdB2C"))
            .EnableTokenAcquisitionToCallDownstreamApi()
