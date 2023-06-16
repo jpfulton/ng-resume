@@ -24,7 +24,7 @@ namespace Jpf.NgResume.Api
 
             AuthenticateResult? result =
                 await httpContext.AuthenticateAsync(
-                    Microsoft.Identity.Web.Constants.Bearer
+                    "CustomBearer"
                     ).ConfigureAwait(false);
             
             if (result.Succeeded)

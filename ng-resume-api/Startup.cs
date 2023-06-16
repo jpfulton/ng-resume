@@ -62,10 +62,13 @@ namespace Jpf.NgResume.Api
 
             services.AddFunctionAuthentication(options =>
             {
-               options.DefaultScheme = Microsoft.Identity.Web.Constants.Bearer;
-               options.DefaultChallengeScheme = Microsoft.Identity.Web.Constants.Bearer;
+               // options.DefaultScheme = Microsoft.Identity.Web.Constants.Bearer;
+               // options.DefaultChallengeScheme = Microsoft.Identity.Web.Constants.Bearer;
             })
-           .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAdB2C"))
+           .AddMicrosoftIdentityWebApi(
+                Configuration.GetSection("AzureAdB2C"),
+                jwtBearerScheme: "CustomBearer", 
+                subscribeToJwtBearerMiddlewareDiagnosticsEvents: true)
            .EnableTokenAcquisitionToCallDownstreamApi()
            .AddInMemoryTokenCaches();
 
