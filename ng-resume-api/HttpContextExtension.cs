@@ -19,7 +19,7 @@ namespace Jpf.NgResume.Api
         {
             if (httpContext == null)
             {
-                throw new ArgumentNullException("Parameter httpContext cannot be null");
+                throw new ArgumentNullException("Parameter httpContext cannot be null.");
             }
 
             AuthenticateResult? result =
