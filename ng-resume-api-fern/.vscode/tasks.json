@@ -32,7 +32,7 @@
         {
             "label": "publish (fern)",
             "type": "shell",
-            "command": "./scripts/publish.sh",
+            "command": "./scripts/publish-fern.sh",
             "dependsOn": "initialize (fern)",
             "presentation": {
                 "echo": true,
