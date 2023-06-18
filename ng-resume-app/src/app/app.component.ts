@@ -6,7 +6,6 @@ import {
   OnDestroy,
   ApplicationRef,
   NgZone,
-  HostBinding,
   ViewChild,
   AfterViewInit} from '@angular/core';
 import { ActivationEnd, Data, NavigationEnd, Router, RouterOutlet } from '@angular/router';
@@ -54,7 +53,6 @@ import { AuthService } from './core/services/auth.service';
     ],
 })
 export class AppComponent extends MsalRedirectComponent implements AfterViewInit, OnInit, OnDestroy {
-  @HostBinding("class") classAttribute = "mat-app-background";
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
 
   private stabilityStatus = false;
@@ -142,15 +140,16 @@ export class AppComponent extends MsalRedirectComponent implements AfterViewInit
   }
 
   private toggleDarkModeClasses(darkMode: boolean) {
-    const matAppBackgroundClassName = "mat-app-background";
     const darkClassName = "darkMode";
 
-    this.classAttribute = darkMode ? matAppBackgroundClassName + " " + darkClassName : matAppBackgroundClassName;
+    const body = document.getElementsByTagName("body")[0];
 
     if (darkMode) {
+      body.classList.add(darkClassName);
       this.overlay.getContainerElement().classList.add(darkClassName);
     }
     else {
+      body.classList.remove(darkClassName);
       this.overlay.getContainerElement().classList.remove(darkClassName);
     }
   }
