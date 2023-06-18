@@ -1,8 +1,6 @@
 using System;
-using System.Linq;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.Extensions.Configuration;
@@ -64,14 +62,14 @@ namespace Jpf.NgResume.Api
                 // options.DefaultChallengeScheme = Microsoft.Identity.Web.Constants.Bearer;
                 options.DefaultScheme = "CustomBearer";
                 options.DefaultChallengeScheme = "CustomBearer";
-                
+
             })
-           .AddMicrosoftIdentityWebApi(
+            .AddMicrosoftIdentityFunctionApi(
                 Configuration.GetSection("AzureAdB2C"),
                 jwtBearerScheme: "CustomBearer", 
                 subscribeToJwtBearerMiddlewareDiagnosticsEvents: true)
-           .EnableTokenAcquisitionToCallDownstreamApi()
-           .AddInMemoryTokenCaches();
+            .EnableTokenAcquisitionToCallDownstreamApi()
+            .AddInMemoryTokenCaches();
 
             IdentityModelEventSource.ShowPII = true;
         }
