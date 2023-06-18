@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-jsdoc */
+import { APIResponse, Fetcher, fetcher } from '@jpfulton/ng-resume-api-browser-sdk/core';
 import { Observable, defer, finalize, retry, timer } from 'rxjs';
 import { LoadingService } from 'src/app/core/services/loading.service';
 
@@ -62,4 +64,18 @@ export function apiPromiseToObservable<T>(
             }
         })
       );
+}
+
+export async function customFetcher<R = unknown>(args: Fetcher.Args): Promise<APIResponse<R, Fetcher.Error>> {
+    const headers: Record<string, string | undefined> | undefined = args.headers;
+    if (headers) {
+        const authorizeHeaderValue = headers["Authorization"];
+        delete headers["Authorization"];
+
+        headers["X-Function-Api-Authorization"] = authorizeHeaderValue;
+    }
+
+    args.headers = headers;
+    
+    return fetcher(args);
 }

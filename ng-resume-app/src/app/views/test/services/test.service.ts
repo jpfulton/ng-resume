@@ -4,7 +4,7 @@ import { Test } from '@jpfulton/ng-resume-api-browser-sdk/api';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
-import { apiPromiseToObservable } from 'src/app/core/utils/api-helpers';
+import { apiPromiseToObservable, customFetcher } from 'src/app/core/utils/api-helpers';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,8 @@ export class TestService {
     }
 
     return new NgResumeApiClient({
-      token: () => this.authService.getActiveAccessToken()
+      token: () => this.authService.getActiveAccessToken(),
+      fetcher: customFetcher
     });
   }
 }
