@@ -31,20 +31,27 @@ namespace Jpf.NgResume.Api
     {
         private static readonly string ARROW = "--> ";
         private IConfiguration configuration;
-        private IServiceDescriptorService serviceDescriptorService;
 
+#if DEBUG
+        private IServiceDescriptorService serviceDescriptorService;
+        
         public TestFunctions(
             IConfiguration configuration,
-#if DEBUG
             IServiceDescriptorService serviceDescriptorService
-#endif
+
             ) 
         {
             this.configuration = configuration;
-#if DEBUG
             this.serviceDescriptorService = serviceDescriptorService;
-#endif
         }
+#else
+        public TestFunctions(
+            IConfiguration configuration
+            ) 
+        {
+            this.configuration = configuration;
+        }
+#endif
 
         /// <summary>
         /// Simple GET message processing function for API tests.
