@@ -27,7 +27,7 @@ using Microsoft.Identity.Web;
 using Jpf.NgResume.Api.Diagnostics;
 #endif
 
-namespace Jpf.NgResume.Api
+namespace Jpf.NgResume.Api.Functions
 {
     /// <summary>
     /// Host class for test functions.
