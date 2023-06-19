@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,16 +13,37 @@ namespace Jpf.NgResume.Api {
 
         public static MicrosoftIdentityWebApiAuthenticationBuilderWithConfiguration AddMicrosoftIdentityFunctionApi(
             this AuthenticationBuilder builder,
-            IConfigurationSection configurationSection,
+            IConfiguration configuration,
+            string configurationSectionName,
+            // IConfigurationSection configurationSection,
             string jwtBearerScheme = JwtBearerDefaults.AuthenticationScheme,
             bool subscribeToJwtBearerMiddlewareDiagnosticsEvents = false)
         {
+
+            /*
             var builderWithConfiguration = builder.AddMicrosoftIdentityWebApi(
                 configurationSection, 
                 jwtBearerScheme, 
                 subscribeToJwtBearerMiddlewareDiagnosticsEvents);
+            */
 
-            // do stuff
+            builder.AddScheme<JwtBearerOptions, CustomJwtBearerHandler>(
+                CustomJwtBearerConstants.DefaultScheme,
+                CustomJwtBearerConstants.DefaultScheme,
+                options => configuration.GetSection(configurationSectionName).Bind(options)
+            );
+
+            var builderWithConfiguration = builder.AddMicrosoftIdentityWebApi(
+                configuration,
+                configurationSectionName, 
+                jwtBearerScheme,
+                subscribeToJwtBearerMiddlewareDiagnosticsEvents);
+
+            builderWithConfiguration.Services.Configure<JwtBearerOptions>(
+                CustomJwtBearerConstants.DefaultScheme,
+                configuration,
+                options => configuration.GetSection("AzureAdB2C").Bind(options)
+                );
 
             return builderWithConfiguration;
 
