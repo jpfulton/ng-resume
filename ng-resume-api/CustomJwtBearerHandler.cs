@@ -1,15 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Jpf.NgResume.Api
 {
@@ -24,16 +18,30 @@ namespace Jpf.NgResume.Api
         }
 
         protected override Task<AuthenticateResult> HandleAuthenticateAsync() {
-            Logger.LogInformation("Using custom JwtBearerHandler.");
+            Logger.LogInformation("Using CustomJwtBearerHandler.");
 
-            var standardAuthToken = Request.Headers["Authoization"];
+            // Incoming request from Azure or the function host use this
+            // header to bear the Jwt token
+            var standardAuthToken = Request.Headers["Authorization"];
 
             if (string.IsNullOrEmpty(standardAuthToken))
             {
+                Logger.LogInformation("Request incoming from client application.");
+
+                // if the standard token is missing, we are working with the client
+                // which uses a sepearate header to bear its Jwt tokens.
                 var token = Request.Headers[CustomJwtBearerConstants.HeaderName];
+
+                // place that token into the "standar" header for processing inside
+                // the base JwtBearerHandler implementation which offers no configurable
+                // mechanism to specific the header to use at time of writing (6/19/2023)
                 Request.Headers.Add("Authorization", token);
             }
+            else {
+                Logger.LogInformation("Request incoming from Azure or function host.");
+            }
 
+            // call base implementation to address authentication on token
             return base.HandleAuthenticateAsync();
         }
 

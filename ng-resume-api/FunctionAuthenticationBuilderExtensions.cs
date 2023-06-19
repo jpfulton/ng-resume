@@ -1,13 +1,12 @@
-using System;
 using System.Linq;
-using System.Reflection;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Web;
 
-namespace Jpf.NgResume.Api {
+namespace Jpf.NgResume.Api
+{
 
     public static class FunctionAuthenticationBuilderExtensions {
 
@@ -15,22 +14,27 @@ namespace Jpf.NgResume.Api {
             this AuthenticationBuilder builder,
             IConfiguration configuration,
             string configurationSectionName,
-            // IConfigurationSection configurationSection,
             string jwtBearerScheme = JwtBearerDefaults.AuthenticationScheme,
             bool subscribeToJwtBearerMiddlewareDiagnosticsEvents = false)
         {
 
+            // call AddMicrosoftIdentityWebApi to work its internal magic to
+            // wire up authentication and authorization services and handlers
             var builderWithConfiguration = builder.AddMicrosoftIdentityWebApi(
                 configuration,
                 configurationSectionName, 
                 jwtBearerScheme,
                 subscribeToJwtBearerMiddlewareDiagnosticsEvents);
 
-            
+            // find and remove the JwtBearerHandler that was registered above
             var jwtService = builderWithConfiguration.Services
                 .FirstOrDefault(service => service.ServiceType.Equals(typeof(JwtBearerHandler)));
             builderWithConfiguration.Services.Remove(jwtService);
 
+            // replace the JwtBearerHandler with a CustomJwtBearerHandler that will
+            // trade out header values to move the tokens for each use case:
+            //  - Azure and function host alls to the fuction app to manage it
+            //  - Calls from the client application to be authenticated/authorized via application logic
             var customJwtService = new ServiceDescriptor(
                 typeof(JwtBearerHandler),
                 typeof(CustomJwtBearerHandler),
@@ -38,51 +42,8 @@ namespace Jpf.NgResume.Api {
             );
             builder.Services.Add(customJwtService);
 
-            /*
-            builder.AddScheme<JwtBearerOptions, CustomJwtBearerHandler>(
-                CustomJwtBearerConstants.DefaultScheme,
-                CustomJwtBearerConstants.DefaultScheme,
-                options => configuration.GetSection(configurationSectionName).Bind(options)
-            );
-            */
-
-            /*
-            builderWithConfiguration.Services.Configure<JwtBearerOptions>(
-                CustomJwtBearerConstants.DefaultScheme,
-                configuration,
-                options => configuration.GetSection("AzureAdB2C").Bind(options)
-                );
-            */
-
+            // return the results of AddMicrosoftIdentityWebApi with our modifications
             return builderWithConfiguration;
-
-            /*
-            Action<JwtBearerOptions> bearerOptions = options => configurationSection.Bind(options);
-            Action<MicrosoftIdentityOptions> identityOptions = options => configurationSection.Bind(options);
-
-            var builderWithConfiguration = (MicrosoftIdentityWebApiAuthenticationBuilderWithConfiguration)
-                typeof(MicrosoftIdentityWebApiAuthenticationBuilderWithConfiguration)
-                    .GetConstructor(
-                        BindingFlags.NonPublic | BindingFlags.Instance,
-                        new Type[] {
-                            typeof(IServiceCollection),
-                            typeof(string),
-                            typeof(Action<JwtBearerOptions>),
-                            typeof(Action<MicrosoftIdentityOptions>),
-                            typeof(IConfigurationSection)
-                        }
-                ).Invoke(
-                    new object[] {
-                        builder.Services,
-                        jwtBearerScheme,
-                        bearerOptions,
-                        identityOptions,
-                        configurationSection
-                    }
-                );
-
-            return builderWithConfiguration;
-            */
         }
     }
 }

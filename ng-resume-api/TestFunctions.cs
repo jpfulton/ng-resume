@@ -35,11 +35,15 @@ namespace Jpf.NgResume.Api
 
         public TestFunctions(
             IConfiguration configuration,
+#if DEBUG
             IServiceDescriptorService serviceDescriptorService
+#endif
             ) 
         {
             this.configuration = configuration;
+#if DEBUG
             this.serviceDescriptorService = serviceDescriptorService;
+#endif
         }
 
         /// <summary>
