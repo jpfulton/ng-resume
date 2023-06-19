@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+#nullable enable
 namespace Jpf.NgResume.Api.Auth {
 
     public static class AuthenticationHelpers
@@ -20,3 +21,4 @@ namespace Jpf.NgResume.Api.Auth {
     }
 
 }
+#nullable disable
