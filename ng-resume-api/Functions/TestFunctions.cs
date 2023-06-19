@@ -137,16 +137,8 @@ namespace Jpf.NgResume.Api.Functions
             HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("Running test post function.");
-
-            var (status, response) = await req.HttpContext.AuthenticateAzureFunctionApiAsync();
-            if (!status)
-            {
-                var token = req.Headers["Authorization"][0];
-                log.LogWarning($"Unauthorized bearer token submitted: [{token}]");
-                
-                return response;
-            }
+            var (status, response) = await AuthenticationHelpers.AuthenticationHelperAsync(req, log);
+            if (!status) return response;
 
             var scopes = new string[] {"test.write"};
             req.HttpContext.VerifyUserHasAnyAcceptedScope(scopes);
