@@ -86,6 +86,10 @@ namespace Jpf.NgResume.Api
             .AddInMemoryTokenCaches();
 
             IdentityModelEventSource.ShowPII = true;
+
+            services.AddSingleton<IServiceDescriptorService>(
+                new ServiceDescriptorService(services)
+                );
         }
     }
 }

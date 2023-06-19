@@ -30,9 +30,15 @@ namespace Jpf.NgResume.Api
     {
         private static readonly string ARROW = "--> ";
         private IConfiguration configuration;
-        
-        public TestFunctions(IConfiguration configuration) {
+        private IServiceDescriptorService serviceDescriptorService;
+
+        public TestFunctions(
+            IConfiguration configuration,
+            IServiceDescriptorService serviceDescriptorService
+            ) 
+        {
             this.configuration = configuration;
+            this.serviceDescriptorService = serviceDescriptorService;
         }
 
         /// <summary>
@@ -266,6 +272,28 @@ namespace Jpf.NgResume.Api
             {
                 return new OkObjectResult(await reader.ReadToEndAsync());
             }
+        }
+
+        [FunctionName("TestServiceDescriptorsGet")]
+        public IActionResult GetServiceDescriptors(
+            [HttpTrigger(
+                AuthorizationLevel.Anonymous,
+                "get",
+                Route = "test/services"
+                )
+            ]
+            HttpRequest req,
+            ILogger log)
+        {
+            var stringBuilder = new StringBuilder();
+
+            foreach (var service in serviceDescriptorService.GetServiceCollection()) {
+                stringBuilder.AppendLine(
+                    $"[{service.ServiceType.FullName}]"
+                );
+            }
+
+            return new OkObjectResult(stringBuilder.ToString());
         }
 #endif
     }
