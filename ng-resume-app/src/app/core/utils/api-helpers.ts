@@ -1,7 +1,9 @@
 /* eslint-disable jsdoc/require-jsdoc */
+import { NgResumeApiClient } from '@jpfulton/ng-resume-api-browser-sdk';
 import { APIResponse, Fetcher, fetcher } from '@jpfulton/ng-resume-api-browser-sdk/core';
 import { Observable, defer, finalize, retry, timer } from 'rxjs';
 import { LoadingService } from 'src/app/core/services/loading.service';
+import { AuthService } from '../services/auth.service';
 
 const RETRY_COUNT = 3;
 const BACK_OFF_IN_MS = 1000;
@@ -66,7 +68,7 @@ export function apiPromiseToObservable<T>(
       );
 }
 
-export async function customFetcher<R = unknown>(args: Fetcher.Args): Promise<APIResponse<R, Fetcher.Error>> {
+async function customFetcher<R = unknown>(args: Fetcher.Args): Promise<APIResponse<R, Fetcher.Error>> {
     const headers: Record<string, string | undefined> | undefined = args.headers;
     if (headers) {
         const authorizeHeaderValue = headers["Authorization"];
@@ -78,4 +80,19 @@ export async function customFetcher<R = unknown>(args: Fetcher.Args): Promise<AP
     args.headers = headers;
     
     return fetcher(args);
+}
+
+export function getAnonymousApiClient(): NgResumeApiClient {
+    return new NgResumeApiClient({});
+}
+
+export function getAuthenticatedApiClient(authService: AuthService) {
+    if (!authService.isLoggedIn) {
+        throw new Error("Cannot initialize api client. No logged in user.");
+    }
+
+    return new NgResumeApiClient({
+        token: () => authService.getActiveAccessToken(),
+        fetcher: customFetcher
+    });
 }
