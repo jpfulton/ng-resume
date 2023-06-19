@@ -73,8 +73,8 @@ namespace Jpf.NgResume.Api
             .AddMicrosoftIdentityFunctionApi(
                 Configuration,
                 "AzureAdB2C",
-                jwtBearerScheme: "CustomBearer",
-                // jwtBearerScheme: CustomJwtBearerConstants.DefaultScheme,
+                // jwtBearerScheme: "CustomBearer",
+                jwtBearerScheme: CustomJwtBearerConstants.DefaultScheme,
                 subscribeToJwtBearerMiddlewareDiagnosticsEvents: true)
             /*
             .AddMicrosoftIdentityFunctionApi(

@@ -20,6 +20,7 @@ using System.Text;
 using System.Reflection;
 using System.Linq;
 using System.Collections;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Jpf.NgResume.Api
 {
@@ -288,6 +289,11 @@ namespace Jpf.NgResume.Api
             var stringBuilder = new StringBuilder();
 
             foreach (var service in serviceDescriptorService.GetServiceCollection()) {
+
+                if (service.ServiceType.Equals(typeof(JwtBearerHandler))) {
+                    break;
+                }
+
                 stringBuilder.AppendLine(
                     $"[{service.ServiceType.FullName}]"
                 );

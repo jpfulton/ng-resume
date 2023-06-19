@@ -20,12 +20,23 @@ namespace Jpf.NgResume.Api {
             bool subscribeToJwtBearerMiddlewareDiagnosticsEvents = false)
         {
 
-            /*
             var builderWithConfiguration = builder.AddMicrosoftIdentityWebApi(
-                configurationSection, 
-                jwtBearerScheme, 
+                configuration,
+                configurationSectionName, 
+                jwtBearerScheme,
                 subscribeToJwtBearerMiddlewareDiagnosticsEvents);
-            */
+
+            
+            var jwtService = builderWithConfiguration.Services
+                .FirstOrDefault(service => service.ServiceType.Equals(typeof(JwtBearerHandler)));
+            builderWithConfiguration.Services.Remove(jwtService);
+
+            var customJwtService = new ServiceDescriptor(
+                typeof(JwtBearerHandler),
+                typeof(CustomJwtBearerHandler),
+                ServiceLifetime.Transient
+            );
+            builder.Services.Add(customJwtService);
 
             /*
             builder.AddScheme<JwtBearerOptions, CustomJwtBearerHandler>(
@@ -34,12 +45,6 @@ namespace Jpf.NgResume.Api {
                 options => configuration.GetSection(configurationSectionName).Bind(options)
             );
             */
-
-            var builderWithConfiguration = builder.AddMicrosoftIdentityWebApi(
-                configuration,
-                configurationSectionName, 
-                jwtBearerScheme,
-                subscribeToJwtBearerMiddlewareDiagnosticsEvents);
 
             /*
             builderWithConfiguration.Services.Configure<JwtBearerOptions>(
