@@ -27,11 +27,13 @@ namespace Jpf.NgResume.Api {
                 subscribeToJwtBearerMiddlewareDiagnosticsEvents);
             */
 
+            /*
             builder.AddScheme<JwtBearerOptions, CustomJwtBearerHandler>(
                 CustomJwtBearerConstants.DefaultScheme,
                 CustomJwtBearerConstants.DefaultScheme,
                 options => configuration.GetSection(configurationSectionName).Bind(options)
             );
+            */
 
             var builderWithConfiguration = builder.AddMicrosoftIdentityWebApi(
                 configuration,
@@ -39,11 +41,13 @@ namespace Jpf.NgResume.Api {
                 jwtBearerScheme,
                 subscribeToJwtBearerMiddlewareDiagnosticsEvents);
 
+            /*
             builderWithConfiguration.Services.Configure<JwtBearerOptions>(
                 CustomJwtBearerConstants.DefaultScheme,
                 configuration,
                 options => configuration.GetSection("AzureAdB2C").Bind(options)
                 );
+            */
 
             return builderWithConfiguration;
 
