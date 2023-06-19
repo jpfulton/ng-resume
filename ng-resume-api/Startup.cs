@@ -6,6 +6,11 @@ using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
+using Jpf.NgResume.Api.Auth;
+
+#if DEBUG
+using Jpf.NgResume.Api.Diagnostics;
+#endif
 
 [assembly: FunctionsStartup(typeof(Jpf.NgResume.Api.Startup))]
 

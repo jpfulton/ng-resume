@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Jpf.NgResume.Api
+namespace Jpf.NgResume.Api.Auth
 {
     public class CustomJwtBearerHandler : JwtBearerHandler {
 

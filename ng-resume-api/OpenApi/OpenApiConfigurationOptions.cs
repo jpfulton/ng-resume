@@ -4,7 +4,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.OpenApi.Models;
 
-namespace Jpf.NgResume.Api
+namespace Jpf.NgResume.Api.OpenApi
 {
     /// <summary>
     /// Configuration options for OpenAPI and Swagger.

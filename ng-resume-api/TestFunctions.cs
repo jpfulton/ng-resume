@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System;
 using System.Text.Json;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
-using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.Resource;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -21,6 +20,12 @@ using System.Reflection;
 using System.Linq;
 using System.Collections;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Jpf.NgResume.Api.Auth;
+using Microsoft.Identity.Web;
+
+#if DEBUG
+using Jpf.NgResume.Api.Diagnostics;
+#endif
 
 namespace Jpf.NgResume.Api
 {
@@ -134,7 +139,7 @@ namespace Jpf.NgResume.Api
         {
             log.LogInformation("Running test post function.");
 
-            var (status, response) = await req.HttpContext.AuthenticateAzureFunctionAsync();
+            var (status, response) = await req.HttpContext.AuthenticateAzureFunctionApiAsync();
             if (!status)
             {
                 var token = req.Headers["Authorization"][0];

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 #nullable enable
-namespace Jpf.NgResume.Api
+namespace Jpf.NgResume.Api.Auth
 {
     public static class HttpContextExtension
     {
@@ -15,7 +15,7 @@ namespace Jpf.NgResume.Api
         /// </summary>
         /// <param name="httpContext">The current HTTP Context, such as req.HttpContext.</param>
         /// <returns>A task indicating success or failure. In case of failure <see cref="Microsoft.Identity.Web.UnauthorizedObjectResult"/>.</returns>
-        public static async Task<(bool, IActionResult?)> AuthenticateAzureFunctionAsync(this HttpContext httpContext)
+        public static async Task<(bool, IActionResult?)> AuthenticateAzureFunctionApiAsync(this HttpContext httpContext)
         {
             if (httpContext == null)
             {

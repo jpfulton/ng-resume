@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Web;
 
-namespace Jpf.NgResume.Api
+namespace Jpf.NgResume.Api.Auth
 {
 
     public static class FunctionAuthenticationBuilderExtensions {
