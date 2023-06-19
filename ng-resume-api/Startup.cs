@@ -69,9 +69,9 @@ namespace Jpf.NgResume.Api
             .EnableTokenAcquisitionToCallDownstreamApi()
             .AddInMemoryTokenCaches();
 
-            IdentityModelEventSource.ShowPII = true;
-
 #if DEBUG
+            IdentityModelEventSource.ShowPII = true;
+            
             services.AddSingleton<IServiceDescriptorService>(
                 new ServiceDescriptorService(services)
                 );
