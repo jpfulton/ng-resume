@@ -1,7 +1,7 @@
 #if DEBUG
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Jpf.NgResume.Api
+namespace Jpf.NgResume.Api.Diagnostics
 {
     public interface IServiceDescriptorService {
         public IServiceCollection GetServiceCollection();

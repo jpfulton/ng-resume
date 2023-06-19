@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System;
 using System.Text.Json;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
-using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.Resource;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -21,8 +20,14 @@ using System.Reflection;
 using System.Linq;
 using System.Collections;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Jpf.NgResume.Api.Auth;
+using Microsoft.Identity.Web;
 
-namespace Jpf.NgResume.Api
+#if DEBUG
+using Jpf.NgResume.Api.Diagnostics;
+#endif
+
+namespace Jpf.NgResume.Api.Functions
 {
     /// <summary>
     /// Host class for test functions.
@@ -132,16 +137,8 @@ namespace Jpf.NgResume.Api
             HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("Running test post function.");
-
-            var (status, response) = await req.HttpContext.AuthenticateAzureFunctionAsync();
-            if (!status)
-            {
-                var token = req.Headers["Authorization"][0];
-                log.LogWarning($"Unauthorized bearer token submitted: [{token}]");
-                
-                return response;
-            }
+            var (status, response) = await AuthenticationHelpers.AuthenticationHelperAsync(req, log);
+            if (!status) return response;
 
             var scopes = new string[] {"test.write"};
             req.HttpContext.VerifyUserHasAnyAcceptedScope(scopes);

@@ -1,4 +1,4 @@
-namespace Jpf.NgResume.Api
+namespace Jpf.NgResume.Api.Auth
 {
     public static class CustomJwtBearerConstants
     {

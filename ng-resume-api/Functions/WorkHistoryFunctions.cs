@@ -8,49 +8,49 @@ using Microsoft.Extensions.Logging;
 
 using Jpf.NgResume.Api.DataStore;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
-using Microsoft.OpenApi.Models;
 using System.Net;
 using System.Collections.Generic;
 using Jpf.NgResume.Api.Models;
+using Microsoft.OpenApi.Models;
 
-namespace Jpf.NgResume.Api
+namespace Jpf.NgResume.Api.Functions
 {
     /// <summary>
-    /// Collection of Http triggered functions implementing the education
+    /// A collection of Http triggered functions implementing the work history
     /// noun in a RESTful API.
     /// </summary>
-    public static class EducationFunctions
+    public static class WorkHistoryFunctions
     {
-        private static readonly EducationDataStore dataStore;
+        private static readonly WorkHistoryDataStore dataStore;
 
-        static EducationFunctions()
+        static WorkHistoryFunctions()
         {
-            dataStore = new EducationDataStore();
+            dataStore = new WorkHistoryDataStore();
         }
 
-        [FunctionName("EducationGetAll")]
-        [OpenApiOperation(operationId: "GetAll", tags: new[] { "education" })]
+        [FunctionName("WorkHistoryGetAll")]
+        [OpenApiOperation(operationId: "GetAll", tags: new[] { "workhistory" })]
         [OpenApiResponseWithBody(
             statusCode: HttpStatusCode.OK,
             contentType: "application/json; charset=utf-8",
-            bodyType: typeof(IList<Education>),
-            Description = "An array of all education items."
+            bodyType: typeof(IList<WorkHistory>),
+            Description = "An array of all work history items."
         )]
-        public static async Task<IActionResult> GetAllEducation(
+        public static async Task<IActionResult> GetAllWorkHistory(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "get",
-                Route = "education"
+                Route = "workhistory"
                 )
             ] HttpRequest request,
             ILogger log)
         {
-            var data = await dataStore.GetAllEducationsAsync();
+            var data = await dataStore.GetAllWorkHistoriesAsync();
             return new OkObjectResult(data);
         }
 
-        [FunctionName("EducationGetById")]
-        [OpenApiOperation(operationId: "GetById", tags: new[] { "education" })]
+        [FunctionName("WorkHistoryGetById")]
+        [OpenApiOperation(operationId: "GetById", tags: new[] { "workhistory" })]
         [OpenApiParameter(
             name: "id", 
             Required = true, 
@@ -59,14 +59,14 @@ namespace Jpf.NgResume.Api
         [OpenApiResponseWithBody(
             statusCode: HttpStatusCode.OK,
             contentType: "application/json; charset=utf-8",
-            bodyType: typeof(Education),
-            Description = "An education item by its id property."
+            bodyType: typeof(WorkHistory),
+            Description = "A work history item by its id property."
         )]
-        public static async Task<IActionResult> GetEducation(
+        public static async Task<IActionResult> GetWorkHistory(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "get",
-                Route = "education/{id}"
+                Route = "workhistory/{id}"
                 )
             ] HttpRequest request,
             string id, 
@@ -83,7 +83,7 @@ namespace Jpf.NgResume.Api
                 throw new ArgumentException("Id parameter is not in the form of a guid.", "id", fe);
             }
             
-            var data = await dataStore.GetEducationAsync(idAsGuid);
+            var data = await dataStore.GetWorkHistoryAsync(idAsGuid);
             return new OkObjectResult(data);
         }
     }

@@ -68,7 +68,17 @@ export function apiPromiseToObservable<T>(
       );
 }
 
-export async function customFetcher<R = unknown>(args: Fetcher.Args): Promise<APIResponse<R, Fetcher.Error>> {
+/**
+ * Custom api sdk fetcher implementation. This implementation moves the bearer token from
+ * the "Authorize" header to the "X-Function-Api-Authorization" header prior to calling
+ * the default fetcher function for the api sdk.
+ * @template R Type returned by the ApiResponse.
+ * @param {Fetcher.Args} args Internal sdk fetcher functions argument object. Carries 
+ *                            header values that will be submitted by the sdk.
+ * @returns {Promise<APIResponse<R, Fetcher.Error>>} Standard internal response value
+ *                                                   for the sdk fetcer function.
+ */
+async function customFetcher<R = unknown>(args: Fetcher.Args): Promise<APIResponse<R, Fetcher.Error>> {
     const headers: Record<string, string | undefined> | undefined = args.headers;
     if (headers) {
         const authorizeHeaderValue = headers["Authorization"];
@@ -82,13 +92,24 @@ export async function customFetcher<R = unknown>(args: Fetcher.Args): Promise<AP
     return fetcher(args);
 }
 
+/**
+ * Constructs and returns an api client suitable for access to
+ * unauthenticated api endpoints.
+ * @returns {NgResumeApiClient} An api client.
+ */
 export function getAnonymousApiClient(): NgResumeApiClient {
     return new NgResumeApiClient({});
 }
 
+/**
+ * Constructs and returns an api client suitable for access to
+ * authenticated api endpoints.
+ * @param {AuthService} authService Instance of the authentication service.
+ * @returns {NgResumeApiClient} An api client.
+ */
 export function getAuthenticatedApiClient(authService: AuthService) {
     if (!authService.isLoggedIn) {
-        throw new Error("Cannot initialize api client. No logged in user.");
+        throw new Error("Cannot initialize authenticated api client. No logged in user.");
     }
 
     return new NgResumeApiClient({
