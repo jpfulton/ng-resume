@@ -3,5 +3,7 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+    "APPINSIGHTS_INSTRUMENTATIONKEY": "<VALUE>",
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": "<VALUE>"
   }
 }

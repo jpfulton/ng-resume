@@ -28,10 +28,10 @@ env:
 # Execute this workflow on pushes to the default branch or upon pull requests into the default branch.
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
     types: [opened, synchronize, reopened, closed]
-    branches: [ main ]
+    branches: [main]
 
 # Default permissions for each job. May be supplemented or overridden in each configured job.
 permissions:
@@ -52,82 +52,83 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-        - name: Checkout repository
-          id: checkout
-          uses: actions/checkout@v3
+      - name: Checkout repository
+        id: checkout
+        uses: actions/checkout@v3
 
-        - name: Use Node.js
-          id: nodejs
-          uses: actions/setup-node@v3
-          with:
-            node-version: '18.x'
-            cache: 'yarn'
-            cache-dependency-path: ${{ env.APP_WORKING_DIR }}/yarn.lock
+      - name: Use Node.js
+        id: nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          cache: "yarn"
+          cache-dependency-path: ${{ env.APP_WORKING_DIR }}/yarn.lock
 
-        - name: Install dependencies via yarn with frozen lockfile
-          id: installdeps
+      - name: Install dependencies via yarn with frozen lockfile
+        id: installdeps
+        working-directory: ${{ env.APP_WORKING_DIR }}
+        run: yarn --frozen-lockfile
+
+      - name: Lint application
+        id: lint
+        working-directory: ${{ env.APP_WORKING_DIR }}
+        run: yarn run lint
+
+      - name: Test application
+        id: test
+        working-directory: ${{ env.APP_WORKING_DIR }}
+        run: yarn run test --configuration=ci
+
+      - name: Build application
+        id: build
+        timeout-minutes: 5
+        working-directory: ${{ env.APP_WORKING_DIR }}
+        run: yarn run prerender
+
+      # Deploy build artifacts into Azure.
+      # In the event of a push into the default branch, deploy to production.
+      # In the event of a pending PR into the default branch, create and deploy to a preview
+      # environment with a comment on the PR including the preview URL.
+      - name: Deploy application to Azure
+        id: deploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          azure_static_web_apps_api_token: ${{ env.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: "upload" # upload artifacts and deploy to either production or a preview environment
+          app_location: ${{ env.APP_LOCATION }}
+          api_location: ${{ env.API_LOCATION }}
+          output_location: ${{ env.OUTPUT_LOCATION }}
+
+      # Run the cypress e2e sanity test suite on the Azure deployment.
+      # The static_web_app_url output variable from the deployment step
+      # will contain either the production URL or the URL of a preview environment
+      # if this workflow is running on a PR.
+      - name: E2E test suite on deployment
+        id: e2e
+        uses: cypress-io/github-action@v5
+        with:
           working-directory: ${{ env.APP_WORKING_DIR }}
-          run: yarn --frozen-lockfile
+          config: baseUrl=${{ steps.deploy.outputs.static_web_app_url }}
 
-        - name: Lint application
-          id: lint
-          working-directory: ${{ env.APP_WORKING_DIR }}
-          run: yarn run lint
+      # Upload the cypress e2e test suite screenshots as artifacts to this
+      # workflow if failure is detected in a previous step.
+      - name: Upload E2E test suite failure screenshots artifact
+        id: e2e-failure-screenshot-upload
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: e2e-failure-screenshots
+          path: ${{ env.APP_WORKING_DIR }}/cypress/screenshots
 
-        - name: Test application
-          id: test
-          working-directory: ${{ env.APP_WORKING_DIR }}
-          run: yarn run test --configuration=ci
-
-        - name: Build application
-          id: build
-          working-directory: ${{ env.APP_WORKING_DIR }}
-          run: yarn run prerender
-
-        # Deploy build artifacts into Azure.
-        # In the event of a push into the default branch, deploy to production.
-        # In the event of a pending PR into the default branch, create and deploy to a preview
-        # environment with a comment on the PR including the preview URL.
-        - name: Deploy application to Azure
-          id: deploy
-          uses: Azure/static-web-apps-deploy@v1
-          with:
-            repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
-            azure_static_web_apps_api_token: ${{ env.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-            action: "upload" # upload artifacts and deploy to either production or a preview environment
-            app_location: ${{ env.APP_LOCATION }}
-            api_location: ${{ env.API_LOCATION }}
-            output_location: ${{ env.OUTPUT_LOCATION }}
-
-        # Run the cypress e2e sanity test suite on the Azure deployment.
-        # The static_web_app_url output variable from the deployment step
-        # will contain either the production URL or the URL of a preview environment
-        # if this workflow is running on a PR.
-        - name: E2E test suite on deployment
-          id: e2e
-          uses: cypress-io/github-action@v5
-          with:
-            working-directory: ${{ env.APP_WORKING_DIR }}
-            config: baseUrl=${{ steps.deploy.outputs.static_web_app_url }}
-
-        # Upload the cypress e2e test suite screenshots as artifacts to this
-        # workflow if failure is detected in a previous step.
-        - name: Upload E2E test suite failure screenshots artifact
-          id: e2e-failure-screenshot-upload
-          uses: actions/upload-artifact@v3
-          if: failure()
-          with:
-            name: e2e-failure-screenshots
-            path: ${{ env.APP_WORKING_DIR }}/cypress/screenshots
-
-        # Upload the cypress e2e test suite videos as artifacts to this workflow.
-        - name: Upload E2E test suite video artifact
-          id: e2e-video-upload
-          uses: actions/upload-artifact@v3
-          if: always()
-          with:
-            name: e2e-videos
-            path: ${{ env.APP_WORKING_DIR }}/cypress/videos
+      # Upload the cypress e2e test suite videos as artifacts to this workflow.
+      - name: Upload E2E test suite video artifact
+        id: e2e-video-upload
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: e2e-videos
+          path: ${{ env.APP_WORKING_DIR }}/cypress/videos
 
   close_pull_request_job:
     name: Clean Up Preview Environments Job

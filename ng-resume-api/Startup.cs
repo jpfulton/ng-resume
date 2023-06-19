@@ -1,11 +1,11 @@
 using System;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 [assembly: FunctionsStartup(typeof(Jpf.NgResume.Api.Startup))]
 
@@ -35,6 +35,7 @@ namespace Jpf.NgResume.Api
                 .SetBasePath(currentDirectory)
                 .AddConfiguration(configuration) // Add the original function configuration 
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables() // include settings from the environment
                 .Build();
 
             // Replace the Azure Function configuration with our new one
@@ -45,16 +46,36 @@ namespace Jpf.NgResume.Api
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddFunctionAuthentication(sharedOptions =>
+            services.AddApplicationInsightsTelemetry(config =>
             {
-               sharedOptions.DefaultScheme = Microsoft.Identity.Web.Constants.Bearer;
-               sharedOptions.DefaultChallengeScheme = Microsoft.Identity.Web.Constants.Bearer;
-            })
-           .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAdB2C"))
-           .EnableTokenAcquisitionToCallDownstreamApi()
-           .AddInMemoryTokenCaches();
+                config.ConnectionString = Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING");
+            });
+            
+            services.AddLogging(options =>
+            {
+                options.AddApplicationInsights();
+            });
 
+            services.AddFunctionAuthentication(options =>
+            {
+                options.DefaultScheme = CustomJwtBearerConstants.DefaultScheme;
+                options.DefaultChallengeScheme = CustomJwtBearerConstants.DefaultScheme;
+            })
+            .AddMicrosoftIdentityFunctionApi(
+                Configuration,
+                "AzureAdB2C",
+                jwtBearerScheme: CustomJwtBearerConstants.DefaultScheme,
+                subscribeToJwtBearerMiddlewareDiagnosticsEvents: true)
+            .EnableTokenAcquisitionToCallDownstreamApi()
+            .AddInMemoryTokenCaches();
+
+#if DEBUG
             IdentityModelEventSource.ShowPII = true;
+            
+            services.AddSingleton<IServiceDescriptorService>(
+                new ServiceDescriptorService(services)
+                );
+#endif
         }
     }
 }

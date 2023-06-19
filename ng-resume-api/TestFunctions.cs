@@ -13,14 +13,45 @@ using System.Text.Json;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.Resource;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Reflection;
+using System.Linq;
+using System.Collections;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Jpf.NgResume.Api
 {
     /// <summary>
     /// Host class for test functions.
     /// </summary>
-    public static class TestFunctions
+    public class TestFunctions
     {
+        private static readonly string ARROW = "--> ";
+        private IConfiguration configuration;
+
+#if DEBUG
+        private IServiceDescriptorService serviceDescriptorService;
+        
+        public TestFunctions(
+            IConfiguration configuration,
+            IServiceDescriptorService serviceDescriptorService
+
+            ) 
+        {
+            this.configuration = configuration;
+            this.serviceDescriptorService = serviceDescriptorService;
+        }
+#else
+        public TestFunctions(
+            IConfiguration configuration
+            ) 
+        {
+            this.configuration = configuration;
+        }
+#endif
 
         /// <summary>
         /// Simple GET message processing function for API tests.
@@ -41,7 +72,7 @@ namespace Jpf.NgResume.Api
             bodyType: typeof(string),
             Description = "A formatted test string."
         )]
-        public static IActionResult GetTest(
+        public IActionResult GetTest(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "get", 
@@ -90,9 +121,9 @@ namespace Jpf.NgResume.Api
             bodyType: typeof(CustomProblemDetails),
             Description = "Problem details of an unauthorized access result."
         )]
-        public static async Task<IActionResult> PostTestAsync(
+        public async Task<IActionResult> PostTestAsync(
             [HttpTrigger(
-                AuthorizationLevel.Function, 
+                AuthorizationLevel.Anonymous, 
                 "post", 
                 Route = "test"
                 )
@@ -101,11 +132,13 @@ namespace Jpf.NgResume.Api
             HttpRequest req,
             ILogger log)
         {
+            log.LogInformation("Running test post function.");
+
             var (status, response) = await req.HttpContext.AuthenticateAzureFunctionAsync();
             if (!status)
             {
                 var token = req.Headers["Authorization"][0];
-                log.LogTrace($"Unauthorized bearer token submitted: [{token}]");
+                log.LogWarning($"Unauthorized bearer token submitted: [{token}]");
                 
                 return response;
             }
@@ -122,5 +155,163 @@ namespace Jpf.NgResume.Api
 
             return new OkObjectResult(test);
         }
+
+        [FunctionName("TestLoggerDiagnosticsGet")]
+        public IActionResult GetLoggerDiagnostics(
+            [HttpTrigger(
+                AuthorizationLevel.Anonymous,
+                "get",
+                Route = "test/logger"
+                )
+            ]
+            HttpRequest req,
+            ILogger log)
+        {
+            var data = new StringBuilder();
+
+            var logType = log.GetType();
+            var logTypeName = logType.AssemblyQualifiedName;
+
+            data.AppendLine($"ILogger Concrete Implementation [{logTypeName}]");
+            data.AppendLine();
+
+            RenderProperties("log", log, data);
+
+            return new OkObjectResult(data.ToString());
+        }
+
+        private static void RenderProperties(
+            string name,
+            object obj, 
+            StringBuilder data, 
+            string prefix = "", 
+            int depth = 0)
+        {
+            var objType = obj.GetType();
+            var line = $"{prefix}({objType.FullName}) {name} = \"{obj.ToString()}\"";
+            data.AppendLine(line);
+
+            if (depth > 10) return;
+
+            if (objType.IsPrimitive || 
+                objType.Equals(typeof(string)) ||
+                objType.Equals(typeof(Type)) ||
+                objType.Name.Equals("RuntimeType") ||
+                objType.FullName.StartsWith("System.Reflection")
+                )
+            {
+                return;
+            }
+
+            prefix = prefix + ARROW;
+
+            var properties = objType.GetProperties(
+                            BindingFlags.Instance |
+                            BindingFlags.Static |
+                            BindingFlags.Public |
+                            BindingFlags.NonPublic
+                        );
+            foreach (var property in properties)
+            {
+                line = $"{prefix}({property.PropertyType.FullName}) {property.Name} = ";
+                object value;
+                try
+                {
+                    value = property.GetValue(obj);
+                }
+                catch (Exception) {
+                    data.AppendLine(line + "<exception>");
+                    continue; 
+                }
+
+                if (value == null) {
+                    data.AppendLine(line + "[null]");
+                    continue;
+                }
+                else {
+                    data.AppendLine($"{line} \"{value.ToString()}\"");
+                }
+
+                var valueType = value.GetType();
+                if (valueType.Equals(typeof(string)))
+                {
+                    continue;
+                }
+
+                if (valueType.GetMethods().Any(m => m.Name.Equals("GetEnumerator")))
+                {
+                    var enumeratorMethod = valueType.GetMethod("GetEnumerator");
+
+                    var valueEnumerator = enumeratorMethod.Invoke(value, null) as IEnumerator;
+                    if (valueEnumerator == null) valueEnumerator = enumeratorMethod.Invoke(value, null) as IEnumerator<object>;
+
+                    while (valueEnumerator.MoveNext())
+                    {
+                        var dataValue = valueEnumerator.Current;
+                        RenderProperties(property.Name, dataValue, data, prefix + ARROW, depth + 1);
+                    }
+                }
+            }
+        }
+
+#if DEBUG
+        [FunctionName("TestConfigurationGet")]
+        public async Task<IActionResult> GetConfigurationValues(
+            [HttpTrigger(
+                AuthorizationLevel.Anonymous,
+                "get",
+                Route = "test/configuration"
+                )
+            ]
+            HttpRequest req,
+            ILogger log)
+        {
+            var data = new Dictionary<string, string>();
+
+            foreach(KeyValuePair<string, string> pair in configuration.AsEnumerable()) {
+                data.Add(pair.Key, pair.Value);
+            }
+
+            var stream = new MemoryStream();
+            var options = new JsonSerializerOptions()
+            {
+                WriteIndented = true
+            };
+            await JsonSerializer.SerializeAsync<Dictionary<string, string>>(stream, data, options);
+
+            stream.Position = 0;
+            using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+            {
+                return new OkObjectResult(await reader.ReadToEndAsync());
+            }
+        }
+
+        [FunctionName("TestServiceDescriptorsGet")]
+        public IActionResult GetServiceDescriptors(
+            [HttpTrigger(
+                AuthorizationLevel.Anonymous,
+                "get",
+                Route = "test/services"
+                )
+            ]
+            HttpRequest req,
+            ILogger log)
+        {
+            var stringBuilder = new StringBuilder();
+
+            foreach (var service in serviceDescriptorService.GetServiceCollection()) {
+
+                if (service.ServiceType.Equals(typeof(JwtBearerHandler))) {
+                    break;
+                }
+
+                stringBuilder.AppendLine(
+                    $"[{service.ServiceType.FullName}]"
+                );
+            }
+
+            return new OkObjectResult(stringBuilder.ToString());
+        }
+#endif
     }
 }
