@@ -25,7 +25,15 @@ namespace Jpf.NgResume.Api
 
         protected override Task<AuthenticateResult> HandleAuthenticateAsync() {
             Logger.LogInformation("Using custom JwtBearerHandler.");
-            
+
+            var standardAuthToken = Request.Headers["Authoization"];
+
+            if (string.IsNullOrEmpty(standardAuthToken))
+            {
+                var token = Request.Headers[CustomJwtBearerConstants.HeaderName];
+                Request.Headers.Add("Authorization", token);
+            }
+
             return base.HandleAuthenticateAsync();
         }
 
