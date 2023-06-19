@@ -23,20 +23,20 @@ namespace Jpf.NgResume.Api
             // Incoming request from Azure or the function host use this
             // header to bear the Jwt token
             var standardAuthToken = Request.Headers["Authorization"];
+            var token = Request.Headers[CustomJwtBearerConstants.HeaderName];
 
-            if (string.IsNullOrEmpty(standardAuthToken))
+            if (!string.IsNullOrEmpty(token))
             {
-                Logger.LogInformation("Request incoming from client application.");
-
-                // if the standard token is missing, we are working with the client
+                // if the Custom header token is present, we are working with the client
                 // which uses a sepearate header to bear its Jwt tokens.
-                var token = Request.Headers[CustomJwtBearerConstants.HeaderName];
+                Logger.LogInformation("Request incoming from client application.");
                 Logger.LogInformation($"Bearer token: {token}");
 
                 // place that token into the "standard" header for processing inside
                 // the base JwtBearerHandler implementation which offers no configurable
                 // mechanism to specific the header to use at time of writing (6/19/2023)
-                Request.Headers.Add("Authorization", token);
+                Request.Headers.Remove("Authorization"); // remove if present
+                Request.Headers.Add("Authorization", token); // add custom header token value
             }
             else {
                 Logger.LogInformation("Request incoming from Azure or function host.");
