@@ -12,7 +12,6 @@ namespace Jpf.NgResume.Api.Auth {
             var (status, response) = await req.HttpContext.AuthenticateAzureFunctionApiAsync();
             if (!status)
             {
-                var token = req.Headers[CustomJwtBearerConstants.HeaderName][0];
                 log.LogWarning($"Unauthorized bearer token submitted.");
             }
 
