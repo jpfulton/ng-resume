@@ -16,7 +16,7 @@ namespace Jpf.NgResume.Api.OpenApi
     /// </summary>
     public class OpenApiConfigurationOptions : IOpenApiConfigurationOptions
     {
-        private List<OpenApiServer> servers;
+        private readonly List<OpenApiServer> servers;
 
         public OpenApiConfigurationOptions() {
             servers = GetServerList();

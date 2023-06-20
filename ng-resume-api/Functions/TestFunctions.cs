@@ -35,10 +35,10 @@ namespace Jpf.NgResume.Api.Functions
     public class TestFunctions
     {
         private static readonly string ARROW = "--> ";
-        private IConfiguration configuration;
+        private readonly IConfiguration configuration;
 
 #if DEBUG
-        private IServiceDescriptorService serviceDescriptorService;
+        private readonly IServiceDescriptorService serviceDescriptorService;
         
         public TestFunctions(
             IConfiguration configuration,
