@@ -185,7 +185,7 @@ namespace Jpf.NgResume.Api.Functions
             int depth = 0)
         {
             var objType = obj.GetType();
-            var line = $"{prefix}({objType.FullName}) {name} = \"{obj.ToString()}\"";
+            var line = $"{prefix}({objType.FullName}) {name} = \"{obj}\"";
             data.AppendLine(line);
 
             if (depth > 10) return;
