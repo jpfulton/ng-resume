@@ -74,7 +74,7 @@
       "options": {
         "cwd": "${workspaceFolder}/bin/Debug/net7.0"
       },
-      "command": "host start --no-build --verbose --dotnet-isolated-debug",
+      "command": "host start --no-build --verbose",
       "isBackground": true,
       "problemMatcher": "$func-dotnet-watch"
     }

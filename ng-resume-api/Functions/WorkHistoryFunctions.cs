@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Jpf.NgResume.Api.Models;
 using Microsoft.OpenApi.Models;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace Jpf.NgResume.Api.Functions
 {
@@ -35,17 +36,21 @@ namespace Jpf.NgResume.Api.Functions
             bodyType: typeof(IList<WorkHistory>),
             Description = "An array of all work history items."
         )]
-        public static async Task<IActionResult> GetAllWorkHistory(
+        public static async Task<HttpResponseData> GetAllWorkHistory(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "get",
                 Route = "workhistory"
                 )
-            ] HttpRequest request,
+            ] HttpRequestData request,
             ILogger log)
         {
             var data = await dataStore.GetAllWorkHistoriesAsync();
-            return new OkObjectResult(data);
+            
+            var response = request.CreateResponse(HttpStatusCode.OK);
+            await response.WriteAsJsonAsync(data);
+
+            return response;
         }
 
         [Function("WorkHistoryGetById")]
@@ -61,13 +66,13 @@ namespace Jpf.NgResume.Api.Functions
             bodyType: typeof(WorkHistory),
             Description = "A work history item by its id property."
         )]
-        public static async Task<IActionResult> GetWorkHistory(
+        public static async Task<HttpResponseData> GetWorkHistory(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "get",
                 Route = "workhistory/{id}"
                 )
-            ] HttpRequest request,
+            ] HttpRequestData request,
             string id, 
             ILogger log)
         {
@@ -83,7 +88,11 @@ namespace Jpf.NgResume.Api.Functions
             }
             
             var data = await dataStore.GetWorkHistoryAsync(idAsGuid);
-            return new OkObjectResult(data);
+            
+            var response = request.CreateResponse(HttpStatusCode.OK);
+            await response.WriteAsJsonAsync(data);
+
+            return response;
         }
     }
 }

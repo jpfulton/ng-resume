@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Jpf.NgResume.Api.Auth;
 using Jpf.NgResume.Api.Diagnostics;
@@ -16,11 +18,24 @@ using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Logging;
 
 var host = new HostBuilder()
-                .ConfigureFunctionsWorkerDefaults(x => x.UseDefaultWorkerMiddleware())
+                .ConfigureFunctionsWorkerDefaults(x => {
+                    x.UseDefaultWorkerMiddleware();
+                })
                 .ConfigureAppConfiguration((_, builder) => builder
                     .AddJsonFile("local.settings.json", true)
                     .Build()
                 )
+                .ConfigureServices(s => {
+                    s.Configure<JsonSerializerOptions>(options =>
+                    {
+                        options.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                        options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                        options.PropertyNameCaseInsensitive = true;
+                        #if DEBUG
+                        options.WriteIndented = true;
+                        #endif
+                    });
+                })
                 .Build();
 
 host.Run();
