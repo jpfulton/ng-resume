@@ -39,7 +39,7 @@ permissions:
 
 jobs:
   analyze:
-    name: CodeQL Analyze
+    name: CodeQL Analyze Job
     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
     timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
     permissions:
