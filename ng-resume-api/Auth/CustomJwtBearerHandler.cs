@@ -30,9 +30,6 @@ namespace Jpf.NgResume.Api.Auth
                 // if the Custom header token is present, we are working with the client
                 // which uses a sepearate header to bear its Jwt tokens.
                 Logger.LogInformation("Request incoming from client application.");
-#if DEBUG
-                Logger.LogInformation($"Bearer token: {token}");
-#endif
 
                 // place that token into the "standard" header for processing inside
                 // the base JwtBearerHandler implementation which offers no configurable
@@ -42,9 +39,6 @@ namespace Jpf.NgResume.Api.Auth
             }
             else {
                 Logger.LogInformation("Request incoming from Azure or function host.");
-#if DEBUG
-                Logger.LogInformation($"Bearer token: {standardAuthToken}");
-#endif
             }
 
             // call base implementation to address authentication on token
