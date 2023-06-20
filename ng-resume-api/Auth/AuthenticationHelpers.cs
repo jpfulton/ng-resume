@@ -13,7 +13,11 @@ namespace Jpf.NgResume.Api.Auth {
             if (!status)
             {
                 var token = req.Headers[CustomJwtBearerConstants.HeaderName][0];
+#if DEBUG
                 log.LogWarning($"Unauthorized bearer token submitted: [{token}]");
+#else
+                log.LogWarning($"Unauthorized bearer token submitted.");
+#endif
             }
 
             return (status, response);
