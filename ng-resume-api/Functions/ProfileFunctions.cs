@@ -4,8 +4,7 @@ using Jpf.NgResume.Api.Auth;
 using Jpf.NgResume.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
@@ -24,7 +23,7 @@ namespace Jpf.NgResume.Api.Functions
             this.graphServiceClient = graphServiceClient;
         }
 
-        [FunctionName("ProfileGet")]
+        [Function("ProfileGet")]
         [OpenApiOperation(operationId: "Get", tags: new[] { "profile" })]
         [OpenApiSecurity(
             "Bearer", 

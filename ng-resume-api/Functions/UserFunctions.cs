@@ -1,8 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
 
@@ -15,7 +14,7 @@ namespace Jpf.NgResume.Api.Functions {
             this.graphServiceClient = graphServiceClient;
         }
 
-        [FunctionName("UsersGetAll")]
+        [Function("UsersGetAll")]
         public async Task<IActionResult> GetAllAsync(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous,

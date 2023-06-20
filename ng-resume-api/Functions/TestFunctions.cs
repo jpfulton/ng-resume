@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
@@ -22,6 +20,8 @@ using System.Collections;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Jpf.NgResume.Api.Auth;
 using Microsoft.Identity.Web;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
 #if DEBUG
 using Jpf.NgResume.Api.Diagnostics;
@@ -64,7 +64,7 @@ namespace Jpf.NgResume.Api.Functions
         /// <param name="req"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        [FunctionName("TestGet")]
+        [Function("TestGet")]
         [OpenApiOperation(operationId: "Get", tags: new[] { "test" })]
         [OpenApiParameter(
             name: "name", 
@@ -77,14 +77,14 @@ namespace Jpf.NgResume.Api.Functions
             bodyType: typeof(string),
             Description = "A formatted test string."
         )]
-        public IActionResult GetTest(
+        public HttpResponseData GetTest(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "get", 
                 Route = "test"
                 )
             ] 
-            HttpRequest req,
+            HttpRequestData req,
             ILogger log)
         {
             string name = req.Query["name"];
@@ -93,7 +93,12 @@ namespace Jpf.NgResume.Api.Functions
                 ? "This HTTP triggered function executed successfully. Pass a name in the query string for a personalized response."
                 : $"Hello, {name}. This HTTP triggered function executed successfully.";
 
-            return new OkObjectResult(responseMessage);
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
+
+            response.WriteString(responseMessage);
+
+            return response;
         }
 
         /// <summary>
@@ -102,7 +107,7 @@ namespace Jpf.NgResume.Api.Functions
         /// <param name="req"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        [FunctionName("TestPost")]
+        [Function("TestPost")]
         [OpenApiOperation(operationId: "Add", tags: new[] { "test" })]
         [OpenApiSecurity(
             "Bearer", 
@@ -153,7 +158,7 @@ namespace Jpf.NgResume.Api.Functions
             return new OkObjectResult(test);
         }
 
-        [FunctionName("TestLoggerDiagnosticsGet")]
+        [Function("TestLoggerDiagnosticsGet")]
         public IActionResult GetLoggerDiagnostics(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous,
@@ -252,7 +257,7 @@ namespace Jpf.NgResume.Api.Functions
         }
 
 #if DEBUG
-        [FunctionName("TestConfigurationGet")]
+        [Function("TestConfigurationGet")]
         public async Task<IActionResult> GetConfigurationValues(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous,
@@ -283,7 +288,7 @@ namespace Jpf.NgResume.Api.Functions
             }
         }
 
-        [FunctionName("TestServiceDescriptorsGet")]
+        [Function("TestServiceDescriptorsGet")]
         public IActionResult GetServiceDescriptors(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous,

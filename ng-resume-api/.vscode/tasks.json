@@ -72,9 +72,9 @@
       "type": "func",
       "dependsOn": "build (functions)",
       "options": {
-        "cwd": "${workspaceFolder}/bin/Debug/net6.0"
+        "cwd": "${workspaceFolder}/bin/Debug/net7.0"
       },
-      "command": "host start --no-build --verbose",
+      "command": "host start --no-build --verbose --dotnet-isolated-debug",
       "isBackground": true,
       "problemMatcher": "$func-dotnet-watch"
     }
