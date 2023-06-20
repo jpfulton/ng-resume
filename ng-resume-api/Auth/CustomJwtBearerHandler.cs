@@ -22,7 +22,6 @@ namespace Jpf.NgResume.Api.Auth
 
             // Incoming request from Azure or the function host use this
             // header to bear the Jwt token
-            var standardAuthToken = Request.Headers["Authorization"];
             var token = Request.Headers[CustomJwtBearerConstants.HeaderName];
 
             if (!string.IsNullOrEmpty(token))
