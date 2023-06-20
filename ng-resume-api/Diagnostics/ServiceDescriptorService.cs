@@ -9,7 +9,7 @@ namespace Jpf.NgResume.Api.Diagnostics
 
     public class ServiceDescriptorService : IServiceDescriptorService
     {
-        private IServiceCollection serviceDescriptors;
+        private readonly IServiceCollection serviceDescriptors;
 
         public ServiceDescriptorService(IServiceCollection serviceDescriptors) {
             this.serviceDescriptors = serviceDescriptors;

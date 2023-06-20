@@ -35,10 +35,10 @@ namespace Jpf.NgResume.Api.Functions
     public class TestFunctions
     {
         private static readonly string ARROW = "--> ";
-        private IConfiguration configuration;
+        private readonly IConfiguration configuration;
 
 #if DEBUG
-        private IServiceDescriptorService serviceDescriptorService;
+        private readonly IServiceDescriptorService serviceDescriptorService;
         
         public TestFunctions(
             IConfiguration configuration,
@@ -185,7 +185,7 @@ namespace Jpf.NgResume.Api.Functions
             int depth = 0)
         {
             var objType = obj.GetType();
-            var line = $"{prefix}({objType.FullName}) {name} = \"{obj.ToString()}\"";
+            var line = $"{prefix}({objType.FullName}) {name} = \"{obj}\"";
             data.AppendLine(line);
 
             if (depth > 10) return;
@@ -216,8 +216,8 @@ namespace Jpf.NgResume.Api.Functions
                 {
                     value = property.GetValue(obj);
                 }
-                catch (Exception) {
-                    data.AppendLine(line + "<exception>");
+                catch (TargetParameterCountException) {
+                    data.AppendLine(line + "<TargetParameterCountException> (requires an index).");
                     continue; 
                 }
 
@@ -226,7 +226,7 @@ namespace Jpf.NgResume.Api.Functions
                     continue;
                 }
                 else {
-                    data.AppendLine($"{line} \"{value.ToString()}\"");
+                    data.AppendLine($"{line} \"{value}\"");
                 }
 
                 var valueType = value.GetType();
@@ -242,7 +242,7 @@ namespace Jpf.NgResume.Api.Functions
                     var valueEnumerator = enumeratorMethod.Invoke(value, null) as IEnumerator;
                     if (valueEnumerator == null) valueEnumerator = enumeratorMethod.Invoke(value, null) as IEnumerator<object>;
 
-                    while (valueEnumerator.MoveNext())
+                    while (valueEnumerator != null && valueEnumerator.MoveNext())
                     {
                         var dataValue = valueEnumerator.Current;
                         RenderProperties(property.Name, dataValue, data, prefix + ARROW, depth + 1);
