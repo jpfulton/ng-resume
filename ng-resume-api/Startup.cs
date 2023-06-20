@@ -55,7 +55,7 @@ namespace Jpf.NgResume.Api
             {
                 config.ConnectionString = Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING");
             });
-            
+
             services.AddLogging(options =>
             {
                 options.AddApplicationInsights();
@@ -73,6 +73,9 @@ namespace Jpf.NgResume.Api
                 subscribeToJwtBearerMiddlewareDiagnosticsEvents: true)
             .EnableTokenAcquisitionToCallDownstreamApi()
             .AddInMemoryTokenCaches();
+
+            // from DarkLoop package, required for current Microsoft.Identity.Web
+            services.AddFunctionsAuthorization();
 
 #if DEBUG
             IdentityModelEventSource.ShowPII = true;
