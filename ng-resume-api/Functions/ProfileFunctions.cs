@@ -1,6 +1,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using Jpf.NgResume.Api.Auth;
+using Jpf.NgResume.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -9,7 +10,6 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
-using Microsoft.Graph.Models;
 using Microsoft.OpenApi.Models;
 
 namespace Jpf.NgResume.Api.Functions
@@ -59,7 +59,9 @@ namespace Jpf.NgResume.Api.Functions
             ILogger log)
         {
             var me = await graphServiceClient.Me.GetAsync();
-            return new OkObjectResult(me);
+            var user = User.FromMicrosoftGraphUser(me);
+
+            return new OkObjectResult(user);
         }
     }
 }
