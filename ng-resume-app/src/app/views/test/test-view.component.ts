@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { TestService } from './services/test.service';
-import { Test } from '@jpfulton/ng-resume-api-browser-sdk/api/types';
+import { Test, User } from '@jpfulton/ng-resume-api-browser-sdk/api/types';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -18,9 +18,9 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./test-view.component.scss']
 })
 export class TestViewComponent implements OnInit {
-
-  test: Test | undefined;
   accessToken: string | undefined;
+  test: Test | undefined;
+  user: User | undefined;
 
   constructor(
     private testService: TestService,
@@ -40,7 +40,15 @@ export class TestViewComponent implements OnInit {
     this.testService.add(test).subscribe(test => this.test = test);
   }
 
+  sendProfileGet(): void {
+    this.testService.getProfile().subscribe(user => this.user = user);
+  }
+
   getTestAsJson(): string {
     return JSON.stringify(this.test, null, 4);
+  }
+
+  getUserAsJson(): string {
+    return JSON.stringify(this.user, null, 4);
   }
 }
