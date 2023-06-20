@@ -98,8 +98,8 @@ jobs:
       with:
         category: "/language:${{matrix.language}}"
 
-  ci_cd_job:
-    name: CI/CD Job
+  ci_job:
+    name: CI Job
     needs: analyze
 
     # Execute this job upon pushes to the default branch or
@@ -108,7 +108,6 @@ jobs:
 
     permissions:
       contents: read # for actions/checkout to fetch code
-      pull-requests: write # for Azure/static-web-apps-deploy to comment on PRs
 
     runs-on: ubuntu-latest
 
@@ -140,6 +139,40 @@ jobs:
         working-directory: ${{ env.APP_WORKING_DIR }}
         run: yarn run test --configuration=ci
 
+  cd_job:
+    name: CD Job
+    needs: ci_job
+    outputs:
+      preview-url: ${{ steps.deploy.outputs.static_web_app_url }}
+
+    # Execute this job upon pushes to the default branch or
+    # PRs into the default branch that are not closed.
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      pull-requests: write # for Azure/static-web-apps-deploy to comment on PRs
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        id: checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        id: nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          cache: "yarn"
+          cache-dependency-path: ${{ env.APP_WORKING_DIR }}/yarn.lock
+
+      - name: Install dependencies via yarn with frozen lockfile
+        id: installdeps
+        working-directory: ${{ env.APP_WORKING_DIR }}
+        run: yarn --frozen-lockfile
+
       - name: Build application
         id: build
         timeout-minutes: 5
@@ -161,6 +194,37 @@ jobs:
           api_location: ${{ env.API_LOCATION }}
           output_location: ${{ env.OUTPUT_LOCATION }}
 
+  e2e_job:
+    name: E2E Job
+    needs: cd_job
+
+    # Execute this job upon pushes to the default branch or
+    # PRs into the default branch that are not closed.
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+
+    permissions:
+      contents: read # for actions/checkout to fetch code
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        id: checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        id: nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          cache: "yarn"
+          cache-dependency-path: ${{ env.APP_WORKING_DIR }}/yarn.lock
+
+      - name: Install dependencies via yarn with frozen lockfile
+        id: installdeps
+        working-directory: ${{ env.APP_WORKING_DIR }}
+        run: yarn --frozen-lockfile
+        
       # Run the cypress e2e sanity test suite on the Azure deployment.
       # The static_web_app_url output variable from the deployment step
       # will contain either the production URL or the URL of a preview environment
@@ -170,7 +234,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           working-directory: ${{ env.APP_WORKING_DIR }}
-          config: baseUrl=${{ steps.deploy.outputs.static_web_app_url }}
+          config: baseUrl=${{ needs.cd_job.outputs.preview-url }}
 
       # Upload the cypress e2e test suite screenshots as artifacts to this
       # workflow if failure is detected in a previous step.
