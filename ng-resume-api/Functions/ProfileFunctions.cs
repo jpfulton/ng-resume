@@ -32,10 +32,6 @@ namespace Jpf.NgResume.Api.Functions
             Scheme = OpenApiSecuritySchemeType.Bearer, 
             BearerFormat = "JWT",
             In = OpenApiSecurityLocationType.Header)]
-        [OpenApiRequestBody(
-            contentType: "application/json; charset=utf-8",
-            bodyType: typeof(User)
-        )]
         [OpenApiResponseWithBody(
             statusCode: HttpStatusCode.OK,
             contentType:  "application/json; charset=utf-8",
