@@ -216,8 +216,8 @@ namespace Jpf.NgResume.Api.Functions
                 {
                     value = property.GetValue(obj);
                 }
-                catch (Exception) {
-                    data.AppendLine(line + "<exception>");
+                catch (TargetParameterCountException) {
+                    data.AppendLine(line + "<TargetParameterCountException> (requires an index).");
                     continue; 
                 }
 
