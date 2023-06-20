@@ -226,7 +226,7 @@ namespace Jpf.NgResume.Api.Functions
                     continue;
                 }
                 else {
-                    data.AppendLine($"{line} \"{value.ToString()}\"");
+                    data.AppendLine($"{line} \"{value}\"");
                 }
 
                 var valueType = value.GetType();
