@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using Jpf.NgResume.Api.Auth;
+using Microsoft.Identity.Web;
 
 #if DEBUG
 using Jpf.NgResume.Api.Diagnostics;
@@ -72,6 +73,7 @@ namespace Jpf.NgResume.Api
                 jwtBearerScheme: CustomJwtBearerConstants.DefaultScheme,
                 subscribeToJwtBearerMiddlewareDiagnosticsEvents: true)
             .EnableTokenAcquisitionToCallDownstreamApi()
+            .AddMicrosoftGraph(Configuration.GetSection("DownstreamApi"))
             .AddInMemoryTokenCaches();
 
             // from DarkLoop package, required for current Microsoft.Identity.Web
