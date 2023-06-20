@@ -242,7 +242,7 @@ namespace Jpf.NgResume.Api.Functions
                     var valueEnumerator = enumeratorMethod.Invoke(value, null) as IEnumerator;
                     if (valueEnumerator == null) valueEnumerator = enumeratorMethod.Invoke(value, null) as IEnumerator<object>;
 
-                    while (valueEnumerator.MoveNext())
+                    while (valueEnumerator != null && valueEnumerator.MoveNext())
                     {
                         var dataValue = valueEnumerator.Current;
                         RenderProperties(property.Name, dataValue, data, prefix + ARROW, depth + 1);
