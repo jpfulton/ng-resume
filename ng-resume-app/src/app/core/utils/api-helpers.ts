@@ -1,9 +1,10 @@
 /* eslint-disable jsdoc/require-jsdoc */
-import { NgResumeApiClient } from '@jpfulton/ng-resume-api-browser-sdk';
+import { NgResumeApiClient, NgResumeApiTimeoutError } from '@jpfulton/ng-resume-api-browser-sdk';
 import { APIResponse, Fetcher, fetcher } from '@jpfulton/ng-resume-api-browser-sdk/core';
-import { Observable, defer, finalize, retry, timer } from 'rxjs';
+import { Observable, catchError, defer, finalize, of, retry, throwError, timer } from 'rxjs';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { AuthService } from '../services/auth.service';
+import { ErrorDialogService } from '../services/error-dialog.service';
 
 const RETRY_COUNT = 3;
 const BACK_OFF_IN_MS = 1000;
@@ -48,11 +49,15 @@ export function apiPromiseToObservableWithRetry<T>(
  * @template T Data type of the Promise and returned Observable. 
  * @param {Function<T>} promiseFactory Factory function that returns a Promise of type T.
  * @param {LoadingService} loadingService Instance of the loading service.
+ * @param {ErrorDialogService} errorDialogService Instance of the dialog service.
  * @returns {Observable<T>} An observable created from the Promise.
  */
 export function apiPromiseToObservable<T>(
     promiseFactory: () => Promise<T>,
-    loadingService: LoadingService | null = null): Observable<T> {
+    loadingService: LoadingService | null = null,
+    errorDialogService: ErrorDialogService | null = null
+    ): Observable<T> {
+    
     if (loadingService) {
         loadingService.incrementTotalRequests();
     }
@@ -60,6 +65,17 @@ export function apiPromiseToObservable<T>(
     // usage of the "defer" operator postpones execution of the promise until subscribe is
     // called on the Observable
     return defer(promiseFactory).pipe(
+        catchError(error => {
+            if (error instanceof NgResumeApiTimeoutError)
+            {
+                if (errorDialogService) {
+                    errorDialogService.openTimeoutDialog();
+                    return of();
+                }
+            }
+
+            return throwError(() => error);
+        }),
         finalize(() => {
             if (loadingService) {
                 loadingService.decrementTotalRequests();

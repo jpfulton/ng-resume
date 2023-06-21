@@ -42,7 +42,7 @@ export class GlobalErrorHandler implements IErrorService {
         this.loggingService.logError(message, stackTrace);
         
         this.zone.run(() => {
-            this.errorDialogService.openDialog();
+            this.errorDialogService.openErrorDialog();
         });
     }
 }
