@@ -23,15 +23,9 @@ var host = new HostBuilder()
                 .ConfigureFunctionsWorkerDefaults(builder => {
                     builder.UseDefaultWorkerMiddleware();
 
-                    /*
-                    var executionContextOptions = builder.Services.BuildServiceProvider()
-                        .GetService<IOptions<ExecutionContextOptions>>().Value;
-
-                    var currentDirectory = executionContextOptions.AppDirectory;
-                    */
-
-                    //var currentDirectory = Environment.CurrentDirectory;
-                    //var currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                    builder
+                        .AddApplicationInsights()
+                        .AddApplicationInsightsLogger();
 
                     // Get the original configuration provider from the Azure Function
                     var configuration = builder.Services.BuildServiceProvider().GetService<IConfiguration>();
@@ -64,6 +58,22 @@ var host = new HostBuilder()
                         #if DEBUG
                         options.WriteIndented = true;
                         #endif
+                    });
+
+                    // You will need extra configuration because above will only log per default Warning (default AI configuration) and above because of following line:
+                    // https://github.com/microsoft/ApplicationInsights-dotnet/blob/main/NETCORE/src/Shared/Extensions/ApplicationInsightsExtensions.cs#L427
+                    // This is documented here:
+                    // https://github.com/microsoft/ApplicationInsights-dotnet/issues/2610#issuecomment-1316672650
+                    // So remove the default logger rule (warning and above). This will result that the default will be Information.
+                    services.Configure<LoggerFilterOptions>(options =>
+                    {
+                        var toRemove = options.Rules.FirstOrDefault(rule => rule.ProviderName
+                            == "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider");
+
+                        if (toRemove is not null)
+                        {
+                            options.Rules.Remove(toRemove);
+                        }
                     });
 
                     /*
@@ -101,6 +111,11 @@ var host = new HostBuilder()
                         new ServiceDescriptorService(services)
                         );
                     #endif
+                })
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    // Make sure the configuration of the appsettings.json file is picked up.
+                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                 })
                 .Build();
 
