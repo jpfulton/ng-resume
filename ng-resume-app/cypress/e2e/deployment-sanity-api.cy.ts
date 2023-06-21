@@ -42,9 +42,8 @@ describe("Deployment Sanity Tests [API]", () => {
     it("[API] Visit Swagger api documentation", () => {
       cy.visit({
         url: "/api/swagger/ui",
-        timeout: 120000 // on cold starts, swagger takes forever to load
+        timeout: 240000 // on cold starts, takes forever to load
       });
-
 
       cy.contains("ng-resume API Documentation");
 
@@ -52,7 +51,10 @@ describe("Deployment Sanity Tests [API]", () => {
     });
   
     it("[API] Access OpenAPI descriptor", () => {
-      cy.request("/api/openapi/v3.json").then((response) => {
+      cy.request({
+        url: "/api/openapi/v3.json",
+        timeout: 240000 // on cold starts, takes forever to load
+      }).then((response) => {
         expectJsonResponseBody(response);
         assert.isObject(response.body, "Body shouodl be an OpenAPI object.");
         expect(response.body.openapi).to.be.equals("3.0.1", "Should be OpenAPI version 3.0.1.");
