@@ -3,7 +3,9 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Jpf.NgResume.Api.Auth;
+#if DEBUG
 using Jpf.NgResume.Api.Diagnostics;
+#endif
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
