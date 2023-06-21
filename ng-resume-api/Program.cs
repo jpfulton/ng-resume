@@ -3,9 +3,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Jpf.NgResume.Api.Auth;
-#if DEBUG
-using Jpf.NgResume.Api.Diagnostics;
-#endif
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +10,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Logging;
+
+#if DEBUG
+using Jpf.NgResume.Api.Diagnostics;
+#endif
 
 var host = new HostBuilder()
                 .ConfigureFunctionsWorkerDefaults(builder => {
@@ -22,6 +23,7 @@ var host = new HostBuilder()
                         .AddApplicationInsights()
                         .AddApplicationInsightsLogger();
 
+                    /*
                     // Get the original configuration provider from the Azure Function
                     var configuration = builder.Services.BuildServiceProvider().GetService<IConfiguration>();
                     
@@ -35,11 +37,13 @@ var host = new HostBuilder()
 
                     // Replace the Azure Function configuration with our new one
                     builder.Services.AddSingleton(newConfig);
+                    */
 
                 })
                 .ConfigureAppConfiguration((_, builder) => builder
                     .AddJsonFile("appsettings.json", optional: false)
                     .AddJsonFile("local.settings.json", true)
+                    .AddEnvironmentVariables()
                     .Build()
                 )
                 .ConfigureServices(services => {
@@ -50,9 +54,7 @@ var host = new HostBuilder()
                         options.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                         options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                         options.PropertyNameCaseInsensitive = true;
-                        #if DEBUG
                         options.WriteIndented = true;
-                        #endif
                     });
 
                     // You will need extra configuration because above will only log per default Warning (default AI configuration) and above because of following line:
