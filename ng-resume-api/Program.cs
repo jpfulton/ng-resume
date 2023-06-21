@@ -76,7 +76,12 @@ var host = new HostBuilder()
                         configuration,
                         "AzureAdB2C",
                         jwtBearerScheme: CustomJwtBearerConstants.DefaultScheme,
-                        subscribeToJwtBearerMiddlewareDiagnosticsEvents: true)
+                        #if DEBUG
+                        subscribeToJwtBearerMiddlewareDiagnosticsEvents: true
+                        #else
+                        subscribeToJwtBearerMiddlewareDiagnosticsEvents: false
+                        #endif
+                        )
                     .EnableTokenAcquisitionToCallDownstreamApi()
                     .AddMicrosoftGraph(configuration.GetSection("DownstreamApi"))
                     .AddInMemoryTokenCaches();
