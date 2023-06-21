@@ -23,22 +23,6 @@ var host = new HostBuilder()
                         .AddApplicationInsights()
                         .AddApplicationInsightsLogger();
 
-                    /*
-                    // Get the original configuration provider from the Azure Function
-                    var configuration = builder.Services.BuildServiceProvider().GetService<IConfiguration>();
-                    
-                    // Create a new IConfigurationRoot and add our configuration along with Azure's original configuration 
-                    var newConfig = new ConfigurationBuilder()
-                        //.SetBasePath(currentDirectory)
-                        .AddConfiguration(configuration) // Add the original function configuration 
-                        //.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                        .AddEnvironmentVariables() // include settings from the environment
-                        .Build();
-
-                    // Replace the Azure Function configuration with our new one
-                    builder.Services.AddSingleton(newConfig);
-                    */
-
                 })
                 .ConfigureAppConfiguration((_, builder) => builder
                     .AddJsonFile("appsettings.json", optional: false)
