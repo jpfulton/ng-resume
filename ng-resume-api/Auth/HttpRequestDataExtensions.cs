@@ -25,11 +25,41 @@ namespace Jpf.NgResume.Api.Auth
                 throw new ArgumentNullException("Parameter requestData cannot be null.");
             }
 
+            var httpContext = GetHttpContext(requestData, functionContext);
+
+            AuthenticateResult? result =
+                await httpContext.AuthenticateAsync(
+                    CustomJwtBearerConstants.DefaultScheme
+                    ).ConfigureAwait(false);
+
+            if (result.Succeeded)
+            {
+                return (true, null, result.Principal);
+            }
+            else
+            {
+                var resp = requestData.CreateResponse(HttpStatusCode.Unauthorized);
+                await resp.WriteAsJsonAsync(new CustomProblemDetails
+                {
+                    Title = "Authentication failed.",
+                    Detail = result.Failure?.Message
+                });
+
+                return (false, resp, null);
+            }
+        }
+
+        private static HttpContext GetHttpContext(
+            HttpRequestData requestData, 
+            FunctionContext functionContext
+            )
+        {
             var contextFactory = new DefaultHttpContextFactory(functionContext.InstanceServices);
             var featureCollection = new FeatureCollection();
 
             var httpRequestFeature = new HttpRequestFeature();
-            foreach(var header in requestData.Headers) {
+            foreach (var header in requestData.Headers)
+            {
                 string[] values = header.Value.ToArray();
                 httpRequestFeature.Headers.Add(header.Key, new StringValues(values));
             }
@@ -39,26 +69,7 @@ namespace Jpf.NgResume.Api.Auth
             featureCollection.Set<IHttpResponseFeature>(httpResponseFeature);
 
             var httpContext = contextFactory.Create(featureCollection);
-
-            AuthenticateResult? result =
-                await httpContext.AuthenticateAsync(
-                    CustomJwtBearerConstants.DefaultScheme
-                    ).ConfigureAwait(false);
-            
-            if (result.Succeeded)
-            {
-                return (true, null, result.Principal);
-            }
-            else
-            {
-                var resp = requestData.CreateResponse(HttpStatusCode.Unauthorized);
-                await resp.WriteAsJsonAsync(new CustomProblemDetails {
-                    Title = "Authorization failed.",
-                    Detail = result.Failure?.Message
-                });
-
-                return (false, resp, null);
-            }
+            return httpContext;
         }
     }
 }
