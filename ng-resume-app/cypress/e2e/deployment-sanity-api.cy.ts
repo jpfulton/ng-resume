@@ -40,7 +40,12 @@ describe("Deployment Sanity Tests [API]", () => {
     });
   
     it("[API] Visit Swagger api documentation", () => {
-      cy.visit("/api/swagger/ui");
+      cy.visit({
+        url: "/api/swagger/ui",
+        timeout: 120000 // on cold starts, swagger takes forever to load
+      });
+
+
       cy.contains("ng-resume API Documentation");
 
       cy.screenshot();
