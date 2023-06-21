@@ -2,24 +2,17 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
-    <!-- <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput> -->
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AzureFunctions.Authentication" Version="4.1.0" />
     <PackageReference Include="DarkLoop.Azure.Functions.Authorize" Version="3.1.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
-    <!-- <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.18" /> -->
-    <!-- <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.7" /> -->
-    <!-- <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" /> -->
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.14.1" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.0.0-preview4" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.13" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi" Version="1.5.1" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.10.0" />
-    <!-- <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.2.0" /> -->
-    <!-- <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="1.5.1" /> -->
-    <!-- <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" /> -->
     <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.21.0" />
     <PackageReference Include="Microsoft.Identity.Abstractions" Version="3.2.1" />
     <PackageReference Include="Microsoft.Identity.Web" Version="2.12.4" />
