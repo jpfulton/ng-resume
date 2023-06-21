@@ -35,31 +35,22 @@ namespace Jpf.NgResume.Api.Functions
     /// </summary>
     public class TestFunctions
     {
+#if DEBUG
         private static readonly string ARROW = "--> ";
         private readonly IConfiguration configuration;
-        // private readonly IHttpContextAccessor httpContextAccessor;
-
-#if DEBUG
         private readonly IServiceDescriptorService serviceDescriptorService;
 
         public TestFunctions(
             IConfiguration configuration,
             IServiceDescriptorService serviceDescriptorService
-            // IHttpContextAccessor httpContextAccessor
             ) 
         {
             this.configuration = configuration;
             this.serviceDescriptorService = serviceDescriptorService;
-            //this.httpContextAccessor = httpContextAccessor;
         }
 #else
-        public TestFunctions(
-            IConfiguration configuration
-            // IHttpContextAccessor httpContextAccessor
-            ) 
+        public TestFunctions() 
         {
-            this.configuration = configuration;
-            // this.httpContextAccessor = httpContextAccessor;
         }
 #endif
 
@@ -168,6 +159,7 @@ namespace Jpf.NgResume.Api.Functions
             return resp;
         }
 
+#if DEBUG
         [Function("TestLoggerDiagnosticsGet")]
         public IActionResult GetLoggerDiagnostics(
             [HttpTrigger(
@@ -266,7 +258,6 @@ namespace Jpf.NgResume.Api.Functions
             }
         }
 
-#if DEBUG
         [Function("TestConfigurationGet")]
         public async Task<HttpResponseData> GetConfigurationValues(
             [HttpTrigger(
