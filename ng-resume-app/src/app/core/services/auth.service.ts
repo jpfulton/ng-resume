@@ -95,8 +95,7 @@ export class AuthService {
 
     const request = {
       scopes: [
-        "https://jpatrickfulton.onmicrosoft.com/api/test.write",
-        "User.Read.All"
+        "https://jpatrickfulton.onmicrosoft.com/api/test.write"
       ],
       account: this.msalAuthService.instance.getActiveAccount()!
     };
