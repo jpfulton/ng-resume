@@ -83,8 +83,6 @@ namespace Jpf.NgResume.Api.Functions
             HttpRequestData req,
             ILogger log)
         {
-            var unusedVariable = ""; // REMOVE ME
-
             string name = req.Query["name"];
 
             string responseMessage = string.IsNullOrEmpty(name)
