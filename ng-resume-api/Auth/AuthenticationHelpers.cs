@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -21,18 +22,18 @@ namespace Jpf.NgResume.Api.Auth {
             return (status, response);
         }
 
-        public static async Task<(bool, HttpResponseData?)> AuthenticationHelperAsync(
+        public static async Task<(bool, HttpResponseData?, ClaimsPrincipal?)> AuthenticationHelperAsync(
             HttpRequestData req,
             FunctionContext functionContext, 
             ILogger log) 
         {
-            var (status, response) = await req.AuthenticateAzureFunctionApiAsync(functionContext);
+            var (status, response, user) = await req.AuthenticateAzureFunctionApiAsync(functionContext);
             if (!status)
             {
                 log.LogWarning($"Unauthorized bearer token submitted.");
             }
 
-            return (status, response);
+            return (status, response, user);
         }
     }
 

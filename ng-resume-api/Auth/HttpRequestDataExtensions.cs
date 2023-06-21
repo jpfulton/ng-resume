@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Primitives;
@@ -16,7 +15,7 @@ namespace Jpf.NgResume.Api.Auth
 {
     public static class HttpRequestDataExtensions
     {
-        public static async Task<(bool, HttpResponseData?)> AuthenticateAzureFunctionApiAsync(
+        public static async Task<(bool, HttpResponseData?, ClaimsPrincipal?)> AuthenticateAzureFunctionApiAsync(
             this HttpRequestData requestData,
             FunctionContext functionContext
             )
@@ -48,25 +47,17 @@ namespace Jpf.NgResume.Api.Auth
             
             if (result.Succeeded)
             {
-                // httpContext.User = result.Principal;
-                return (true, null);
+                return (true, null, result.Principal);
             }
             else
             {
-                /*
-                return (false, new UnauthorizedObjectResult(new CustomProblemDetails {
-                    Title = "Authorization failed.",
-                    Detail = result.Failure?.Message
-                }));
-                */
-
                 var resp = requestData.CreateResponse(HttpStatusCode.Unauthorized);
                 await resp.WriteAsJsonAsync(new CustomProblemDetails {
                     Title = "Authorization failed.",
                     Detail = result.Failure?.Message
                 });
 
-                return (false, resp);
+                return (false, resp, null);
             }
         }
     }

@@ -147,23 +147,15 @@ namespace Jpf.NgResume.Api.Functions
             FunctionContext functionContext)
         {
             var log = functionContext.GetLogger<TestFunctions>();
-            //var contextAccessor = 
-            //    (IHttpContextAccessor) functionContext.InstanceServices.GetService(typeof(IHttpContextAccessor));
-            //var req = await functionContext.GetHttpRequestDataAsync();
-            //var resp = functionContext.GetHttpResponseData();
 
-            //var contextAccessor = functionContext.
-            // var httpContext = contextAccessor.HttpContext;
-
-            var (status, response) = await AuthenticationHelpers.AuthenticationHelperAsync(request, functionContext, log);
+            var (status, response, user) = await AuthenticationHelpers.AuthenticationHelperAsync(request, functionContext, log);
             if (!status) return response;
 
             // var scopes = new string[] {"test.write"};
             // req.HttpContext.VerifyUserHasAnyAcceptedScope(scopes);
 
-            // var user = req.Identities
-            var displayName = ""; // user.GetDisplayName();
-            var userId = ""; // user.GetObjectId();
+            var displayName = user.GetDisplayName();
+            var userId = user.GetObjectId();
 
             var test = await JsonSerializer.DeserializeAsync<Test>(request.Body);
 
