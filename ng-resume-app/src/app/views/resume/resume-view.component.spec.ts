@@ -7,6 +7,7 @@ import { ResumeViewComponent } from './resume-view.component';
 
 import { EducationService } from './services/education.service';
 import { WorkHistoryService } from './services/workhistory.service';
+import { MatDialogModule } from '@angular/material/dialog';
 
 describe('ResumeViewComponent', () => {
   let fixture: ComponentFixture<ResumeViewComponent>;
@@ -15,6 +16,7 @@ describe('ResumeViewComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
+        MatDialogModule,
         HttpClientTestingModule,
         ResumeViewComponent
       ],

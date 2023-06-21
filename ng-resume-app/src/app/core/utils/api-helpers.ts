@@ -17,11 +17,15 @@ const BACK_OFF_IN_MS = 1000;
  * @template T Data type of the Promise and returned Observable. 
  * @param {Function<T>} promiseFactory Factory function that returns a Promise of type T.
  * @param {LoadingService} loadingService Instance of the loading service.
+ * @param {ErrorDialogService} errorDialogService Instance of the dialog service.
  * @returns {Observable<T>} An observable created from the Promise.
  */
 export function apiPromiseToObservableWithRetry<T>(
     promiseFactory: () => Promise<T>,
-    loadingService: LoadingService | null = null): Observable<T> {
+    loadingService: LoadingService | null = null,
+    errorDialogService: ErrorDialogService | null = null
+    ): Observable<T> {
+    
     if (loadingService) {
         loadingService.incrementTotalRequests();
     }
@@ -32,6 +36,17 @@ export function apiPromiseToObservableWithRetry<T>(
         retry({
             count: RETRY_COUNT,
             delay: (_error, retryCount) => timer(retryCount * BACK_OFF_IN_MS)
+        }),
+        catchError(error => {
+            if (error instanceof NgResumeApiTimeoutError)
+            {
+                if (errorDialogService) {
+                    errorDialogService.openTimeoutDialog();
+                    return of();
+                }
+            }
+
+            return throwError(() => error);
         }),
         finalize(() => {
             if (loadingService) {
@@ -96,15 +111,18 @@ export function apiPromiseToObservable<T>(
  */
 async function customFetcher<R = unknown>(args: Fetcher.Args): Promise<APIResponse<R, Fetcher.Error>> {
     const headers: Record<string, string | undefined> | undefined = args.headers;
+    
     if (headers) {
         const authorizeHeaderValue = headers["Authorization"];
-        delete headers["Authorization"];
 
-        headers["X-Function-Api-Authorization"] = authorizeHeaderValue;
+        if (authorizeHeaderValue) {
+            delete headers["Authorization"];
+            headers["X-Function-Api-Authorization"] = authorizeHeaderValue;
+        }
     }
 
     args.headers = headers;
-    
+
     return fetcher(args);
 }
 
@@ -114,7 +132,9 @@ async function customFetcher<R = unknown>(args: Fetcher.Args): Promise<APIRespon
  * @returns {NgResumeApiClient} An api client.
  */
 export function getAnonymousApiClient(): NgResumeApiClient {
-    return new NgResumeApiClient({});
+    return new NgResumeApiClient({
+        fetcher: customFetcher
+    });
 }
 
 /**
