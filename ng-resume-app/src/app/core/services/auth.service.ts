@@ -94,7 +94,10 @@ export class AuthService {
     if (!this.isLoggedIn) return undefined;
 
     const request = {
-      scopes: ["https://jpatrickfulton.onmicrosoft.com/api/test.write"],
+      scopes: [
+        "https://jpatrickfulton.onmicrosoft.com/api/test.write",
+        "User.Read.All"
+      ],
       account: this.msalAuthService.instance.getActiveAccount()!
     };
 
