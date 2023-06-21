@@ -101,7 +101,6 @@ jobs:
 
   ci_job:
     name: CI Job
-    needs: analyze
 
     # Execute this job upon pushes to the default branch or
     # PRs into the default branch that are not closed.
@@ -142,7 +141,7 @@ jobs:
 
   cd_job:
     name: CD Job
-    needs: ci_job
+    needs: [analyze, ci_job]
     outputs:
       preview-url: ${{ steps.deploy.outputs.static_web_app_url }}
 
