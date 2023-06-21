@@ -22,6 +22,7 @@ using Jpf.NgResume.Api.Auth;
 using Microsoft.Identity.Web;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.AspNetCore.Authentication;
 
 #if DEBUG
 using Jpf.NgResume.Api.Diagnostics;
@@ -36,25 +37,29 @@ namespace Jpf.NgResume.Api.Functions
     {
         private static readonly string ARROW = "--> ";
         private readonly IConfiguration configuration;
+        // private readonly IHttpContextAccessor httpContextAccessor;
 
 #if DEBUG
         private readonly IServiceDescriptorService serviceDescriptorService;
-        
+
         public TestFunctions(
             IConfiguration configuration,
             IServiceDescriptorService serviceDescriptorService
-
+            // IHttpContextAccessor httpContextAccessor
             ) 
         {
             this.configuration = configuration;
             this.serviceDescriptorService = serviceDescriptorService;
+            //this.httpContextAccessor = httpContextAccessor;
         }
 #else
         public TestFunctions(
             IConfiguration configuration
+            // IHttpContextAccessor httpContextAccessor
             ) 
         {
             this.configuration = configuration;
+            // this.httpContextAccessor = httpContextAccessor;
         }
 #endif
 
@@ -131,31 +136,44 @@ namespace Jpf.NgResume.Api.Functions
             bodyType: typeof(CustomProblemDetails),
             Description = "Problem details of an unauthorized access result."
         )]
-        public async Task<IActionResult> PostTestAsync(
+        public async Task<HttpResponseData> PostTestAsync(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "post", 
                 Route = "test"
                 )
             ]
-            Test test,
-            HttpRequest req,
-            ILogger log)
+            HttpRequestData request,
+            FunctionContext functionContext)
         {
-            var (status, response) = await AuthenticationHelpers.AuthenticationHelperAsync(req, log);
+            var log = functionContext.GetLogger<TestFunctions>();
+            //var contextAccessor = 
+            //    (IHttpContextAccessor) functionContext.InstanceServices.GetService(typeof(IHttpContextAccessor));
+            //var req = await functionContext.GetHttpRequestDataAsync();
+            //var resp = functionContext.GetHttpResponseData();
+
+            //var contextAccessor = functionContext.
+            // var httpContext = contextAccessor.HttpContext;
+
+            var (status, response) = await AuthenticationHelpers.AuthenticationHelperAsync(request, functionContext, log);
             if (!status) return response;
 
-            var scopes = new string[] {"test.write"};
-            req.HttpContext.VerifyUserHasAnyAcceptedScope(scopes);
+            // var scopes = new string[] {"test.write"};
+            // req.HttpContext.VerifyUserHasAnyAcceptedScope(scopes);
 
-            var user = req.HttpContext.User;
-            var displayName = user.GetDisplayName();
-            var userId = user.GetObjectId();
+            // var user = req.Identities
+            var displayName = ""; // user.GetDisplayName();
+            var userId = ""; // user.GetObjectId();
+
+            var test = await JsonSerializer.DeserializeAsync<Test>(request.Body);
 
             test.Id = Guid.NewGuid();
             test.Message = test.Message + $" (Recieved by API from user: {displayName} [{userId}])";
 
-            return new OkObjectResult(test);
+            var resp = request.CreateResponse(HttpStatusCode.OK);
+            await resp.WriteAsJsonAsync(test);
+
+            return resp;
         }
 
         [Function("TestLoggerDiagnosticsGet")]
@@ -258,15 +276,14 @@ namespace Jpf.NgResume.Api.Functions
 
 #if DEBUG
         [Function("TestConfigurationGet")]
-        public async Task<IActionResult> GetConfigurationValues(
+        public async Task<HttpResponseData> GetConfigurationValues(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous,
                 "get",
                 Route = "test/configuration"
                 )
             ]
-            HttpRequest req,
-            ILogger log)
+            HttpRequestData req)
         {
             var data = new Dictionary<string, string>();
 
@@ -274,6 +291,12 @@ namespace Jpf.NgResume.Api.Functions
                 data.Add(pair.Key, pair.Value);
             }
 
+            var resp = req.CreateResponse(HttpStatusCode.OK);
+            await resp.WriteAsJsonAsync(data);
+
+            return resp;
+
+            /*
             var stream = new MemoryStream();
             var options = new JsonSerializerOptions()
             {
@@ -286,17 +309,18 @@ namespace Jpf.NgResume.Api.Functions
             {
                 return new OkObjectResult(await reader.ReadToEndAsync());
             }
+            */
         }
 
         [Function("TestServiceDescriptorsGet")]
-        public IActionResult GetServiceDescriptors(
+        public HttpResponseData GetServiceDescriptors(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous,
                 "get",
                 Route = "test/services"
                 )
             ]
-            HttpRequest req,
+            HttpRequestData req,
             ILogger log)
         {
             var stringBuilder = new StringBuilder();
@@ -308,11 +332,16 @@ namespace Jpf.NgResume.Api.Functions
                 }
 
                 stringBuilder.AppendLine(
-                    $"[{service.ServiceType.FullName}]"
+                    $"[{service.ServiceType.FullName}] ({service.Lifetime})"
                 );
             }
 
-            return new OkObjectResult(stringBuilder.ToString());
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
+
+            response.WriteString(stringBuilder.ToString());
+
+            return response;
         }
 #endif
     }
