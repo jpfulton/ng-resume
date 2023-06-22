@@ -76,12 +76,17 @@ namespace Jpf.NgResume.Api.Functions
                     u.Mail
                 })
                 .GetAsync();
-            var myGroups = await graphClient.Users[userId]
+            var memberships = await graphClient.Users[userId]
                 .MemberOf
                 .Request()
                 .GetAsync();
 
-            var appUser = Models.User.FromMicrosoftGraphUser(me, myGroups);
+            var groups = memberships
+                .Where(p => p.GetType() == typeof(Microsoft.Graph.Group))
+                .Cast<Microsoft.Graph.Group>()
+                .ToList();
+
+            var appUser = Models.User.FromMicrosoftGraphUser(me, groups);
 
             var response = request.CreateResponse(HttpStatusCode.OK);
             await response.WriteAsJsonAsync(appUser);

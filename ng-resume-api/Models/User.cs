@@ -20,11 +20,11 @@ namespace Jpf.NgResume.Api.Models
         public string Id { get; set; }
         public string DisplayName { get; set; }
         public string Mail { get; set; }
-        public string[] MemberOf { get; set; }
+        public List<string> MemberOf { get; set; } = new();
 
         public static User FromMicrosoftGraphUser(
             Microsoft.Graph.User graphUser,
-            IUserMemberOfCollectionWithReferencesPage groups) 
+            List<Microsoft.Graph.Group> groups) 
         {
             var user = new User()
             {
@@ -33,10 +33,7 @@ namespace Jpf.NgResume.Api.Models
                 Mail = graphUser.Mail
             };
 
-            var memberships = new List<string>();
-            foreach (var group in groups) {
-                memberships.Add(group.Id);
-            }
+            groups.ForEach((group) => user.MemberOf.Add(group.DisplayName));
 
             return user;
         }
