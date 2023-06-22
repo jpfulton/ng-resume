@@ -54,7 +54,7 @@ describe("Deployment Sanity Tests [API]", () => {
         timeout: 240000 // on cold starts, takes forever to load
       });
 
-      cy.contains("Swagger");
+      cy.contains("swagger");
 
       cy.screenshot();
     });
