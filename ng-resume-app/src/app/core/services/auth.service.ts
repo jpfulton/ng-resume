@@ -93,9 +93,11 @@ export class AuthService {
   async getActiveAccessToken(): Promise<string | undefined> {
     if (!this.isLoggedIn) return undefined;
 
+    // TODO: Revisit this block, should be in constants?
     const request = {
       scopes: [
-        "https://jpatrickfulton.onmicrosoft.com/api/test.write"
+        "https://jpatrickfulton.onmicrosoft.com/api/test.write",
+        "https://graph.microsoft.com/User.Read.All"
       ],
       account: this.msalAuthService.instance.getActiveAccount()!
     };

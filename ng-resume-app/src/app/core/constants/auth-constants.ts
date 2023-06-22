@@ -109,7 +109,9 @@ export const msalConfig: Configuration = {
  * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
 export const loginRequest = {
-    scopes: []
+    scopes: [
+        "https://graph.microsoft.com/User.Read.All"
+    ]
 }
 
 /**
@@ -119,7 +121,9 @@ export const loginRequest = {
  * If you do not receive the username claim in ID tokens, see also:
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/FAQ.md#why-is-getaccountbyusername-returning-null-even-though-im-signed-in
  */
+/*
 export const silentRequest = {
     scopes: [],
     loginHint: "example@domain.net"
 };
+*/
