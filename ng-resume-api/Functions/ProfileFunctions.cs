@@ -5,10 +5,12 @@ using Jpf.NgResume.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
+using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 
 namespace Jpf.NgResume.Api.Functions
@@ -43,20 +45,30 @@ namespace Jpf.NgResume.Api.Functions
             bodyType: typeof(CustomProblemDetails),
             Description = "Problem details of an unauthorized access result."
         )]
-        public async Task<IActionResult> GetAsync(
+        public async Task<HttpResponseData> GetAsync(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous,
                 "get",
                 Route = "profile"
                 )
             ]
-            HttpRequest req,
-            ILogger log)
+            HttpRequestData request,
+            FunctionContext functionContext)
         {
-            var me = await graphServiceClient.Me.GetAsync();
-            var user = User.FromMicrosoftGraphUser(me);
+            var log = functionContext.GetLogger<TestFunctions>();
+            var (status, resp, user) = await AuthenticationHelpers.AuthenticationHelperAsync(request, functionContext, log);
+            if (!status) return resp;
 
-            return new OkObjectResult(user);
+            // var me = await graphServiceClient.Me.GetAsync();
+            
+            var userId = user.GetObjectId();
+            var me = await graphServiceClient.Users[userId].GetAsync();
+            var appUser = User.FromMicrosoftGraphUser(me);
+
+            var response = request.CreateResponse(HttpStatusCode.OK);
+            await response.WriteAsJsonAsync(appUser);
+
+            return response;
         }
     }
 }
