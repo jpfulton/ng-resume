@@ -47,12 +47,13 @@ namespace Jpf.NgResume.Api.Auth
                 return (authorized, null, user);
             }
             else {
-                var resp = request.CreateResponse(HttpStatusCode.Unauthorized);
+                var resp = request.CreateResponse();
                 await resp.WriteAsJsonAsync(new CustomProblemDetails
                 {
                     Title = "Authorization failed.",
                     Detail = "User was not a member of an authorized group."
                 });
+                resp.StatusCode = HttpStatusCode.Unauthorized;
 
                 return (false, resp, null);
             }
