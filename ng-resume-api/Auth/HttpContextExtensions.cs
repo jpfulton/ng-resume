@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 #nullable enable
 namespace Jpf.NgResume.Api.Auth
 {
-    public static class HttpContextExtension
+    public static class HttpContextExtensions
     {
         /// <summary>
         /// Enables Bearer authentication for an API for use in Azure Functions.
@@ -40,11 +40,6 @@ namespace Jpf.NgResume.Api.Auth
                 }));
             }
         }
-    }
-
-    public class CustomProblemDetails : ProblemDetails
-    {
-        new private IDictionary<string, object?>? Extensions { get; }
     }
 }
 #nullable disable

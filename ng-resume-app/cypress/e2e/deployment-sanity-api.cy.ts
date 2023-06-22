@@ -39,17 +39,33 @@ describe("Deployment Sanity Tests [API]", () => {
       });
     });
   
+    it("[API] Access Swagger JSON source file", () => {
+      cy.request({
+        url: "/api/swagger.json",
+        timeout: 240000 // on cold starts, takes forever to load
+      }).then((response) => {
+        expectJsonResponseBody(response);
+      });
+    });
+  
     it("[API] Visit Swagger api documentation", () => {
-      cy.visit("/api/swagger/ui");
-      cy.contains("ng-resume API Documentation");
+      cy.visit({
+        url: "/api/swagger/ui",
+        timeout: 240000 // on cold starts, takes forever to load
+      });
+
+      cy.contains("swagger");
 
       cy.screenshot();
     });
   
     it("[API] Access OpenAPI descriptor", () => {
-      cy.request("/api/openapi/v3.json").then((response) => {
+      cy.request({
+        url: "/api/openapi/v3.json",
+        timeout: 240000 // on cold starts, takes forever to load
+      }).then((response) => {
         expectJsonResponseBody(response);
-        assert.isObject(response.body, "Body shouodl be an OpenAPI object.");
+        assert.isObject(response.body, "Body should be an OpenAPI object.");
         expect(response.body.openapi).to.be.equals("3.0.1", "Should be OpenAPI version 3.0.1.");
       });
     });

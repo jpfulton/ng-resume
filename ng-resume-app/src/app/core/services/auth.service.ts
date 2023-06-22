@@ -66,23 +66,50 @@ export class AuthService {
 
   login(userFlowRequest?: RedirectRequest | PopupRequest) {
     if (this.msalGuardConfig.interactionType === InteractionType.Popup) {
-        if (this.msalGuardConfig.authRequest) {
-            this.msalAuthService.loginPopup({ ...this.msalGuardConfig.authRequest, ...userFlowRequest } as PopupRequest)
-                .subscribe((response: AuthenticationResult) => {
-                    this.msalAuthService.instance.setActiveAccount(response.account);
-                });
-        } else {
-            this.msalAuthService.loginPopup(userFlowRequest)
-                .subscribe((response: AuthenticationResult) => {
-                    this.msalAuthService.instance.setActiveAccount(response.account);
-                });
-        }
-    } else {
-        if (this.msalGuardConfig.authRequest) {
-            this.msalAuthService.loginRedirect({ ...this.msalGuardConfig.authRequest, ...userFlowRequest } as RedirectRequest);
-        } else {
-            this.msalAuthService.loginRedirect(userFlowRequest);
-        }
+      if (this.msalGuardConfig.authRequest) {
+
+        const popupRequest: PopupRequest = {
+          ...this.msalGuardConfig.authRequest,
+          ...userFlowRequest
+        } as PopupRequest;
+
+          this.msalAuthService.loginPopup(popupRequest)
+            .subscribe((response: AuthenticationResult) => {
+                this.msalAuthService.instance.setActiveAccount(response.account);
+            });
+        
+      }
+      else {
+
+        const popupRequest: PopupRequest = {
+          ...userFlowRequest
+        } as PopupRequest;
+
+        this.msalAuthService.loginPopup(popupRequest)
+          .subscribe((response: AuthenticationResult) => {
+              this.msalAuthService.instance.setActiveAccount(response.account);
+          });
+      }
+    }
+    else {
+
+      if (this.msalGuardConfig.authRequest) {
+
+        const redirectRequest: RedirectRequest = {
+          ...this.msalGuardConfig.authRequest,
+          ...userFlowRequest
+        } as RedirectRequest;
+
+        this.msalAuthService.loginRedirect(redirectRequest);
+
+      }
+      else {
+        const redirectRequest: RedirectRequest = {
+          ...userFlowRequest
+        } as RedirectRequest;
+
+        this.msalAuthService.loginRedirect(redirectRequest);
+      }
     }
   }
 
@@ -94,7 +121,10 @@ export class AuthService {
     if (!this.isLoggedIn) return undefined;
 
     const request = {
-      scopes: ["https://jpatrickfulton.onmicrosoft.com/api/test.write"],
+      scopes: [
+        "https://jpatrickfulton.onmicrosoft.com/api/test.write"
+        // "https://graph.microsoft.com/User.Read.All"
+      ],
       account: this.msalAuthService.instance.getActiveAccount()!
     };
 
@@ -105,13 +135,18 @@ export class AuthService {
         if (error instanceof InteractionRequiredAuthError) {
           interactionRequired = true;
         }
+        else {
+          throw error;
+        }
       });
     
     if (interactionRequired) {
       response = await this.msalAuthService.instance.acquireTokenRedirect(request);
     }
 
-    return response?.accessToken;
+    const token = response?.accessToken;
+    if (token && token !== "") return response?.accessToken;
+    else return undefined;
   }
 
   getActiveIdToken(): string | undefined {

@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestViewComponent } from './test-view.component';
 import { MsalModule, MsalService, MSAL_INSTANCE, MSAL_GUARD_CONFIG } from '@azure/msal-angular';
 import { MSALInstanceFactory, MSALGuardConfigFactory } from 'src/app/app.config';
+import { MatDialogModule } from '@angular/material/dialog';
 
 describe('TestViewComponent', () => {
   let component: TestViewComponent;
@@ -12,7 +13,8 @@ describe('TestViewComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         TestViewComponent,
-        MsalModule
+        MsalModule,
+        MatDialogModule
       ],
       providers: [
         MsalService,

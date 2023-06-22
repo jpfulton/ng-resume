@@ -1,0 +1,16 @@
+.dialog-container {
+    padding: 10px;
+
+    h2 {
+        margin: 0;
+    }
+
+    .dialog-actions {
+        text-align: right;
+
+        button {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+    }
+}

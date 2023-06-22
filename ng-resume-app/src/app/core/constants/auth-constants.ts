@@ -119,7 +119,9 @@ export const loginRequest = {
  * If you do not receive the username claim in ID tokens, see also:
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/FAQ.md#why-is-getaccountbyusername-returning-null-even-though-im-signed-in
  */
+/*
 export const silentRequest = {
     scopes: [],
     loginHint: "example@domain.net"
 };
+*/

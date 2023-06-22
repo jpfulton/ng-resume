@@ -39,13 +39,14 @@ permissions:
 
 jobs:
   analyze:
-    name: CodeQL Analyze
+    name: CodeQL Analyze Job
     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
     timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
     permissions:
       actions: read
       contents: read
       security-events: write
+      pull-requests: write
 
     # Execute this job upon pushes to the default branch or
     # PRs into the default branch that are not closed.
@@ -100,7 +101,6 @@ jobs:
 
   ci_job:
     name: CI Job
-    needs: analyze
 
     # Execute this job upon pushes to the default branch or
     # PRs into the default branch that are not closed.
@@ -141,7 +141,7 @@ jobs:
 
   cd_job:
     name: CD Job
-    needs: ci_job
+    needs: [analyze, ci_job]
     outputs:
       preview-url: ${{ steps.deploy.outputs.static_web_app_url }}
 

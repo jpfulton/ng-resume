@@ -1,8 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -12,6 +10,8 @@ using Microsoft.OpenApi.Models;
 using System.Net;
 using System.Collections.Generic;
 using Jpf.NgResume.Api.Models;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace Jpf.NgResume.Api.Functions
 {
@@ -28,7 +28,7 @@ namespace Jpf.NgResume.Api.Functions
             dataStore = new EducationDataStore();
         }
 
-        [FunctionName("EducationGetAll")]
+        [Function("EducationGetAll")]
         [OpenApiOperation(operationId: "GetAll", tags: new[] { "education" })]
         [OpenApiResponseWithBody(
             statusCode: HttpStatusCode.OK,
@@ -36,20 +36,25 @@ namespace Jpf.NgResume.Api.Functions
             bodyType: typeof(IList<Education>),
             Description = "An array of all education items."
         )]
-        public static async Task<IActionResult> GetAllEducation(
+        public static async Task<HttpResponseData> GetAllEducation(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "get",
                 Route = "education"
                 )
-            ] HttpRequest request,
+            ] HttpRequestData request,
             ILogger log)
         {
             var data = await dataStore.GetAllEducationsAsync();
-            return new OkObjectResult(data);
+
+            var response = request.CreateResponse(HttpStatusCode.OK);
+            await response.WriteAsJsonAsync(data);
+
+            return response;
+
         }
 
-        [FunctionName("EducationGetById")]
+        [Function("EducationGetById")]
         [OpenApiOperation(operationId: "GetById", tags: new[] { "education" })]
         [OpenApiParameter(
             name: "id", 
@@ -62,13 +67,13 @@ namespace Jpf.NgResume.Api.Functions
             bodyType: typeof(Education),
             Description = "An education item by its id property."
         )]
-        public static async Task<IActionResult> GetEducation(
+        public static async Task<HttpResponseData> GetEducation(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "get",
                 Route = "education/{id}"
                 )
-            ] HttpRequest request,
+            ] HttpRequestData request,
             string id, 
             ILogger log)
         {
@@ -84,7 +89,11 @@ namespace Jpf.NgResume.Api.Functions
             }
             
             var data = await dataStore.GetEducationAsync(idAsGuid);
-            return new OkObjectResult(data);
+            
+            var response = request.CreateResponse(HttpStatusCode.OK);
+            await response.WriteAsJsonAsync(data);
+
+            return response;
         }
     }
 }
