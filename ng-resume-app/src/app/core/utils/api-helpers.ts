@@ -35,9 +35,17 @@ export function apiPromiseToObservableWithRetry<T>(
     return defer(promiseFactory).pipe(
         retry({
             count: RETRY_COUNT,
-            delay: (_error, retryCount) => timer(retryCount * BACK_OFF_IN_MS)
+            delay: (error, retryCount) => {
+
+                if (error instanceof NgResumeApiTimeoutError)
+                    return timer(retryCount * BACK_OFF_IN_MS);
+                else
+                    return throwError(() => error);
+                
+            }
         }),
         catchError(error => {
+            
             if (error instanceof NgResumeApiTimeoutError)
             {
                 if (errorDialogService) {
