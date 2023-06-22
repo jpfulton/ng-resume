@@ -25,8 +25,8 @@ namespace Jpf.NgResume.Api.Functions {
             HttpRequest req,
             ILogger log)
         {
-            var usersResponse = await graphServiceClient.Users.GetAsync();
-            return new OkObjectResult(usersResponse.Value);
+            var usersResponse = await graphServiceClient.Users.Request().GetAsync();
+            return new OkObjectResult(usersResponse);
         }
     }
 

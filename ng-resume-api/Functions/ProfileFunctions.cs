@@ -17,7 +17,6 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
 using Microsoft.Identity.Web;
-using Microsoft.Kiota.Abstractions.Authentication;
 using Microsoft.OpenApi.Models;
 
 namespace Jpf.NgResume.Api.Functions
@@ -45,7 +44,7 @@ namespace Jpf.NgResume.Api.Functions
         [OpenApiResponseWithBody(
             statusCode: HttpStatusCode.OK,
             contentType:  "application/json; charset=utf-8",
-            bodyType: typeof(User),
+            bodyType: typeof(Models.User),
             Description = "A user representing the current user's profile."
         )]
         [OpenApiResponseWithBody(
@@ -69,39 +68,25 @@ namespace Jpf.NgResume.Api.Functions
             if (!status) return resp;
 
             var userId = user.GetObjectId();
-            var me = await graphClient.Users[userId].GetAsync();
-            var appUser = User.FromMicrosoftGraphUser(me);
+            var me = await graphClient.Users[userId].Request()
+                .Select(u => new
+                {
+                    u.Id,
+                    u.DisplayName,
+                    u.Mail
+                })
+                .GetAsync();
+            var myGroups = await graphClient.Users[userId]
+                .MemberOf
+                .Request()
+                .GetAsync();
+
+            var appUser = Models.User.FromMicrosoftGraphUser(me, myGroups);
 
             var response = request.CreateResponse(HttpStatusCode.OK);
             await response.WriteAsJsonAsync(appUser);
 
             return response;
         }
-    }
-
-    public class TokenProvider : IAccessTokenProvider
-    {
-        private HttpRequestData requestData;
-
-        public TokenProvider(HttpRequestData requestData) {
-            this.requestData = requestData;
-        }
-
-        public Task<string> GetAuthorizationTokenAsync(
-            Uri uri, 
-            Dictionary<string, object> additionalAuthenticationContext = default,
-            CancellationToken cancellationToken = default)
-        {
-            //var token = "token";
-            // get the token and return it in your own way
-            var token = requestData
-                .Headers
-                .GetValues(CustomJwtBearerConstants.HeaderName)
-                .ToArray()[0];
-
-            return Task.FromResult(token);
-        }
-
-        public AllowedHostsValidator AllowedHostsValidator { get; }
     }
 }
