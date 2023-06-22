@@ -92,7 +92,7 @@ var host = new HostBuilder()
                             new ClientSecretCredential(
                                 configuration.GetValue<string>("MicrosoftGraph:TenantId"),
                                 configuration.GetValue<string>("MicrosoftGraph:AppId"),
-                                configuration.GetValue<string>("MicrosoftGraph:ClientSecret")
+                                configuration.GetValue<string>("MicrosoftGraph_ClientSecret")
                             );
 
                         var graphClient = new GraphServiceClient(clientSecretCredential, scopes);
