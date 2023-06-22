@@ -1740,10 +1740,10 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.3.tgz#e45e384e4b8ec16bce2fd903af78450f6bf7ec98"
   integrity sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==
 
-"@jpfulton/ng-resume-api-browser-sdk@0.0.30":
-  version "0.0.30"
-  resolved "https://registry.yarnpkg.com/@jpfulton/ng-resume-api-browser-sdk/-/ng-resume-api-browser-sdk-0.0.30.tgz#075c854e1a9d657432e7dae877a02190375c6c2a"
-  integrity sha512-VglwVQbIdyvGu5QeJet//87wz6+GzOP+hU2k3p63XJAWJkPfTahBj4SFDuftYvtC3kCf+a49Cj0lyAHyRxm2RQ==
+"@jpfulton/ng-resume-api-browser-sdk@0.0.33":
+  version "0.0.33"
+  resolved "https://registry.yarnpkg.com/@jpfulton/ng-resume-api-browser-sdk/-/ng-resume-api-browser-sdk-0.0.33.tgz#33c76e29b44702d605f0b022b9a6224dbaee51d8"
+  integrity sha512-P+o+svDJNyHSneO06SqZgr6F59/JfVW3myeCdmnt8HBqSzEKY+R2i5vqZJdk9YZg7RaNVWesYSHN4o5WkMqF1A==
   dependencies:
     "@types/url-join" "4.0.1"
     "@ungap/url-search-params" "0.2.2"
