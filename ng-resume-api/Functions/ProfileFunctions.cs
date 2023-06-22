@@ -1,5 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
+using Azure.Core;
+using Azure.Identity;
 using Jpf.NgResume.Api.Auth;
 using Jpf.NgResume.Api.Models;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +17,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
 using Microsoft.Identity.Web;
+using Microsoft.Kiota.Abstractions.Authentication;
 using Microsoft.OpenApi.Models;
 
 namespace Jpf.NgResume.Api.Functions
@@ -18,11 +25,13 @@ namespace Jpf.NgResume.Api.Functions
 
     public class ProfileFunctions
     {
-        private readonly GraphServiceClient graphServiceClient;
+        private readonly GraphServiceClient graphClient;
 
-        public ProfileFunctions(GraphServiceClient graphServiceClient)
+        public ProfileFunctions(
+            GraphServiceClient graphClient
+            )
         {
-            this.graphServiceClient = graphServiceClient;
+            this.graphClient = graphClient;
         }
 
         [Function("ProfileGet")]
@@ -59,10 +68,8 @@ namespace Jpf.NgResume.Api.Functions
             var (status, resp, user) = await AuthenticationHelpers.AuthenticationHelperAsync(request, functionContext, log);
             if (!status) return resp;
 
-            // var me = await graphServiceClient.Me.GetAsync();
-            
             var userId = user.GetObjectId();
-            var me = await graphServiceClient.Users[userId].GetAsync();
+            var me = await graphClient.Users[userId].GetAsync();
             var appUser = User.FromMicrosoftGraphUser(me);
 
             var response = request.CreateResponse(HttpStatusCode.OK);
@@ -70,5 +77,31 @@ namespace Jpf.NgResume.Api.Functions
 
             return response;
         }
+    }
+
+    public class TokenProvider : IAccessTokenProvider
+    {
+        private HttpRequestData requestData;
+
+        public TokenProvider(HttpRequestData requestData) {
+            this.requestData = requestData;
+        }
+
+        public Task<string> GetAuthorizationTokenAsync(
+            Uri uri, 
+            Dictionary<string, object> additionalAuthenticationContext = default,
+            CancellationToken cancellationToken = default)
+        {
+            //var token = "token";
+            // get the token and return it in your own way
+            var token = requestData
+                .Headers
+                .GetValues(CustomJwtBearerConstants.HeaderName)
+                .ToArray()[0];
+
+            return Task.FromResult(token);
+        }
+
+        public AllowedHostsValidator AllowedHostsValidator { get; }
     }
 }

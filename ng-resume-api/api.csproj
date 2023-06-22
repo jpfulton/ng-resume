@@ -15,7 +15,6 @@
     <PackageReference Include="Microsoft.Graph" Version="5.15.0" />
     <PackageReference Include="Microsoft.Identity.Abstractions" Version="3.2.1" />
     <PackageReference Include="Microsoft.Identity.Web" Version="2.12.4" />
-    <!-- <PackageReference Include="Microsoft.Identity.Web.GraphServiceClient" Version="2.12.4" /> -->
     <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.31.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.LoggingExtensions" Version="6.31.0" />
   </ItemGroup>

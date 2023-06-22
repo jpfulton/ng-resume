@@ -10,6 +10,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.Graph;
+using Azure.Identity;
 
 #if DEBUG
 using Jpf.NgResume.Api.Diagnostics;
@@ -76,19 +78,31 @@ var host = new HostBuilder()
                         configuration,
                         "AzureAdB2C",
                         jwtBearerScheme: CustomJwtBearerConstants.DefaultScheme,
-                        #if DEBUG
+#if DEBUG
                         subscribeToJwtBearerMiddlewareDiagnosticsEvents: true
-                        #else
+#else
                         subscribeToJwtBearerMiddlewareDiagnosticsEvents: false
-                        #endif
-                        )
-                    .EnableTokenAcquisitionToCallDownstreamApi()
-                    .AddMicrosoftGraph(configuration.GetSection("DownstreamApi"))
-                    .AddInMemoryTokenCaches();
+#endif
+                        );
+
+                    services.AddTransient<GraphServiceClient>((_) =>
+                    {
+                        var scopes = new[] { "https://graph.microsoft.com/.default" };
+                        var clientSecretCredential = 
+                            new ClientSecretCredential(
+                                configuration.GetValue<string>("MicrosoftGraph:TenantId"),
+                                configuration.GetValue<string>("MicrosoftGraph:AppId"),
+                                configuration.GetValue<string>("MicrosoftGraph:ClientSecret")
+                            );
+
+                        var graphClient = new GraphServiceClient(clientSecretCredential, scopes);
+
+                        return graphClient;
+                    });
 
                     // services.AddAuthorization();
 
-                    #if DEBUG
+#if DEBUG
                     IdentityModelEventSource.ShowPII = true;
             
                     services.AddSingleton<IServiceDescriptorService>(
