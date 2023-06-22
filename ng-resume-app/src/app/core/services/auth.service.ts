@@ -7,10 +7,11 @@ import { PlatformService } from './platform.service';
 import { LoggingService } from './logging.service';
 import { EventMessage, EventType as MsalEventType, InteractionStatus, SsoSilentRequest, RedirectRequest, PopupRequest, InteractionType } from '@azure/msal-browser';
 import { AuthenticationResult, AccountInfo, PromptValue, IdTokenClaims, InteractionRequiredAuthError } from '@azure/msal-common';
-import { b2cPolicies } from '../constants/auth-constants';
+import { b2cPolicies, loginRequest } from '../constants/auth-constants';
 import { User } from '../models/user';
 import { createClaimsTable } from '../utils/claim-utils';
 import { Claim } from '../models/claim';
+import { log } from 'console';
 
 type IdTokenClaimsWithPolicyId = IdTokenClaims & {
   acr?: string,
@@ -66,23 +67,50 @@ export class AuthService {
 
   login(userFlowRequest?: RedirectRequest | PopupRequest) {
     if (this.msalGuardConfig.interactionType === InteractionType.Popup) {
-        if (this.msalGuardConfig.authRequest) {
-            this.msalAuthService.loginPopup({ ...this.msalGuardConfig.authRequest, ...userFlowRequest } as PopupRequest)
-                .subscribe((response: AuthenticationResult) => {
-                    this.msalAuthService.instance.setActiveAccount(response.account);
-                });
-        } else {
-            this.msalAuthService.loginPopup(userFlowRequest)
-                .subscribe((response: AuthenticationResult) => {
-                    this.msalAuthService.instance.setActiveAccount(response.account);
-                });
-        }
-    } else {
-        if (this.msalGuardConfig.authRequest) {
-            this.msalAuthService.loginRedirect({ ...this.msalGuardConfig.authRequest, ...userFlowRequest } as RedirectRequest);
-        } else {
-            this.msalAuthService.loginRedirect(userFlowRequest);
-        }
+      if (this.msalGuardConfig.authRequest) {
+
+        const popupRequest: PopupRequest = {
+          ...this.msalGuardConfig.authRequest,
+          ...userFlowRequest
+        } as PopupRequest;
+
+          this.msalAuthService.loginPopup(popupRequest)
+            .subscribe((response: AuthenticationResult) => {
+                this.msalAuthService.instance.setActiveAccount(response.account);
+            });
+        
+      }
+      else {
+
+        const popupRequest: PopupRequest = {
+          ...userFlowRequest
+        } as PopupRequest;
+
+        this.msalAuthService.loginPopup(popupRequest)
+          .subscribe((response: AuthenticationResult) => {
+              this.msalAuthService.instance.setActiveAccount(response.account);
+          });
+      }
+    }
+    else {
+
+      if (this.msalGuardConfig.authRequest) {
+
+        const redirectRequest: RedirectRequest = {
+          ...this.msalGuardConfig.authRequest,
+          ...userFlowRequest
+        } as RedirectRequest;
+
+        this.msalAuthService.loginRedirect(redirectRequest);
+
+      }
+      else {
+        const redirectRequest: RedirectRequest = {
+          ...userFlowRequest
+        } as RedirectRequest;
+
+        this.msalAuthService.loginRedirect(redirectRequest);
+      }
     }
   }
 
@@ -93,11 +121,10 @@ export class AuthService {
   async getActiveAccessToken(): Promise<string | undefined> {
     if (!this.isLoggedIn) return undefined;
 
-    // TODO: Revisit this block, should be in constants?
     const request = {
       scopes: [
-        "https://jpatrickfulton.onmicrosoft.com/api/test.write",
-        "https://graph.microsoft.com/User.Read.All"
+        "https://jpatrickfulton.onmicrosoft.com/api/test.write"
+        // "https://graph.microsoft.com/User.Read.All"
       ],
       account: this.msalAuthService.instance.getActiveAccount()!
     };
@@ -109,13 +136,18 @@ export class AuthService {
         if (error instanceof InteractionRequiredAuthError) {
           interactionRequired = true;
         }
+        else {
+          throw error;
+        }
       });
     
     if (interactionRequired) {
       response = await this.msalAuthService.instance.acquireTokenRedirect(request);
     }
 
-    return response?.accessToken;
+    const token = response?.accessToken;
+    if (token && token !== "") return response?.accessToken;
+    else return undefined;
   }
 
   getActiveIdToken(): string | undefined {
