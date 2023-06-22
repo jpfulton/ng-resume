@@ -14,30 +14,27 @@ namespace Jpf.NgResume.Api.Models
     /// Model class to represent application users.
     /// </summary>
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore, NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    //[OpenApiExample(typeof(User))]
-    public class User
+    //[OpenApiExample(typeof(Group))]
+    public class Group
     {
         public string Id { get; set; }
         public string DisplayName { get; set; }
-        public string Mail { get; set; }
-        public List<Group> MemberOf { get; set; } = new();
+        public bool? SecurityEnabled { get; set; }
     }
 
-    public static class UserExtensions {
-        public static User FromMicrosoftGraph(
-            this Microsoft.Graph.User graphUser,
-            List<Microsoft.Graph.Group> groups) 
+    public static class GroupExtensions {
+        public static Group FromMicrosoftGraph(
+            this Microsoft.Graph.Group graphGroup
+            )
         {
-            var user = new User()
+            var group = new Group()
             {
-                Id = graphUser.Id,
-                DisplayName = graphUser.DisplayName,
-                Mail = graphUser.Mail
+                Id = graphGroup.Id,
+                DisplayName = graphGroup.DisplayName,
+                SecurityEnabled = graphGroup.SecurityEnabled
             };
 
-            groups.ForEach((group) => user.MemberOf.Add(group.FromMicrosoftGraph()));
-
-            return user;
+            return group;
         }
     }   
 }
