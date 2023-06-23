@@ -5,6 +5,7 @@ import { Observable, catchError, defer, finalize, of, retry, throwError, timer }
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { AuthService } from '../services/auth.service';
 import { ErrorDialogService } from '../services/error-dialog.service';
+import { UnauthorizedError } from '@jpfulton/ng-resume-api-browser-sdk/api';
 
 const RETRY_COUNT = 3;
 const BACK_OFF_IN_MS = 1000;
@@ -50,6 +51,13 @@ export function apiPromiseToObservableWithRetry<T>(
             {
                 if (errorDialogService) {
                     errorDialogService.openTimeoutDialog();
+                    return of();
+                }
+            }
+            else if (error instanceof UnauthorizedError)
+            {
+                if (errorDialogService) {
+                    errorDialogService.openUnauthorizedDialog();
                     return of();
                 }
             }
