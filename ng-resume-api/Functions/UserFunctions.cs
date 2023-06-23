@@ -24,7 +24,7 @@ namespace Jpf.NgResume.Api.Functions {
         }
 
         [Function("UsersGetAll")]
-        [OpenApiOperation(operationId: "Get", tags: new[] { "profile" })]
+        [OpenApiOperation(operationId: "GetAll", tags: new[] { "users" })]
         [OpenApiSecurity(
             "Bearer", 
             SecuritySchemeType.Http, 
@@ -108,7 +108,7 @@ namespace Jpf.NgResume.Api.Functions {
             });
 
             var response = request.CreateResponse();
-            await response.WriteAsJsonAsync(user);
+            await response.WriteAsJsonAsync(appUsers);
 
             return response;
         }
