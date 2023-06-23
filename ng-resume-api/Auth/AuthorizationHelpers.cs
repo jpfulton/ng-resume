@@ -44,7 +44,7 @@ namespace Jpf.NgResume.Api.Auth
                     log, 
                     userId, 
                     groupName);
-            if(!authorized) return (authorized, authorizationResponse, null);
+            if(!authorized) return (authorized, authorizationResponse, user);
 
             return (authorized, null, user);
         }
@@ -69,7 +69,11 @@ namespace Jpf.NgResume.Api.Auth
                 memoryCache.Add(cacheItem, cacheItemPolicy);
             }
 
-            var authorized = user.MemberOf.Any(group => group.DisplayName == groupName);
+            var authorized = 
+                string.IsNullOrEmpty(groupName) ?
+                true :
+                user.MemberOf.Any(group => group.DisplayName == groupName);
+                
             if (authorized) {
                 return (authorized, null, user);
             }
@@ -93,6 +97,7 @@ namespace Jpf.NgResume.Api.Auth
                 {
                     u.Id,
                     u.DisplayName,
+                    u.Identities,
                     u.Mail
                 })
                 .GetAsync();
