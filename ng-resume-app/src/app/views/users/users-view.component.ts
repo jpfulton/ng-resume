@@ -4,6 +4,7 @@ import { UsersService } from './services/users.service';
 import { User } from '@jpfulton/ng-resume-api-browser-sdk/api';
 import { Subscription } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
+import { PlatformService } from 'src/app/core/services/platform.service';
 
 @Component({
   selector: 'app-users-view',
@@ -22,13 +23,16 @@ export class UsersViewComponent implements OnInit, OnDestroy {
   private usersSubscription: Subscription | null = null;
 
   constructor(
-    private usersService : UsersService
+    private usersService: UsersService,
+    private platformService: PlatformService
   )
   {
   }
 
   ngOnInit(): void {
-    this.usersSubscription = this.usersService.getAll().subscribe(data => this.userList = data);
+    if (this.platformService.isBrowser()) {
+      this.usersSubscription = this.usersService.getAll().subscribe(data => this.userList = data);
+    }
   }
 
   ngOnDestroy(): void {
