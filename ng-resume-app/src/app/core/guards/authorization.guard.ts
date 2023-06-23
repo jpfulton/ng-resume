@@ -3,7 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { inject } from '@angular/core';
 import { LoggingService } from '../services/logging.service';
 
-export const authorizationGuard: CanActivateFn = (route, state) => {
+export const authorizationGuard: CanActivateFn = async (route, state) => {
 
   const logService: LoggingService = inject(LoggingService);
   const authService: AuthService = inject(AuthService);
@@ -13,14 +13,20 @@ export const authorizationGuard: CanActivateFn = (route, state) => {
     return false;
   }
 
-  /*
   const roles = route.data["roles"] as string[];
+  const user = await authService.getActiveUser();
+  const groups = user?.memberOf;
+  
+  let groupMatch = false;
 
-  authService.getActiveUser().then((user) => {
-    const groups = user?.memberOf;
-    
+  groups?.forEach((group) => {
+    roles.forEach((role) => {
+      if (group.displayName === role)
+        logService.logInfo("Active user is in role. Activating route.");
+        groupMatch = true;
+    });
   });
-  */
 
-  return true;
+  if (!groupMatch) logService.logInfo("Active user is not in specified role(s). Refusing to activate route.");
+  return groupMatch;
 };
