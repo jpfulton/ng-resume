@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -13,7 +13,7 @@ import { MatCardModule } from '@angular/material/card';
  
 import { FocusableDirective } from '../../directives/focusable.directive';
 import { AuthService } from '../../services/auth.service';
-import { User } from '../../models/user';
+import { LocalUser } from '../../models/local-user';
 
 @Component({
   selector: 'app-header',
@@ -33,21 +33,15 @@ import { User } from '../../models/user';
     FocusableDirective
   ]
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   @ViewChild("darkModeToggle") darkModeToggle!: MatSlideToggle;
 
-  user: User | undefined;
+  user: LocalUser | undefined;
 
   constructor(
     public authService: AuthService
   )
   { 
-  }
-
-  ngOnInit(): void {
-    if (this.authService.isLoggedIn) {
-      this.user = this.authService.getActiveUser();
-    }
   }
 
   logout(): void {
@@ -57,7 +51,16 @@ export class HeaderComponent implements OnInit {
 
   login(): void {
     this.authService.login();
-    this.user = this.authService.getActiveUser();
+
+    if (this.authService.isLoggedIn) {
+      this.authService.getActiveUser().then((result) => this.user = result);
+    }
+  }
+
+  profileMenuOpening(): void {
+    if (this.authService.isLoggedIn) {
+      this.authService.getActiveUser().then((result) => this.user = result);
+    }
   }
 
 }
