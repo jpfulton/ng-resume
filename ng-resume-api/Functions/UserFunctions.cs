@@ -69,6 +69,7 @@ namespace Jpf.NgResume.Api.Functions {
                     {
                         u.Id,
                         u.DisplayName,
+                        u.Identities,
                         u.Mail
                     })
                     .GetAsync();
@@ -98,14 +99,7 @@ namespace Jpf.NgResume.Api.Functions {
             var appUsers = new List<Models.User>();
             users.ToList().ForEach(user =>
             {
-                /*
-                var groups = user.MemberOf
-                    .Where(p => p.GetType() == typeof(Microsoft.Graph.Group))
-                    .Cast<Microsoft.Graph.Group>()
-                    .ToList();
-                */
-
-                appUsers.Add(user.FromMicrosoftGraph(new List<Microsoft.Graph.Group>()));
+                appUsers.Add(user.FromMicrosoftGraph());
             });
 
             var response = request.CreateResponse();

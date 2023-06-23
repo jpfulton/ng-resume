@@ -20,10 +20,19 @@ namespace Jpf.NgResume.Api.Models
         public string Id { get; set; }
         public string DisplayName { get; set; }
         public string Mail { get; set; }
+        public List<Identity> Identities { get; set; } = new();
         public List<Group> MemberOf { get; set; } = new();
     }
 
     public static class UserExtensions {
+
+        public static User FromMicrosoftGraph(
+            this Microsoft.Graph.User graphUser
+        )
+        {
+            return graphUser.FromMicrosoftGraph(new List<Microsoft.Graph.Group>());
+        }
+
         public static User FromMicrosoftGraph(
             this Microsoft.Graph.User graphUser,
             List<Microsoft.Graph.Group> groups) 
@@ -34,6 +43,7 @@ namespace Jpf.NgResume.Api.Models
                 DisplayName = graphUser.DisplayName,
                 Mail = graphUser.Mail
             };
+            graphUser.Identities.ToList().ForEach((identity) => user.Identities.Add(identity.FromMicrosoftGraph()));
 
             groups.ForEach((group) => user.MemberOf.Add(group.FromMicrosoftGraph()));
 

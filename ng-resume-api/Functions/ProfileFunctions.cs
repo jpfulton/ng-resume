@@ -76,6 +76,7 @@ namespace Jpf.NgResume.Api.Functions
                 {
                     u.Id,
                     u.DisplayName,
+                    u.Identities,
                     u.Mail
                 })
                 .GetAsync();
