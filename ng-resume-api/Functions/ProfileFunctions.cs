@@ -34,7 +34,7 @@ namespace Jpf.NgResume.Api.Functions
         }
 
         [Function("ProfileGet")]
-        [OpenApiOperation(operationId: "Get", tags: new[] { "profile" })]
+        [OpenApiOperation(operationId: "GetAll", tags: new[] { "users" })]
         [OpenApiSecurity(
             "Bearer", 
             SecuritySchemeType.Http, 
