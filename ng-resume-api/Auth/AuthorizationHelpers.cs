@@ -36,11 +36,15 @@ namespace Jpf.NgResume.Api.Auth
                 await request.AuthenticationHelperAsync(functionContext, log);
             if (!authenticated) return (authenticated, authenticationResponse, null);
 
+            string userId;
+            if (principal != null) userId = principal.GetObjectId()!;
+            else userId = "";
+
             var (authorized, authorizationResponse, user) = 
                 await request.AuthorizeWithGroup( 
                     graphClient, 
                     log, 
-                    principal.GetObjectId(), 
+                    userId, 
                     groupName);
             if(!authorized) return (authorized, authorizationResponse, null);
 
