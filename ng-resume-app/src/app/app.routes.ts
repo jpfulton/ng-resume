@@ -60,6 +60,18 @@ const routeConfig: Routes = [
         }
     },
     {
+        path: 'users',
+        loadComponent: () => import("./views/users/users-view.component").then(c => c.UsersViewComponent),
+        title: TITLE_PREFIX + 'Users',
+        canActivate: [MsalGuard],
+        data: {
+            image: "/assets/images/harbor.jpg",
+            description: "Users administration.",
+            keywords: ["Angular", "Angular Universal"],
+            allowRobotIndexing: false
+        }
+    },
+    {
         path: 'test',
         loadComponent: () => import("./views/test/test-view.component").then(c => c.TestViewComponent),
         title: TITLE_PREFIX + 'Test Harness',

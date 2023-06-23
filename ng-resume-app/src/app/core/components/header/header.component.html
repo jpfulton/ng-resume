@@ -104,6 +104,11 @@
                 Test Harness
             </a>
         </mat-menu>
+
+        <a mat-menu-item routerLink="/users" routerLinkActive="active" *ngIf="authService.isLoggedIn">
+            <mat-icon>person</mat-icon>
+            User Administration
+        </a>
     </mat-menu>
 
     <mat-menu #policyMenu="matMenu">
