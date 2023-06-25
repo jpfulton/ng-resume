@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
+using Jpf.NgResume.Api.MicrosoftGraph;
 using Jpf.NgResume.Api.Models;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -93,13 +94,7 @@ namespace Jpf.NgResume.Api.Auth
         private static async Task<Models.User> GetUser(GraphServiceClient graphClient, string userId)
         {
             var me = await graphClient.Users[userId].Request()
-                .Select(u => new
-                {
-                    u.Id,
-                    u.DisplayName,
-                    u.Identities,
-                    u.Mail
-                })
+                .SelectUserProperties()
                 .GetAsync();
 
             var memberships = await graphClient.Users[userId]

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Jpf.NgResume.Api.Auth;
+using Jpf.NgResume.Api.MicrosoftGraph;
 using Jpf.NgResume.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -65,13 +66,7 @@ namespace Jpf.NgResume.Api.Functions {
 
             var users = await graphClient.Users
                     .Request()
-                    .Select(u => new
-                    {
-                        u.Id,
-                        u.DisplayName,
-                        u.Identities,
-                        u.Mail
-                    })
+                    .SelectUserProperties()
                     .GetAsync();
 
             // Iterate over all the users in the directory
