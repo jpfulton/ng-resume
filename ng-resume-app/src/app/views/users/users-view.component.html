@@ -12,11 +12,6 @@
           <td mat-cell *matCellDef="let user"> {{user.displayName}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="userPrincipalName">
-          <th mat-header-cell *matHeaderCellDef> Principal Name </th>
-          <td mat-cell *matCellDef="let user"> {{user.userPrincipalName}} </td>
-        </ng-container>
-
         <ng-container matColumnDef="givenName">
           <th mat-header-cell *matHeaderCellDef> Given Name </th>
           <td mat-cell *matCellDef="let user"> {{user.givenName}} </td>

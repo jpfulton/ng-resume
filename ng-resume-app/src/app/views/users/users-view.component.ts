@@ -21,7 +21,6 @@ export class UsersViewComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     "id",
     "displayName",
-    "userPrincipalName",
     "givenName",
     "surname"
   ];
