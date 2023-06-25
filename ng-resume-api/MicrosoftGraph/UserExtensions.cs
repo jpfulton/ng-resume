@@ -10,18 +10,18 @@ namespace Jpf.NgResume.Api.MicrosoftGraph
             this IGraphServiceUsersCollectionRequest users
         )
         {
-            return users.Select(u => SelectUser());
+            return users.Select(SelectUser());
         }
 
         public static IUserRequest SelectUserProperties(
             this IUserRequest users
         )
         {
-            return users.Select(u => SelectUser());
+            return users.Select(SelectUser());
         }
 
-        private static Func<User, object> SelectUser() {
-            return new Func<User, object>(u => new
+        private static Expression<Func<User, object>> SelectUser() {
+            Expression<Func<User, object>> f = u => new
             {
                 u.Id,
                 u.UserPrincipalName,
@@ -29,7 +29,9 @@ namespace Jpf.NgResume.Api.MicrosoftGraph
                 u.Identities,
                 u.GivenName,
                 u.Surname
-            });
+            };
+
+            return f;
         }
 
     }

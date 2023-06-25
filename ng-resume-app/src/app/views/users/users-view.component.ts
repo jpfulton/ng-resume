@@ -18,7 +18,13 @@ import { PlatformService } from 'src/app/core/services/platform.service';
 })
 export class UsersViewComponent implements OnInit, OnDestroy {
   userList: User[] = [];
-  displayedColumns: string[] = ["id", "displayName", "mail"];
+  displayedColumns: string[] = [
+    "id",
+    "displayName",
+    "userPrincipalName",
+    "givenName",
+    "surname"
+  ];
 
   private usersSubscription: Subscription | null = null;
 
