@@ -38,9 +38,11 @@
           <td mat-cell *matCellDef="let user" [attr.colspan]="columnsToDisplayWithExpand.length">
             <div class="example-element-detail"
                  [@detailExpand]="user === expandedUser ? 'expanded' : 'collapsed'">
+
               <div>
                 {{user.displayName}}
               </div>
+              
             </div>
           </td>
         </ng-container>
