@@ -7,6 +7,7 @@ import { MatTableModule } from '@angular/material/table';
 import { PlatformService } from 'src/app/core/services/platform.service';
 import { MatIconModule } from '@angular/material/icon';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-users-view',
@@ -14,6 +15,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   imports: [
     CommonModule,
     MatTableModule,
+    MatButtonModule,
     MatIconModule
   ],
   templateUrl: './users-view.component.html',
