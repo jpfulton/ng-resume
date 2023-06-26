@@ -22,6 +22,7 @@ namespace Jpf.NgResume.Api.Models
         public string DisplayName { get; set; }
         public string GivenName { get; set; }
         public string Surname { get; set; }
+        public string FederatedIssuer { get; set; }
         public List<Identity> Identities { get; set; } = new();
         public List<Group> MemberOf { get; set; } = new();
     }
@@ -47,7 +48,9 @@ namespace Jpf.NgResume.Api.Models
                 GivenName = graphUser.GivenName,
                 Surname = graphUser.Surname
             };
+
             graphUser.Identities.ToList().ForEach((identity) => user.Identities.Add(identity.FromMicrosoftGraph()));
+            user.FederatedIssuer = user.Identities.FirstOrDefault((ident) => ident.SignInType.Equals("federated")).Issuer;
 
             groups.ForEach((group) => user.MemberOf.Add(group.FromMicrosoftGraph()));
 
