@@ -1,0 +1,20 @@
+table {
+    width: 100%;
+}
+
+tr.detail-row {
+    height: 0;
+}
+
+tr.user-row:not(.expanded-row):hover {
+    background: whitesmoke;
+}
+
+tr.user-row:not(.expanded-row):active {
+    background: #efefef;
+}
+
+.user-row td {
+    border-bottom-width: 0;
+}
+  

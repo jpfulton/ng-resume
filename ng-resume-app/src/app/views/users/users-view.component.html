@@ -1,6 +1,6 @@
 <section>
 
-    <table mat-table [dataSource]="userList" class="mat-elevation-z8">
+    <table mat-table [dataSource]="userList" class="mat-elevation-z8" multiTemplateDataRows>
 
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef> Id </th>
@@ -22,8 +22,44 @@
           <td mat-cell *matCellDef="let user"> {{user.surname}} </td>
         </ng-container>
       
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!--
+        <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
+          <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+          <td mat-cell *matCellDef="let user"> {{user[column]}} </td>
+        </ng-container> 
+        -->     
+        <ng-container matColumnDef="expand">
+          <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+          <td mat-cell *matCellDef="let user">
+
+            <button mat-icon-button color="primary" aria-label="expand row" (click)="(expandedUser = expandedUser === user ? null : user); $event.stopPropagation()">
+              <mat-icon *ngIf="expandedUser !== user">keyboard_arrow_down</mat-icon>
+              <mat-icon *ngIf="expandedUser === user">keyboard_arrow_up</mat-icon>
+            </button>
+
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let user" [attr.colspan]="columnsToDisplayWithExpand.length">
+            <div class="example-element-detail"
+                 [@detailExpand]="user === expandedUser ? 'expanded' : 'collapsed'">
+              <div>
+                {{user.displayName}}
+              </div>
+            </div>
+          </td>
+        </ng-container>
+      
+      
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+        <tr mat-row *matRowDef="let user; columns: columnsToDisplayWithExpand;"
+            class="element-row"
+            [class.expanded-row]="expandedUser === user"
+            (click)="expandedUser = expandedUser === user ? null : user">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
       </table>
 
 </section>
