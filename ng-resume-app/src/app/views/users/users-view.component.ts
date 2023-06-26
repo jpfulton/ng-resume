@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsersService } from './services/users.service';
 import { User } from '@jpfulton/ng-resume-api-browser-sdk/api';
@@ -36,9 +36,10 @@ export class UsersViewComponent implements OnInit, OnDestroy {
     "id",
     "displayName",
     "givenName",
-    "surname"
+    "surname",
+    "federatedIssuer"
   ];
-  columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
+  columnsToDisplayWithExpand: string[] = [...this.displayedColumns, 'expand'];
 
   private usersSubscription: Subscription | null = null;
 

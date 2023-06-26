@@ -1,9 +1,17 @@
+@use "sass:map";
+@use "../../../styles/themes";
+
 table {
     width: 100%;
-}
 
-tr.detail-row {
-    height: 0;
+    tr.detail-row {
+        height: 0;
+    }
+    
+    tr.user-row td {
+        border-bottom-width: 0;
+    }
+
 }
 
 tr.user-row:not(.expanded-row):hover {
@@ -14,7 +22,10 @@ tr.user-row:not(.expanded-row):active {
     background: #efefef;
 }
 
-.user-row td {
-    border-bottom-width: 0;
+.darkMode tr.user-row:not(.expanded-row):hover {
+    background: map.get(themes.$ng-resume-dark-primary, 700);
 }
-  
+
+.darkMode tr.user-row:not(.expanded-row):active {
+    background: map.get(themes.$ng-resume-dark-primary, 900);
+}
