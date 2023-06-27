@@ -68,7 +68,7 @@ const routeConfig: Routes = [
         data: {
             roles: ["SiteOwners"],
             image: "/assets/images/harbor.jpg",
-            description: "Users administration.",
+            description: "User administration.",
             keywords: ["Angular", "Angular Universal"],
             allowRobotIndexing: false
         }

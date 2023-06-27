@@ -4,7 +4,23 @@
 
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef> Id </th>
-          <td mat-cell *matCellDef="let user"> {{user.id}} </td>
+          <td mat-cell *matCellDef="let user">
+
+            <div class="id-widget">
+              <div class="id-container" title="{{user.id}}">
+                {{user.id}}
+              </div>
+              <button 
+              mat-icon-button
+              class="small-icon-button" 
+              color="disabled" 
+              title="Copy"
+              (click)="copyToClipboard(user.id); $event.stopPropagation();">
+                <mat-icon>file_copy</mat-icon>
+              </button>
+            </div>
+
+          </td>
         </ng-container>
       
         <ng-container matColumnDef="displayName">
@@ -33,6 +49,7 @@
 
             <button 
               mat-icon-button 
+              color="accent"
               aria-label="expand row" 
               (click)="(expandedUser = expandedUser === user ? null : user); $event.stopPropagation()"
               >
@@ -48,8 +65,28 @@
             <div class="user-detail"
                  [@detailExpand]="user === expandedUser ? 'expanded' : 'collapsed'">
 
-              <div>
-                {{user.displayName}}
+              <div class="detail-container">
+                
+                <div class="identity-container" *ngFor="let identity of user.identities">
+                  <div class="column">
+                    <div class="bold cell">Identity</div>
+                    <div class="bold cell">---</div>
+                    <div class="bold cell">Issuer</div>
+                    <div class="bold cell">Issuer Assigned Id</div>
+                    <div class="bold cell">Sign In Type</div>
+                    <div class="cell"><mat-divider></mat-divider></div>
+                  </div>
+                  
+                  <div class="column">
+                    <div class="cell">&nbsp;</div>
+                    <div class="cell">&nbsp;</div>
+                    <div class="cell">{{identity.issuer}}</div>
+                    <div class="cell">{{identity.issuerAssignedId}}</div>
+                    <div class="cell">{{identity.signInType}}</div>
+                    <div class="cell">&nbsp;</div>
+                  </div>
+                </div>
+
               </div>
 
             </div>

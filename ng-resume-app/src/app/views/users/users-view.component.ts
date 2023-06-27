@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
 import { UsersService } from './services/users.service';
 import { User } from '@jpfulton/ng-resume-api-browser-sdk/api';
 import { Subscription } from 'rxjs';
@@ -8,15 +8,18 @@ import { PlatformService } from 'src/app/core/services/platform.service';
 import { MatIconModule } from '@angular/material/icon';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-users-view',
   standalone: true,
   imports: [
-    CommonModule,
+    NgFor,
+    NgIf,
     MatTableModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatDividerModule
   ],
   templateUrl: './users-view.component.html',
   styleUrls: ['./users-view.component.scss'],
@@ -60,4 +63,7 @@ export class UsersViewComponent implements OnInit, OnDestroy {
     this.usersSubscription?.unsubscribe();
   }
 
+  copyToClipboard(data: string): void {
+    navigator.clipboard.writeText(data);
+  }
 }
