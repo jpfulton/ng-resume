@@ -23,7 +23,8 @@ export const authorizationGuard: CanActivateFn = async (route, state) => {
     roles.forEach((role) => {
       if (group.displayName === role)
         logService.logInfo("Active user is in role. Activating route.");
-        groupMatch = true;
+      
+      groupMatch = true;
     });
   });
 
