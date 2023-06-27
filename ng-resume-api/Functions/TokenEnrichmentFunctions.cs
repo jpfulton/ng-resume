@@ -98,6 +98,8 @@ namespace Jpf.NgResume.Api.Functions
                     .SelectUserProperties()
                     .GetAsync();
 
+                if (user == null) throw new ApplicationException("User does not exist.");
+
                 var memberships = await graphClient.Users[objectId]
                     .MemberOf
                     .Request()
@@ -110,10 +112,11 @@ namespace Jpf.NgResume.Api.Functions
 
                 appUser = user.FromMicrosoftGraph(groups);
             }
-            catch (Exception e) {
+            catch (Exception e) when (e is ApplicationException || e is ClientException)
+            {
                 log.LogError(e, "Exception while querying MS Graph for user during token enrichment.");
 
-                var errorData = new B2cResponseContent("ShowBlockPage", "No user exists for the objectId.");
+                var errorData = new B2cResponseContent("ShowBlockPage", "Exception while querying MS Graph for user during token enrichment.");
 
                 var errorResponse = request.CreateResponse();
                 await errorResponse.WriteAsJsonAsync(errorData);
@@ -159,7 +162,7 @@ namespace Jpf.NgResume.Api.Functions
 
             // Read the authorization header
             // var auth = req.Headers["Authorization"].ToString();
-            
+
             var authHeaders = req.Headers.GetValues("Authorization").ToArray();
             log.LogInformation($"Authorization header count: {authHeaders.Length}");
             for (int i = 0; i < authHeaders.Length; i++)
