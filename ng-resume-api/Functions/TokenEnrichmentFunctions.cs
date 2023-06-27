@@ -159,9 +159,15 @@ namespace Jpf.NgResume.Api.Functions
 
             // Read the authorization header
             // var auth = req.Headers["Authorization"].ToString();
-            var auth = req.Headers.GetValues("Authorization").FirstOrDefault();
+            
+            var authHeaders = req.Headers.GetValues("Authorization").ToArray();
+            log.LogInformation($"Authorization header count: {authHeaders.Length}");
+            for (int i = 0; i < authHeaders.Length; i++)
+            {
+                log.LogInformation($"Authorization Header Value[{i}]: '{authHeaders[i]}'"); // REMOVE ME LATER
+            }
 
-            log.LogInformation($"Authorization Header Value: '{auth}'"); // REMOVE ME LATER
+            var auth = authHeaders.FirstOrDefault((value) => value.StartsWith("Basic "), "");
 
             // Ensure the type of the authorization header id `Basic`
             if (!auth.StartsWith("Basic "))
