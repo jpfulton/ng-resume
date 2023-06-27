@@ -63,7 +63,7 @@ namespace Jpf.NgResume.Api.Functions
             HttpRequestData request,
             FunctionContext functionContext)
         {
-            var log = functionContext.GetLogger<TestFunctions>();
+            var log = functionContext.GetLogger<ProfileFunctions>();
 
             var (authorized, authorizationResponse, user) =
                 await request.AuthenticateThenAuthorizeWithGroup(

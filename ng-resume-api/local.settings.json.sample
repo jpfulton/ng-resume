@@ -4,6 +4,8 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
     "FUNCTIONS_EXTENSION_VERSION": "~4",
-    "MicrosoftGraph_ClientSecret": "ENTER SECRET HERE"
+    "MicrosoftGraph_ClientSecret": "ENTER SECRET HERE",
+    "AdB2c_Enrichment_Basic_Auth_Username": "ENTER SECRET HERE",
+    "AdB2c_Enrichment_Basic_Auth_Password": "ENTER SECRET HERE"
   }
 }
