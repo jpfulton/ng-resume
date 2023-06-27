@@ -62,7 +62,10 @@ namespace Jpf.NgResume.Api.Functions
             }
 
             // get the request body
-            var body = await new StreamReader(request.Body).ReadToEndAsync();
+            string body = "";
+            using (var reader = new StreamReader(request.Body)) {
+                body = await reader.ReadToEndAsync();
+            }
             dynamic requestData = JsonConvert.DeserializeObject(body);
 
             // If input data is null, show block page
@@ -156,7 +159,9 @@ namespace Jpf.NgResume.Api.Functions
 
             // Read the authorization header
             // var auth = req.Headers["Authorization"].ToString();
-            var auth = req.Headers.GetValues("Authorization").ToArray()[0];
+            var auth = req.Headers.GetValues("Authorization").FirstOrDefault();
+
+            log.LogInformation($"Authorization Header Value: '{auth}'"); // REMOVE ME LATER
 
             // Ensure the type of the authorization header id `Basic`
             if (!auth.StartsWith("Basic "))
