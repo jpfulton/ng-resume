@@ -1,9 +1,10 @@
 @use "sass:map";
+@use 'styles/themes';
+
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
 // Plus imports for other components in your app.
-@import 'styles/palette';
 @import 'styles/spinner.scss';
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -11,53 +12,24 @@
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-// $ng-resume-primary: mat.define-palette(mat.$indigo-palette);
-$ng-resume-primary: mat.define-palette($ng-resume-palette, 500, 300, 900);
-$ng-resume-dark-primary: mat.define-palette($ng-resume-palette, 700, 100, 900);
-
-$ng-resume-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
-
-// The warn palette is optional (defaults to red).
-$ng-resume-warn: mat.define-palette(mat.$red-palette);
-
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
-$ng-resume-theme: mat.define-light-theme((
-  color: (
-    primary: $ng-resume-primary,
-    accent: $ng-resume-accent,
-    warn: $ng-resume-warn,
-  )
-));
-$ng-resume-dark-theme: mat.define-dark-theme((
-  color: (
-    primary: $ng-resume-dark-primary,
-    accent: $ng-resume-accent,
-    warn: $ng-resume-warn,
-  )
-));
-
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-component-themes($ng-resume-theme);
+@include mat.all-component-themes(themes.$ng-resume-theme);
 
 // dark mode theming
 .darkMode {
-  @include mat.all-component-colors($ng-resume-dark-theme);
+  @include mat.all-component-colors(themes.$ng-resume-dark-theme);
 
   a, a:hover, a:visited {
     text-decoration: none;
-    color: map.get($ng-resume-accent, 200);
+    color: map.get(themes.$ng-resume-accent, 200);
   }
 
   .divider {
       width: 100%;
       display: block;
-      border-top: 2px solid map.get($ng-resume-primary, 100);
+      border-top: 2px solid map.get(themes.$ng-resume-primary, 100);
       margin-top: 4px;
       margin-bottom: 4px;
 }
@@ -75,17 +47,17 @@ body {
   // cookie consent widget style overrides
   .cc-revoke {
     @include mat.elevation(20);
-    background-color: map.get($ng-resume-accent, 500) !important;
+    background-color: map.get(themes.$ng-resume-accent, 500) !important;
   }
   .cc-window {
     @include mat.elevation(20);
-    background-color: map.get($ng-resume-accent, 500) !important;
+    background-color: map.get(themes.$ng-resume-accent, 500) !important;
 
     .cc-highlight {
-      background-color: map.get($ng-resume-accent, 700) !important;
+      background-color: map.get(themes.$ng-resume-accent, 700) !important;
 
       .cc-allow {
-        background-color: map.get($ng-resume-accent, 900) !important;
+        background-color: map.get(themes.$ng-resume-accent, 900) !important;
         color: white !important;
 
         &:hover {
@@ -98,13 +70,13 @@ body {
 
 a, a:hover, a:visited {
     text-decoration: none;
-    color: map.get($ng-resume-accent, 500);
+    color: map.get(themes.$ng-resume-accent, 500);
 }
 
 .divider {
     width: 100%;
     display: block;
-    border-top: 2px solid map.get($ng-resume-primary, 900);
+    border-top: 2px solid map.get(themes.$ng-resume-primary, 900);
     margin-top: 4px;
     margin-bottom: 4px;
 }

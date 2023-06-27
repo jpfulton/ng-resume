@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
+import { authorizationGuard } from './core/guards/authorization.guard';
 
 const TITLE_PREFIX = "jpatrickfulton.com - ";
 
@@ -55,6 +56,19 @@ const routeConfig: Routes = [
         data: {
             image: "/assets/images/harbor.jpg",
             description: "Token claims.",
+            keywords: ["Angular", "Angular Universal"],
+            allowRobotIndexing: false
+        }
+    },
+    {
+        path: 'users',
+        loadComponent: () => import("./views/users/users-view.component").then(c => c.UsersViewComponent),
+        title: TITLE_PREFIX + 'Users',
+        canActivate: [authorizationGuard],
+        data: {
+            roles: ["SiteOwners"],
+            image: "/assets/images/harbor.jpg",
+            description: "User administration.",
             keywords: ["Angular", "Angular Universal"],
             allowRobotIndexing: false
         }

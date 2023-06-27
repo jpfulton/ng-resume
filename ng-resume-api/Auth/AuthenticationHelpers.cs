@@ -12,7 +12,10 @@ namespace Jpf.NgResume.Api.Auth {
 
     public static class AuthenticationHelpers
     {
-        public static async Task<(bool, IActionResult?)> AuthenticationHelperAsync(HttpRequest req, ILogger log) {
+        public static async Task<(bool, IActionResult?)> AuthenticationHelperAsync(
+            this HttpRequest req, 
+            ILogger log) 
+        {
             var (status, response) = await req.HttpContext.AuthenticateAzureFunctionApiAsync();
             if (!status)
             {
@@ -23,7 +26,7 @@ namespace Jpf.NgResume.Api.Auth {
         }
 
         public static async Task<(bool, HttpResponseData?, ClaimsPrincipal?)> AuthenticationHelperAsync(
-            HttpRequestData req,
+            this HttpRequestData req,
             FunctionContext functionContext, 
             ILogger log) 
         {

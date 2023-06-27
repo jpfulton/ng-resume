@@ -64,33 +64,17 @@ namespace Jpf.NgResume.Api.Functions
             FunctionContext functionContext)
         {
             var log = functionContext.GetLogger<TestFunctions>();
-            var (status, resp, user) = await AuthenticationHelpers.AuthenticationHelperAsync(request, functionContext, log);
-            if (!status) return resp;
 
-            var userId = user.GetObjectId();
-            var me = await graphClient.Users[userId].Request()
-                .Select(u => new
-                {
-                    u.Id,
-                    u.DisplayName,
-                    u.Mail
-                })
-                .GetAsync();
+            var (authorized, authorizationResponse, user) =
+                await request.AuthenticateThenAuthorizeWithGroup(
+                    functionContext,
+                    graphClient,
+                    log,
+                    null);
+            if (!authorized) return authorizationResponse;
 
-            var memberships = await graphClient.Users[userId]
-                .MemberOf
-                .Request()
-                .GetAsync();
-
-            var groups = memberships
-                .Where(p => p.GetType() == typeof(Microsoft.Graph.Group))
-                .Cast<Microsoft.Graph.Group>()
-                .ToList();
-
-            var appUser = me.FromMicrosoftGraph(groups);
-
-            var response = request.CreateResponse(HttpStatusCode.OK);
-            await response.WriteAsJsonAsync(appUser);
+            var response = request.CreateResponse();
+            await response.WriteAsJsonAsync(user);
 
             return response;
         }

@@ -38,12 +38,13 @@ namespace Jpf.NgResume.Api.Auth
             }
             else
             {
-                var resp = requestData.CreateResponse(HttpStatusCode.Unauthorized);
+                var resp = requestData.CreateResponse();
                 await resp.WriteAsJsonAsync(new CustomProblemDetails
                 {
                     Title = "Authentication failed.",
                     Detail = result.Failure?.Message
                 });
+                resp.StatusCode = HttpStatusCode.Unauthorized;
 
                 return (false, resp, null);
             }

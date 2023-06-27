@@ -8,9 +8,10 @@ import { LoggingService } from './logging.service';
 import { EventMessage, EventType as MsalEventType, InteractionStatus, SsoSilentRequest, RedirectRequest, PopupRequest, InteractionType } from '@azure/msal-browser';
 import { AuthenticationResult, AccountInfo, PromptValue, IdTokenClaims, InteractionRequiredAuthError } from '@azure/msal-common';
 import { b2cPolicies } from '../constants/auth-constants';
-import { User } from '../models/user';
+import { LocalUser } from '../models/local-user';
 import { createClaimsTable } from '../utils/claim-utils';
 import { Claim } from '../models/claim';
+import { getAuthenticatedApiClient } from '../utils/api-helpers';
 
 type IdTokenClaimsWithPolicyId = IdTokenClaims & {
   acr?: string,
@@ -154,8 +155,11 @@ export class AuthService {
     return this.msalAuthService.instance.getActiveAccount()!.idToken;
   }
 
-  getActiveUser(): User | undefined {
+  async getActiveUser(): Promise<LocalUser | undefined> {
     if (!this.isLoggedIn) return undefined;
+
+    const apiClient = getAuthenticatedApiClient(this);
+    const user = await apiClient.profile.get() as LocalUser;
 
     const account = this.msalAuthService.instance.getActiveAccount()!;
     const claims: Claim[] = createClaimsTable(account?.idTokenClaims as any);
@@ -163,23 +167,22 @@ export class AuthService {
     const claimsMap = new Map<string, Claim>(claims.map(i => [i.name, i]));
 
     try {
-      const user: User = {
-        oid: claimsMap.get("oid")!.value as string,
-        username: account.username,
-        emails: claimsMap.get("emails")!.value as string[],
-        identityProvider: claimsMap.get("idp")!.value as string,
-        identityProviderAccessToken: claimsMap.get("idp_access_token")!.value as string,
-        name: claimsMap.get("name")!.value as string,
-        claimsMap: claimsMap,
-        account: account,
-      };
-    
-      return user;
+      
+      user.oid = claimsMap.get("oid")!.value as string;
+      user.username = account.username;
+      user.emails = claimsMap.get("emails")!.value as string[];
+      user.identityProvider = claimsMap.get("idp")!.value as string;
+      user.identityProviderAccessToken = claimsMap.get("idp_access_token")!.value as string;
+      user.name = claimsMap.get("name")!.value as string;
+      user.claimsMap = claimsMap;
+      user.account = account;
+      
     }
     catch (error) {
-      this.loggingService.logError("Unable to covert claims to User object.");
-      return undefined;
+      this.loggingService.logError("Unable to covert claims to LocalUser object.");
     }
+
+    return user;
   }
 
   destroy(): void {
