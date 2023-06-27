@@ -71,8 +71,7 @@ namespace Jpf.NgResume.Api.Auth
             }
 
             var authorized = 
-                string.IsNullOrEmpty(groupName) ?
-                true :
+                string.IsNullOrEmpty(groupName) ||
                 user.MemberOf.Any(group => group.DisplayName == groupName);
                 
             if (authorized) {
