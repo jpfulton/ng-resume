@@ -55,6 +55,8 @@
               "src/safari-pinned-tab.svg",
               "src/site.webmanifest",
               "src/.well-known",
+              "src/ads.txt",
+              "src/robots.txt",
               "src/assets"
             ],
             "styles": [
