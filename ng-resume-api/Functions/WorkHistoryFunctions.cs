@@ -40,7 +40,7 @@ namespace Jpf.NgResume.Api.Functions
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "get",
-                Route = "workhistory"
+                Route = "api/workhistory"
                 )
             ] HttpRequestData request,
             ILogger log)
@@ -70,7 +70,7 @@ namespace Jpf.NgResume.Api.Functions
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "get",
-                Route = "workhistory/{id}"
+                Route = "api/workhistory/{id}"
                 )
             ] HttpRequestData request,
             string id, 

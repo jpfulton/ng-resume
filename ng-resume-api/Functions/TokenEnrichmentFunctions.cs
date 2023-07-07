@@ -45,7 +45,7 @@ namespace Jpf.NgResume.Api.Functions
             [HttpTrigger(
                 AuthorizationLevel.Anonymous,
                 "post",
-                Route = "token/enrichwithgroups"
+                Route = "api/token/enrichwithgroups"
                 )
             ]
             HttpRequestData request,
