@@ -184,10 +184,10 @@ jobs:
           slot-name: ${{ env.SLOT_NAME }}
 
       - name: 'Swap ${{ env.SLOT_NAME }} to Production'
-        run: az functionapp deployment slot swap \
-                -g ${{ env.RESOURCE_GROUP }} \
-                -n ${{ env.AZURE_FUNCTIONAPP_NAME }} \
-                --slot ${{ env.SLOT_NAME }} \
+        run: az functionapp deployment slot swap
+                -g ${{ env.RESOURCE_GROUP }}
+                -n ${{ env.AZURE_FUNCTIONAPP_NAME }}
+                --slot ${{ env.SLOT_NAME }}
                 --target-slot production
 
   frontend_cd_job:
