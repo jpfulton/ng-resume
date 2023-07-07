@@ -48,7 +48,7 @@ namespace Jpf.NgResume.Api.Functions {
             [HttpTrigger(
                 AuthorizationLevel.Anonymous,
                 "get",
-                Route = "api/users"
+                Route = "users"
                 )
             ]
             HttpRequestData request,

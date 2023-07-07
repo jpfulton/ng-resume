@@ -77,7 +77,7 @@ namespace Jpf.NgResume.Api.Functions
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "get", 
-                Route = "api/test"
+                Route = "test"
                 )
             ] 
             HttpRequestData req,
@@ -131,7 +131,7 @@ namespace Jpf.NgResume.Api.Functions
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, 
                 "post", 
-                Route = "api/test"
+                Route = "test"
                 )
             ]
             HttpRequestData request,
@@ -165,7 +165,7 @@ namespace Jpf.NgResume.Api.Functions
             [HttpTrigger(
                 AuthorizationLevel.Anonymous,
                 "get",
-                Route = "api/test/logger"
+                Route = "test/logger"
                 )
             ]
             HttpRequest req,
@@ -263,7 +263,7 @@ namespace Jpf.NgResume.Api.Functions
             [HttpTrigger(
                 AuthorizationLevel.Anonymous,
                 "get",
-                Route = "api/test/configuration"
+                Route = "test/configuration"
                 )
             ]
             HttpRequestData req)
@@ -300,7 +300,7 @@ namespace Jpf.NgResume.Api.Functions
             [HttpTrigger(
                 AuthorizationLevel.Anonymous,
                 "get",
-                Route = "api/test/services"
+                Route = "test/services"
                 )
             ]
             HttpRequestData req,
