@@ -154,7 +154,7 @@ jobs:
 
     permissions:
       contents: read
-      
+
     runs-on: windows-latest
 
     steps:
@@ -246,7 +246,8 @@ jobs:
           api_location: ${{ env.API_LOCATION }}
           output_location: ${{ env.OUTPUT_LOCATION }}
           # set production branch in SWA to the source branch, to prevent a preview env from being created
-          production_branch: ${{ github.head_ref }}
+          # production_branch: ${{ github.head_ref }}
+          deployment_environment: "Production"
 
   frontend_cd_job:
     name: Frontend CD Job
@@ -301,7 +302,7 @@ jobs:
           output_location: ${{ env.OUTPUT_LOCATION }}
 
   preview_e2e_job:
-    name: E2E Job
+    name: E2E Job (Preview)
     needs: [preview_frontend_cd_job]
 
     # Execute this job upon
