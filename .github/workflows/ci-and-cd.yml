@@ -247,7 +247,7 @@ jobs:
           output_location: ${{ env.OUTPUT_LOCATION }}
           # set production branch in SWA to the source branch, to prevent a preview env from being created
           # production_branch: ${{ github.head_ref }}
-          deployment_environment: "Production"
+          deployment_environment: production
 
   frontend_cd_job:
     name: Frontend CD Job
