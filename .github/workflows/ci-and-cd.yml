@@ -21,9 +21,14 @@ name: continous-integration-and-deployment
 env:
   APP_WORKING_DIR: "ng-resume-app"
   APP_LOCATION: "/ng-resume-app/dist/ng-resume/browser" # location of the client application build artifacts
-  API_LOCATION: "/ng-resume-api"
+  API_LOCATION: ""
   OUTPUT_LOCATION: "" # an empty value here causes the APP_LOCATION location to be pushed to Azure
   AZURE_STATIC_WEB_APPS_API_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }} # repository secret containing deployment token
+  AZURE_FUNCTIONAPP_NAME: personal-site-api
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: "ng-resume-api"
+  DOTNET_VERSION: "7.0.x"
+  RESOURCE_GROUP: personal-site
+  SLOT_NAME: staging
 
 # Execute this workflow on pushes to the default branch or upon pull requests into the default branch.
 on:
@@ -99,8 +104,8 @@ jobs:
       with:
         category: "/language:${{matrix.language}}"
 
-  ci_job:
-    name: CI Job
+  frontend_ci_job:
+    name: Frontend CI Job
 
     # Execute this job upon pushes to the default branch or
     # PRs into the default branch that are not closed.
@@ -139,9 +144,44 @@ jobs:
         working-directory: ${{ env.APP_WORKING_DIR }}
         run: yarn run test --configuration=ci
 
-  cd_job:
-    name: CD Job
-    needs: [analyze, ci_job]
+  api_cd_job:
+    name: API CD Job
+    needs: [analyze, frontend_ci_job]
+    # Execute this job upon pushes to the default branch or
+    # PRs into the default branch that are not closed.
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    permissions:
+      contents: read
+    runs-on: windows-latest
+
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v3
+  
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+  
+      - name: 'Resolve Project Dependencies Using Dotnet'
+        shell: pwsh
+        run: |
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          dotnet build --configuration Release --output ./output
+          popd
+  
+      - name: 'Run Azure Functions Action'
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+          #slot-name: ${{ env.SLOT_NAME }}
+
+  frontend_cd_job:
+    name: Frontend CD Job
+    needs: [analyze, frontend_ci_job]
     outputs:
       preview-url: ${{ steps.deploy.outputs.static_web_app_url }}
 
@@ -196,7 +236,7 @@ jobs:
 
   e2e_job:
     name: E2E Job
-    needs: cd_job
+    needs: [frontend_cd_job, api_cd_job]
 
     # Execute this job upon pushes to the default branch or
     # PRs into the default branch that are not closed.
@@ -234,7 +274,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           working-directory: ${{ env.APP_WORKING_DIR }}
-          config: baseUrl=${{ needs.cd_job.outputs.preview-url }}
+          config: baseUrl=${{ needs.frontend_cd_job.outputs.preview-url }}
 
       # Upload the cypress e2e test suite screenshots as artifacts to this
       # workflow if failure is detected in a previous step.
