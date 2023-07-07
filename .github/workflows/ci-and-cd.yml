@@ -282,22 +282,19 @@ jobs:
         run: yarn run prerender
 
       # Deploy build artifacts into Azure.
-      # In the event of a push into the default branch, deploy to production.
-      # In the event of a pending PR into the default branch, create and deploy to a preview
-      # environment with a comment on the PR including the preview URL.
       - name: Deploy application to Azure
         id: deploy
         uses: Azure/static-web-apps-deploy@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          #repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           azure_static_web_apps_api_token: ${{ secrets.PREVIEW_AZURE_STATIC_WEB_APPS_API_TOKEN }}
           action: "upload" # upload artifacts and deploy to either production or a preview environment
           app_location: ${{ env.APP_LOCATION }}
           api_location: ${{ env.API_LOCATION }}
           output_location: ${{ env.OUTPUT_LOCATION }}
           # set production branch in SWA to the source branch, to prevent a preview env from being created
-          # production_branch: ${{ github.head_ref }}
-          # deployment_environment: production
+          production_branch: ${{ github.head_ref }}
+          deployment_environment: production
 
   frontend_cd_job:
     name: Frontend CD Job
