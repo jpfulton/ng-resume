@@ -24,6 +24,7 @@ env:
   API_LOCATION: ""
   OUTPUT_LOCATION: "" # an empty value here causes the APP_LOCATION location to be pushed to Azure
   AZURE_FUNCTIONAPP_NAME: personal-site-api
+  PREVIEW_AZURE_FUNCTIONAPP_NAME: personal-site-api-preview
   AZURE_FUNCTIONAPP_PACKAGE_PATH: "ng-resume-api"
   DOTNET_VERSION: "7.0.x"
   RESOURCE_GROUP: personal-site
@@ -145,6 +146,55 @@ jobs:
         working-directory: ${{ env.APP_WORKING_DIR }}
         run: yarn run test --configuration=ci
 
+  preview_api_cd_job:
+    name: API CD Job (Preview)
+    needs: [analyze, frontend_ci_job]
+
+    # Execute this job upon
+    # PRs into the default branch that are not closed.
+    if: (github.event_name == 'pull_request' && github.event.action != 'closed')
+
+    permissions:
+      contents: read
+
+    runs-on: windows-latest
+
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v3
+
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.PREVIEW_AZURE_SP_CREDENTIALS }}
+  
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+  
+      - name: 'Resolve Project Dependencies Using Dotnet'
+        shell: pwsh
+        run: |
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          dotnet build --configuration Release --output ./output
+          popd
+  
+      - name: 'Run Azure Functions Action for ${{ env.SLOT_NAME }} Slot'
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: ${{ env.PREVIEW_AZURE_FUNCTIONAPP_NAME }}
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+          slot-name: ${{ env.SLOT_NAME }}
+
+      - name: 'Swap ${{ env.SLOT_NAME }} to Production'
+        run: az functionapp deployment slot swap
+                -g ${{ env.RESOURCE_GROUP }}
+                -n ${{ env.PREVIEW_AZURE_FUNCTIONAPP_NAME }}
+                --slot ${{ env.SLOT_NAME }}
+                --target-slot production
+
   api_cd_job:
     name: API CD Job
     needs: [analyze, frontend_ci_job]
@@ -247,7 +297,7 @@ jobs:
           output_location: ${{ env.OUTPUT_LOCATION }}
           # set production branch in SWA to the source branch, to prevent a preview env from being created
           # production_branch: ${{ github.head_ref }}
-          deployment_environment: production
+          # deployment_environment: production
 
   frontend_cd_job:
     name: Frontend CD Job
@@ -303,7 +353,7 @@ jobs:
 
   preview_e2e_job:
     name: E2E Job (Preview)
-    needs: [preview_frontend_cd_job]
+    needs: [preview_frontend_cd_job, preview_api_cd_job]
 
     # Execute this job upon
     # PRs into the default branch that are not closed.
