@@ -5,6 +5,7 @@
 #header-container {
     position: fixed;
     width: 100%;
+    z-index: 10;
 }
 
 #content-container {
@@ -12,7 +13,7 @@
     height: 100%;
 
     main {
-        padding: 10px 10px 45px 10px;   
+        padding: 10px 10px 70px 10px;   
     }
 }
 
@@ -21,4 +22,5 @@
     left: 0;
     bottom: 0;
     width: 100%;
+    z-index: 10;
 }

@@ -1,7 +1,11 @@
+@use '@angular/material' as mat;
+
 section {
     padding: 10px;
 
     button {
+        @include mat.elevation(10);
+
         margin-left: 10px;
         margin-right: 10px;
     }
