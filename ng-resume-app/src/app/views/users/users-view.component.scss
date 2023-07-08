@@ -74,6 +74,18 @@ table {
     }
 }
 
+/*
+.darkMode {
+    
+    tr.user-row:not(.expanded-row):hover {
+        background: map.get(themes.$ng-resume-dark-primary, 700);
+    }
+
+    tr.user-row:not(.expanded-row):active {
+        background: map.get(themes.$ng-resume-dark-primary, 900);
+    }
+}
+
 tr.user-row:not(.expanded-row):hover {
     background: whitesmoke;
 }
@@ -81,11 +93,4 @@ tr.user-row:not(.expanded-row):hover {
 tr.user-row:not(.expanded-row):active {
     background: #efefef;
 }
-
-.darkMode tr.user-row:not(.expanded-row):hover {
-    background: map.get(themes.$ng-resume-dark-primary, 700);
-}
-
-.darkMode tr.user-row:not(.expanded-row):active {
-    background: map.get(themes.$ng-resume-dark-primary, 900);
-}
+*/
