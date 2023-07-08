@@ -23,12 +23,14 @@ env:
   APP_LOCATION: "/ng-resume-app/dist/ng-resume/browser" # location of the client application build artifacts
   API_LOCATION: ""
   OUTPUT_LOCATION: "" # an empty value here causes the APP_LOCATION location to be pushed to Azure
-  AZURE_STATIC_WEB_APPS_API_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }} # repository secret containing deployment token
   AZURE_FUNCTIONAPP_NAME: personal-site-api
+  PREVIEW_AZURE_FUNCTIONAPP_NAME: personal-site-api-preview
   AZURE_FUNCTIONAPP_PACKAGE_PATH: "ng-resume-api"
   DOTNET_VERSION: "7.0.x"
   RESOURCE_GROUP: personal-site
   SLOT_NAME: staging
+  BASE_URL: "https://www.jpatrickfulton.com"
+  PREVIEW_BASE_URL: "https://preview.jpatrickfulton.com"
 
 # Execute this workflow on pushes to the default branch or upon pull requests into the default branch.
 on:
@@ -144,19 +146,28 @@ jobs:
         working-directory: ${{ env.APP_WORKING_DIR }}
         run: yarn run test --configuration=ci
 
-  api_cd_job:
-    name: API CD Job
+  preview_api_cd_job:
+    name: API CD Job (Preview)
     needs: [analyze, frontend_ci_job]
-    # Execute this job upon pushes to the default branch or
+
+    # Execute this job upon
     # PRs into the default branch that are not closed.
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    if: (github.event_name == 'pull_request' && github.event.action != 'closed')
+
     permissions:
       contents: read
+      pull-requests: write
+
     runs-on: windows-latest
 
     steps:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v3
+
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.PREVIEW_AZURE_SP_CREDENTIALS }}
   
       - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
         uses: actions/setup-dotnet@v3
@@ -170,24 +181,150 @@ jobs:
           dotnet build --configuration Release --output ./output
           popd
   
-      - name: 'Run Azure Functions Action'
+      - name: 'Run Azure Functions Action for ${{ env.SLOT_NAME }} Slot'
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: ${{ env.PREVIEW_AZURE_FUNCTIONAPP_NAME }}
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+          slot-name: ${{ env.SLOT_NAME }}
+
+      - name: 'Swap ${{ env.SLOT_NAME }} to Production'
+        run: az functionapp deployment slot swap
+                -g ${{ env.RESOURCE_GROUP }}
+                -n ${{ env.PREVIEW_AZURE_FUNCTIONAPP_NAME }}
+                --slot ${{ env.SLOT_NAME }}
+                --target-slot production
+
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            PR #${{ github.event.pull_request.number }} API deployed to ${{ env.PREVIEW_AZURE_FUNCTIONAPP_NAME }} on
+            _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
+          comment_tag: preview_api_deployment
+
+  api_cd_job:
+    name: API CD Job
+    needs: [analyze, frontend_ci_job]
+
+    # Execute this job upon pushes to the default branch 
+    if: github.event_name == 'push'
+
+    permissions:
+      contents: read
+
+    runs-on: windows-latest
+
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v3
+
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_SP_CREDENTIALS }}
+  
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+  
+      - name: 'Resolve Project Dependencies Using Dotnet'
+        shell: pwsh
+        run: |
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          dotnet build --configuration Release --output ./output
+          popd
+  
+      - name: 'Run Azure Functions Action for ${{ env.SLOT_NAME }} Slot'
         uses: Azure/functions-action@v1
         id: fa
         with:
           app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
-          #slot-name: ${{ env.SLOT_NAME }}
+          slot-name: ${{ env.SLOT_NAME }}
+
+      - name: 'Swap ${{ env.SLOT_NAME }} to Production'
+        run: az functionapp deployment slot swap
+                -g ${{ env.RESOURCE_GROUP }}
+                -n ${{ env.AZURE_FUNCTIONAPP_NAME }}
+                --slot ${{ env.SLOT_NAME }}
+                --target-slot production
+
+  preview_frontend_cd_job:
+    name: Frontend CD Job (Preview)
+    needs: [analyze, frontend_ci_job]
+
+    # Execute this job upon
+    # PRs into the default branch that are not closed.
+    if: (github.event_name == 'pull_request' && github.event.action != 'closed')
+
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      pull-requests: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        id: checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        id: nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          cache: "yarn"
+          cache-dependency-path: ${{ env.APP_WORKING_DIR }}/yarn.lock
+
+      - name: Install dependencies via yarn with frozen lockfile
+        id: installdeps
+        working-directory: ${{ env.APP_WORKING_DIR }}
+        run: yarn --frozen-lockfile
+
+      - name: Build application
+        id: build
+        timeout-minutes: 5
+        working-directory: ${{ env.APP_WORKING_DIR }}
+        run: yarn run prerender
+
+      # Deploy build artifacts into Azure.
+      - name: Deploy application to Azure
+        id: deploy
+
+        # Use environment variables to control default behavior of the action
+        # and force "production" deployments from a PR per
+        # https://github.com/Azure/static-web-apps/issues/750#issuecomment-1116693199
+        env:
+          DEPLOYMENT_PROVIDER: "Custom"
+          REPOSITORY_URL: ${{ github.event.repository.html_url }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          azure_static_web_apps_api_token: ${{ secrets.PREVIEW_AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: "upload" # upload artifacts and deploy to either production or a preview environment
+          app_location: ${{ env.APP_LOCATION }}
+          api_location: ${{ env.API_LOCATION }}
+          output_location: ${{ env.OUTPUT_LOCATION }}
+
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            PR #${{ github.event.pull_request.number }} deployed to ${{ env.PREVIEW_BASE_URL }} on
+            _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
+          comment_tag: preview_frontend_deployment
 
   frontend_cd_job:
     name: Frontend CD Job
     needs: [analyze, frontend_ci_job]
-    outputs:
-      preview-url: ${{ steps.deploy.outputs.static_web_app_url }}
 
-    # Execute this job upon pushes to the default branch or
-    # PRs into the default branch that are not closed.
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    # Execute this job upon pushes to the default branch.
+    if: github.event_name == 'push'
 
     permissions:
       contents: read # for actions/checkout to fetch code
@@ -228,19 +365,19 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
-          azure_static_web_apps_api_token: ${{ env.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           action: "upload" # upload artifacts and deploy to either production or a preview environment
           app_location: ${{ env.APP_LOCATION }}
           api_location: ${{ env.API_LOCATION }}
           output_location: ${{ env.OUTPUT_LOCATION }}
 
-  e2e_job:
-    name: E2E Job
-    needs: [frontend_cd_job, api_cd_job]
+  preview_e2e_job:
+    name: E2E Job (Preview)
+    needs: [preview_frontend_cd_job, preview_api_cd_job]
 
-    # Execute this job upon pushes to the default branch or
+    # Execute this job upon
     # PRs into the default branch that are not closed.
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    if: (github.event_name == 'pull_request' && github.event.action != 'closed')
 
     permissions:
       contents: read # for actions/checkout to fetch code
@@ -274,7 +411,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           working-directory: ${{ env.APP_WORKING_DIR }}
-          config: baseUrl=${{ needs.frontend_cd_job.outputs.preview-url }}
+          config: baseUrl=${{ env.PREVIEW_BASE_URL }}
 
       # Upload the cypress e2e test suite screenshots as artifacts to this
       # workflow if failure is detected in a previous step.
@@ -295,24 +432,62 @@ jobs:
           name: e2e-videos
           path: ${{ env.APP_WORKING_DIR }}/cypress/videos
 
-  close_pull_request_job:
-    name: Clean Up Preview Environments Job
+  e2e_job:
+    name: E2E Job
+    needs: [frontend_cd_job, api_cd_job]
+
+    # Execute this job upon pushes to the default branch
+    if: github.event_name == 'push'
 
     permissions:
-      contents: none # no repo access required in this job
-
-    # Execute this job upon closure of a pull request to clean up any Azure preview
-    # environments that existed from the opening or modification of a PR.
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+      contents: read # for actions/checkout to fetch code
 
     runs-on: ubuntu-latest
 
     steps:
-      - name: On Close Pull Request Clean Up Preview Environments
-        uses: Azure/static-web-apps-deploy@v1
+      - name: Checkout repository
+        id: checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        id: nodejs
+        uses: actions/setup-node@v3
         with:
-          azure_static_web_apps_api_token: ${{ env.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          action: "close" # remove preview environment upon PR closure
-          app_location: ${{ env.APP_LOCATION }}
-          api_location: ${{ env.API_LOCATION }}
-          output_location: ${{ env.OUTPUT_LOCATION }}
+          node-version: "18.x"
+          cache: "yarn"
+          cache-dependency-path: ${{ env.APP_WORKING_DIR }}/yarn.lock
+
+      - name: Install dependencies via yarn with frozen lockfile
+        id: installdeps
+        working-directory: ${{ env.APP_WORKING_DIR }}
+        run: yarn --frozen-lockfile
+        
+      # Run the cypress e2e sanity test suite on the Azure deployment.
+      # The static_web_app_url output variable from the deployment step
+      # will contain either the production URL or the URL of a preview environment
+      # if this workflow is running on a PR.
+      - name: E2E test suite on deployment
+        id: e2e
+        uses: cypress-io/github-action@v5
+        with:
+          working-directory: ${{ env.APP_WORKING_DIR }}
+          config: baseUrl=${{ env.BASE_URL }}
+
+      # Upload the cypress e2e test suite screenshots as artifacts to this
+      # workflow if failure is detected in a previous step.
+      - name: Upload E2E test suite failure screenshots artifact
+        id: e2e-failure-screenshot-upload
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: e2e-failure-screenshots
+          path: ${{ env.APP_WORKING_DIR }}/cypress/screenshots
+
+      # Upload the cypress e2e test suite videos as artifacts to this workflow.
+      - name: Upload E2E test suite video artifact
+        id: e2e-video-upload
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: e2e-videos
+          path: ${{ env.APP_WORKING_DIR }}/cypress/videos
