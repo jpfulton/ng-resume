@@ -86,30 +86,47 @@
             <mat-icon>policy</mat-icon>
             Policies
         </button>
-        <button mat-menu-item [matMenuTriggerFor]="developerMenu">
+        <button mat-menu-item 
+            [matMenuTriggerFor]="developerMenu"
+            *ngIf="authService.isActiveUserInOneGroup(['Developers'])">
             <mat-icon>developer_mode</mat-icon>
             Developer Resources
         </button>
         <mat-menu #developerMenu="matMenu">
-            <a mat-menu-item href="/api/swagger/ui" target="_blank">
+            <a mat-menu-item 
+                href="/api/swagger/ui" 
+                target="_blank"
+                *ngIf="authService.isActiveUserInOneGroup(['Developers'])">
                 <mat-icon>open_in_new</mat-icon>
                 API Documentation
             </a>
-            <a mat-menu-item href="/api/openapi/v3.yml" target="_blank">
+            <a mat-menu-item 
+                href="/api/openapi/v3.yml" 
+                target="_blank"
+                *ngIf="authService.isActiveUserInOneGroup(['Developers'])">
                 <mat-icon>open_in_new</mat-icon>
                 OpenAPI v3 Description
             </a>
-            <a mat-menu-item routerLink="/claims" routerLinkActive="active" *ngIf="authService.isLoggedIn">
+            <a mat-menu-item 
+                routerLink="/claims" 
+                routerLinkActive="active" 
+                *ngIf="authService.isActiveUserInOneGroup(['Developers'])">
                 <mat-icon>code</mat-icon>
                 Token Claims
             </a>
-            <a mat-menu-item routerLink="/test" routerLinkActive="active" *ngIf="authService.isLoggedIn">
+            <a mat-menu-item 
+                routerLink="/test" 
+                routerLinkActive="active" 
+                *ngIf="authService.isActiveUserInOneGroup(['Developers'])">
                 <mat-icon>code</mat-icon>
                 Test Harness
             </a>
         </mat-menu>
 
-        <a mat-menu-item routerLink="/users" routerLinkActive="active" *ngIf="authService.isLoggedIn">
+        <a mat-menu-item 
+            routerLink="/users" 
+            routerLinkActive="active" 
+            *ngIf="authService.isActiveUserInOneGroup(['SiteOwners', 'Administators'])">
             <mat-icon>person</mat-icon>
             User Administration
         </a>

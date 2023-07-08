@@ -52,8 +52,9 @@ const routeConfig: Routes = [
         path: 'claims',
         loadComponent: () => import("./views/claims/claims-view.component").then(c => c.ClaimsViewComponent),
         title: TITLE_PREFIX + 'Token Claims',
-        canActivate: [MsalGuard],
+        canActivate: [authorizationGuard],
         data: {
+            roles: ["SiteOwners", "Administrators", "Developers"],
             image: "/assets/images/harbor.jpg",
             description: "Token claims.",
             keywords: ["Angular", "Angular Universal"],
@@ -66,7 +67,7 @@ const routeConfig: Routes = [
         title: TITLE_PREFIX + 'Users',
         canActivate: [authorizationGuard],
         data: {
-            roles: ["SiteOwners"],
+            roles: ["SiteOwners", "Administrators"],
             image: "/assets/images/harbor.jpg",
             description: "User administration.",
             keywords: ["Angular", "Angular Universal"],
@@ -77,8 +78,9 @@ const routeConfig: Routes = [
         path: 'test',
         loadComponent: () => import("./views/test/test-view.component").then(c => c.TestViewComponent),
         title: TITLE_PREFIX + 'Test Harness',
-        canActivate: [MsalGuard],
+        canActivate: [authorizationGuard],
         data: {
+            roles: ["SiteOwners", "Administrators", "Developers"],
             image: "/assets/images/harbor.jpg",
             description: "Test harness.",
             keywords: ["Angular", "Angular Universal"],

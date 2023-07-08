@@ -154,6 +154,43 @@ export class AuthService {
     return this.msalAuthService.instance.getActiveAccount()!.idToken;
   }
 
+  isActiveUserInOneGroup(groups: string[]): boolean {
+    if (!this.isLoggedIn) return false;
+
+    let groupMatch = false;
+
+    groups.forEach((group) => {
+      const isInGroup = this.isActiveUserInGroup(group);
+      if (isInGroup) {
+        groupMatch = true;
+      }
+    });
+
+    return groupMatch;
+  }
+
+  isActiveUserInGroup(group: string): boolean {
+    if (!this.isLoggedIn) return false;
+    
+    const account = this.msalAuthService.instance.getActiveAccount();
+    if (!account) return false;
+
+    const claims = account.idTokenClaims;
+    if (!claims) return false;
+
+    const groupMembershipClaim: string = claims["extension_GroupMembership"] as string;
+    if (!groupMembershipClaim) return false;
+
+    const groupMemberships: string[] = groupMembershipClaim.split(",");
+
+    let isInGroup = false;
+    groupMemberships.map(groupMembership => {
+      if (groupMembership === group) isInGroup = true;
+    });
+
+    return isInGroup;
+  }
+
   async getActiveUser(): Promise<LocalUser | undefined> {
     if (!this.isLoggedIn) return undefined;
 
