@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
 
 #header-toolbar {
-    @include mat.elevation(24);
+    @include mat.elevation(10);
 
     .home-button {
         color: white;
