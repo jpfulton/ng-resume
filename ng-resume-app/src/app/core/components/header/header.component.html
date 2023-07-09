@@ -21,14 +21,17 @@
             <mat-icon>login</mat-icon>
             Log In or Sign Up...
         </button>
-        <div mat-menu-item *ngIf="authService.isLoggedIn">
+        <div mat-menu-item *ngIf="authService.isLoggedIn && account">
             <mat-card>
                 <mat-card-header>
                     <mat-card-title>
-                        {{user?.name}}
+                        {{account.idTokenClaims?.name}}
                     </mat-card-title>
-                    <mat-card-subtitle *ngIf="user?.emails!.length > 0">
-                        {{user!.emails[0]}}
+                    <mat-card-subtitle *ngIf="account?.idTokenClaims?.emails?.length !== 0">
+                        {{account.idTokenClaims!.emails![0]}}
+                    </mat-card-subtitle>
+                    <mat-card-subtitle>
+                        {{account.idTokenClaims!.idp}}
                     </mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-actions align="end">

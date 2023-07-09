@@ -149,6 +149,11 @@ export class AuthService {
     else return undefined;
   }
 
+  getActiveAccount(): AccountInfo | undefined {
+    if (!this.isLoggedIn) return undefined;
+    return this.msalAuthService.instance.getActiveAccount()!;
+  }
+
   getActiveIdToken(): string | undefined {
     if (!this.isLoggedIn) return undefined;
     return this.msalAuthService.instance.getActiveAccount()!.idToken;

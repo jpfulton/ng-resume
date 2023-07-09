@@ -56,7 +56,7 @@ namespace Jpf.NgResume.Api.Functions {
         {
             var log = functionContext.GetLogger<TestFunctions>();
 
-            var (authorized, authorizationResponse, _) =
+            var (authorized, authorizationResponse) =
                 await request.AuthenticateThenAuthorizeWithGroup(
                     functionContext,
                     graphClient,
