@@ -29,13 +29,13 @@ namespace Jpf.NgResume.Api.Auth {
             FunctionContext functionContext, 
             ILogger log) 
         {
-            var (status, response, user) = await req.AuthenticateAzureFunctionApiAsync(functionContext);
+            var (status, response, principal) = await req.AuthenticateAzureFunctionApiAsync(functionContext);
             if (!status)
             {
                 log.LogWarning($"Unauthorized bearer token submitted.");
             }
 
-            return (status, response, user);
+            return (status, response, principal);
         }
     }
 

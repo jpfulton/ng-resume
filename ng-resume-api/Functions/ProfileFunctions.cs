@@ -65,13 +65,14 @@ namespace Jpf.NgResume.Api.Functions
         {
             var log = functionContext.GetLogger<ProfileFunctions>();
 
-            var (authorized, authorizationResponse, user) =
-                await request.AuthenticateThenAuthorizeWithGroup(
+            var (authenticated, authenticationResponse, principal) =
+                await request.AuthenticationHelperAsync(
                     functionContext,
-                    graphClient,
-                    log,
-                    null);
-            if (!authorized) return authorizationResponse;
+                    log);
+            if (!authenticated) return authenticationResponse;
+
+            var userId = principal != null ? principal.GetObjectId()! : "";
+            var user = await UserHelpers.GetUser(graphClient, userId);
 
             var response = request.CreateResponse();
             await response.WriteAsJsonAsync(user);

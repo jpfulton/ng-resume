@@ -2,9 +2,8 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Runtime.Caching;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using Jpf.NgResume.Api.MicrosoftGraph;
-using Jpf.NgResume.Api.Models;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -25,7 +24,7 @@ namespace Jpf.NgResume.Api.Auth
             memoryCache = new MemoryCache("userCache");
         }
 
-        public static async Task<(bool, HttpResponseData?, Models.User?)> AuthenticateThenAuthorizeWithGroup(
+        public static async Task<(bool, HttpResponseData?)> AuthenticateThenAuthorizeWithGroup(
             this HttpRequestData request,
             FunctionContext functionContext,
             GraphServiceClient graphClient,
@@ -35,22 +34,54 @@ namespace Jpf.NgResume.Api.Auth
         {
             var (authenticated, authenticationResponse, principal) = 
                 await request.AuthenticationHelperAsync(functionContext, log);
-            if (!authenticated) return (authenticated, authenticationResponse, null);
+            if (!authenticated) return (authenticated, authenticationResponse);
+
+            var (claimAuthorized, claimAuthorizationResponse) =
+                await request.AuthorizeWithClaimsPrincipal(principal!, log, groupName);
+            if(claimAuthorized) 
+                return (claimAuthorized, null);
 
             var userId = principal != null ? principal.GetObjectId()! : "";
-
-            var (authorized, authorizationResponse, user) = 
-                await request.AuthorizeWithGroup( 
+            var (graphAuthorized, graphAuthorizationResponse, _) = 
+                await request.AuthorizeWithMsGraphGroup( 
                     graphClient, 
                     log, 
                     userId, 
                     groupName);
-            if(!authorized) return (authorized, authorizationResponse, user);
+            if(!graphAuthorized) return (graphAuthorized, graphAuthorizationResponse);
 
-            return (authorized, null, user);
+            return (graphAuthorized, null);
         }
 
-        public static async Task<(bool, HttpResponseData?, Models.User?)> AuthorizeWithGroup(
+        public static async Task<(bool, HttpResponseData?)> AuthorizeWithClaimsPrincipal(
+            this HttpRequestData request,
+            ClaimsPrincipal principal,
+            ILogger log,
+            string groupName
+        )
+        {
+            var groupMemberships = principal != null ? principal.GetGroupMemberships() : new string[0];
+            var authorized = 
+                string.IsNullOrEmpty(groupName) ||
+                groupMemberships.Any(group => group.Equals(groupName));
+
+            if (authorized) {
+                return (authorized, null);
+            }
+            else {
+                var resp = request.CreateResponse();
+                await resp.WriteAsJsonAsync(new CustomProblemDetails
+                {
+                    Title = "Authorization failed.",
+                    Detail = "User was not a member of an authorized group."
+                });
+                resp.StatusCode = HttpStatusCode.Unauthorized;
+
+                return (false, resp);
+            }
+        }
+
+        public static async Task<(bool, HttpResponseData?, Models.User?)> AuthorizeWithMsGraphGroup(
             this HttpRequestData request,
             GraphServiceClient graphClient,
             ILogger log,
@@ -60,7 +91,7 @@ namespace Jpf.NgResume.Api.Auth
         {
             var user = memoryCache.Get(userId) as Models.User;
             if (user == null) {
-                user = await GetUser(graphClient, userId);
+                user = await UserHelpers.GetUser(graphClient, userId);
 
                 var cacheItem = new CacheItem(userId, user);
                 var cacheItemPolicy = new CacheItemPolicy  
@@ -88,27 +119,6 @@ namespace Jpf.NgResume.Api.Auth
 
                 return (false, resp, null);
             }
-        }
-
-        private static async Task<Models.User> GetUser(GraphServiceClient graphClient, string userId)
-        {
-            var me = await graphClient.Users[userId].Request()
-                .SelectUserProperties()
-                .GetAsync();
-
-            var memberships = await graphClient.Users[userId]
-                .MemberOf
-                .Request()
-                .GetAsync();
-
-            var groups = memberships
-                .Where(p => p.GetType() == typeof(Microsoft.Graph.Group))
-                .Cast<Microsoft.Graph.Group>()
-                .ToList();
-
-            var appUser = me.FromMicrosoftGraph(groups);
-
-            return appUser;
         }
     }
 }
