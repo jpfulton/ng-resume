@@ -13,7 +13,7 @@ import { MatCardModule } from '@angular/material/card';
  
 import { FocusableDirective } from '../../directives/focusable.directive';
 import { AuthService } from '../../services/auth.service';
-import { LocalUser } from '../../models/local-user';
+import { AccountInfo } from '@azure/msal-common';
 
 @Component({
   selector: 'app-header',
@@ -37,7 +37,7 @@ import { LocalUser } from '../../models/local-user';
 export class HeaderComponent {
   @ViewChild("darkModeToggle") darkModeToggle!: MatSlideToggle;
 
-  user: LocalUser | undefined;
+  account: AccountInfo | undefined;
 
   constructor(
     public authService: AuthService
@@ -47,20 +47,20 @@ export class HeaderComponent {
 
   logout(): void {
     this.authService.logout();
-    this.user = undefined;
+    this.account = undefined;
   }
 
   login(): void {
     this.authService.login();
 
     if (this.authService.isLoggedIn) {
-      this.authService.getActiveUser().then((result) => this.user = result);
+      this.account = this.authService.getActiveAccount();
     }
   }
 
   profileMenuOpening(): void {
     if (this.authService.isLoggedIn) {
-      this.authService.getActiveUser().then((result) => this.user = result);
+      this.account = this.authService.getActiveAccount();
     }
   }
 
