@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { MsalGuard } from '@azure/msal-angular';
 import { authorizationGuard } from './core/guards/authorization.guard';
 
 const TITLE_PREFIX = "jpatrickfulton.com - ";
