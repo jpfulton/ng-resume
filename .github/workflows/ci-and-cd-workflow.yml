@@ -8,30 +8,6 @@
 #   https://github.com/actions/upload-artifact/tree/main
 name: continous-integration-and-deployment
 
-# Define environment variables available to all jobs and steps.
-#
-# To allow for finer grained control of the Angular build process, these variables (which
-# are used in the Azure/static-web-apps-deploy module) are configured as though the client
-# application to deploy is a simple HTML application. Following the initial steps in the
-# lint_test_build_deploy_job, the build output from the 'ng build' command are placed
-# in the /ng-resume/dist/ng-resume folder as completed build output artifacts and may be pushed to Azure
-# as though they are a "static HTML site" in the eyes of the deploy step.
-#
-# Reference for framework deploy configurations: https://docs.microsoft.com/azure/static-web-apps/front-end-frameworks
-env:
-  APP_WORKING_DIR: "ng-resume-app"
-  APP_LOCATION: "/ng-resume-app/dist/ng-resume/browser" # location of the client application build artifacts
-  API_LOCATION: ""
-  OUTPUT_LOCATION: "" # an empty value here causes the APP_LOCATION location to be pushed to Azure
-  AZURE_FUNCTIONAPP_NAME: personal-site-api
-  PREVIEW_AZURE_FUNCTIONAPP_NAME: personal-site-api-preview
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: "ng-resume-api"
-  DOTNET_VERSION: "7.0.x"
-  RESOURCE_GROUP: personal-site
-  SLOT_NAME: staging
-  BASE_URL: "https://www.jpatrickfulton.com"
-  PREVIEW_BASE_URL: "https://preview.jpatrickfulton.com"
-
 # Execute this workflow on pushes to the default branch or upon pull requests into the default branch.
 on:
   push:
@@ -48,19 +24,29 @@ jobs:
   export_vars:
     name: Export Variables to Output
     runs-on: ubuntu-latest
+    # Define output variables available to all jobs using a needs declaration on this job.
+    #
+    # To allow for finer grained control of the Angular build process, these variables (which
+    # are used in the Azure/static-web-apps-deploy module) are configured as though the client
+    # application to deploy is a simple HTML application. Following the initial steps in the
+    # frontend_cd_job, the build outputs from the 'ng build' command are placed
+    # in the /ng-resume/dist/ng-resume folder as completed build output artifacts and may be pushed to Azure
+    # as though they are a "static HTML site" in the eyes of the deploy step.
+    #
+    # Reference for framework deploy configurations: https://docs.microsoft.com/azure/static-web-apps/front-end-frameworks
     outputs:
-      app-working-dir: ${{ env.APP_WORKING_DIR }}
-      app-location: ${{ env.APP_LOCATION }}
-      api-location: ${{ env.API_LOCATION }}
-      output-location: ${{ env.OUTPUT_LOCATION }}
-      azure-functionapp-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-      preview-azure-functionapp-name: ${{ env.PREVIEW_AZURE_FUNCTIONAPP_NAME }}
-      azure-functionapp-package-path: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-      dotnet-version: ${{ env.DOTNET_VERSION }}
-      resource-group: ${{ env.RESOURCE_GROUP }}
-      slot-name: ${{ env.SLOT_NAME }}
-      base-url: ${{ env.BASE_URL }}
-      preview-base-url: ${{ env.PREVIEW_BASE_URL }}
+      app-working-dir: "ng-resume-app"
+      app-location: "/ng-resume-app/dist/ng-resume/browser" # location of the client application build artifacts
+      api-location: ""
+      output-location: "" # an empty value here causes the app-location location to be pushed to Azure
+      azure-functionapp-name: "personal-site-api"
+      preview-azure-functionapp-name: "personal-site-api-preview"
+      azure-functionapp-package-path: "ng-resume-api"
+      dotnet-version: "7.0.x"
+      resource-group: "personal-site"
+      slot-name: "staging"
+      base-url: "https://www.jpatrickfulton.com"
+      preview-base-url: "https://preview.jpatrickfulton.com"
     steps:
       - run: echo "Exporting variables to outputs."
 
