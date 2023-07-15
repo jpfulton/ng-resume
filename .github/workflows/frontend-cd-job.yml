@@ -1,4 +1,4 @@
-name: Reusable Frontend Deployment Workflow
+name: Reusable Frontend CD Workflow
 
 on:
   workflow_call:

@@ -1,0 +1,66 @@
+name: Reusable E2E Testing Workflow
+
+on:
+  workflow_call:
+    inputs:
+      app-working-dir:
+        required: true
+        type: string
+      base-url:
+        required: true
+        type: string
+
+jobs:
+  e2e_job:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        id: checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        id: nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          cache: "yarn"
+          cache-dependency-path: ${{ inputs.app-working-dir }}/yarn.lock
+
+      - name: Install dependencies via yarn with frozen lockfile
+        id: installdeps
+        working-directory: ${{ inputs.app-working-dir }}
+        run: yarn --frozen-lockfile
+        
+      # Run the cypress e2e sanity test suite on the Azure deployment.
+      # The static_web_app_url output variable from the deployment step
+      # will contain either the production URL or the URL of a preview environment
+      # if this workflow is running on a PR.
+      - name: E2E test suite on deployment
+        id: e2e
+        uses: cypress-io/github-action@v5
+        with:
+          working-directory: ${{ inputs.app-working-dir }}
+          config: baseUrl=${{ inputs.base-url }}
+
+      # Upload the cypress e2e test suite screenshots as artifacts to this
+      # workflow if failure is detected in a previous step.
+      - name: Upload E2E test suite failure screenshots artifact
+        id: e2e-failure-screenshot-upload
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: e2e-failure-screenshots
+          path: ${{ inputs.app-working-dir }}/cypress/screenshots
+
+      # Upload the cypress e2e test suite videos as artifacts to this workflow.
+      - name: Upload E2E test suite video artifact
+        id: e2e-video-upload
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: e2e-videos
+          path: ${{ inputs.app-working-dir }}/cypress/videos
