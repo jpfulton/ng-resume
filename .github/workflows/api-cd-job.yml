@@ -33,10 +33,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: 'Checkout GitHub Action'
+      - name: "Checkout GitHub Action"
         uses: actions/checkout@v3
 
-      - name: 'Login via Azure CLI'
+      - name: "Login via Azure CLI"
         uses: azure/login@v1
         with:
           creds: ${{ secrets.azure-sp-credentials }}
@@ -46,33 +46,33 @@ jobs:
         with:
           dotnet-version: ${{ inputs.dotnet-version }}
 
-      - name: 'Resolve Project Dependencies Using Dotnet'
+      - name: "Resolve Project Dependencies Using Dotnet"
         shell: pwsh
         run: |
           pushd './${{ inputs.function-app-package-path }}'
           dotnet build --configuration Release --output ./output
           popd
 
-      - name: 'Run Azure Functions Action for ${{ inputs.slot-name }} Slot'
+      - name: "Run Azure Functions Action for ${{ inputs.slot-name }} Slot"
         uses: Azure/functions-action@v1
         id: fa
         with:
           app-name: ${{ inputs.function-app-name }}
-          package: '${{ inputs.function-app-package-path }}/output'
+          package: "${{ inputs.function-app-package-path }}/output"
           slot-name: ${{ inputs.slot-name }}
 
-      - name: 'Swap ${{ inputs.slot-name }} to Production'
+      - name: "Swap ${{ inputs.slot-name }} to Production"
         run: az functionapp deployment slot swap
-              -g ${{ inputs.resource-group }}
-              -n ${{ inputs.function-app-name }}
-              --slot ${{ inputs.slot-name }}
-              --target-slot production
+          -g ${{ inputs.resource-group }}
+          -n ${{ inputs.function-app-name }}
+          --slot ${{ inputs.slot-name }}
+          --target-slot production
 
       - name: Comment PR
         if: (github.event_name == 'pull_request' && github.event.action != 'closed')
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-              PR #${{ github.event.pull_request.number }} API deployed to ${{ inputs.function-app-name }} on
-              _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
+            PR #${{ github.event.pull_request.number }} API deployed to ${{ inputs.function-app-name }} on
+            _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
           comment_tag: preview_api_deployment
