@@ -45,6 +45,20 @@ permissions:
   contents: read
 
 jobs:
+  export_vars:
+    runs-on: ubuntu-latest
+    outputs:
+      azure-functionapp-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+      preview-azure-funtionapp-name: ${{ env.PREVIEW_AZURE_FUNCTIONAPP_NAME }}
+      azure-functionapp-package-path: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+      dotnet-version: ${{ env.DOTNET_VERSION }}
+      resource-group: ${{ env.RESOURCE_GROUP }}
+      slot-name: ${{ env.SLOT_NAME }}
+      base-url: ${{ env.BASE_URL }}
+      preview-base-ur: ${{ env.PREVIEW_BASE_URL }}
+    steps:
+      - run: echo "Exporting environment variables to outputs."
+
   #analyze:
   #  name: CodeQL Analyze Job
   #  runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
@@ -149,7 +163,7 @@ jobs:
   preview_api_cd_job:
     name: API CD Job (Preview)
   #  needs: [analyze, frontend_ci_job]
-    needs: [frontend_ci_job]
+    needs: [export_vars, frontend_ci_job]
 
     # Execute this job upon
     # PRs into the default branch that are not closed.
@@ -161,11 +175,11 @@ jobs:
 
     uses: ./.github/workflows/api-cd-job.yml
     with:
-      dotnet-version: ${DOTNET_VERSION}
-      function-app-name: ${AZURE_FUNCTIONAPP_NAME}
-      function-app-package-path: ${AZURE_FUNCTIONAPP_PACKAGE_PATH}
-      resource-group: ${RESOURCE_GROUP}
-      slot-name: ${SLOT_NAME}
+      dotnet-version: ${{ needs.export_vars.outputs.dotnet-version }}
+      function-app-name: ${{ needs.export_vars.outputs.azure-functionapp-name }}
+      function-app-package-path: ${{ needs.export_vars.outputs.azure-functionapp-package-path }}
+      resource-group: ${{ needs.export_vars.outputs.resource-group }}
+      slot-name: ${{ needs.export_vars.outputs.slot-name }}
     secrets:
       azure-sp-credentials: ${{ secrets.PREVIEW_AZURE_SP_CREDENTIALS }}
 
