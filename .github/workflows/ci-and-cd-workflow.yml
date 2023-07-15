@@ -62,7 +62,7 @@ jobs:
     # PRs into the default branch that are not closed.
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     uses: ./.github/workflows/analyze-job.yml
-    
+
   frontend_ci_job:
     name: (All)
     needs: [export_vars]
@@ -74,7 +74,7 @@ jobs:
     uses: ./.github/workflows/frontend-ci-job.yml
     with:
       app-working-dir: ${{ needs.export_vars.outputs.app-working-dir }}
-    
+
   preview_api_cd_job:
     name: (Preview)
     needs: [export_vars, analyze, frontend_ci_job]
@@ -94,7 +94,7 @@ jobs:
 
   api_cd_job:
     name: (Production)
-    needs: [export_vars, analyze, frontend_ci_job] 
+    needs: [export_vars, analyze, frontend_ci_job]
     if: (github.event_name == 'push') # Execute this job upon pushes to the default branch
     permissions:
       contents: read
@@ -125,7 +125,7 @@ jobs:
       branch: ${{ github.event.pull_request.head.ref }}
       output-location: ${{ needs.export_vars.outputs.output-location }}
       pull-request-number: ${{ github.event.pull_request.number }}
-      repository-url:  ${{ github.event.repository.html_url }}
+      repository-url: ${{ github.event.repository.html_url }}
     secrets:
       azure-static-web-apps-api-token: ${{ secrets.PREVIEW_AZURE_STATIC_WEB_APPS_API_TOKEN }}
       github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -146,7 +146,7 @@ jobs:
       branch: ${{ github.event.pull_request.head.ref }}
       output-location: ${{ needs.export_vars.outputs.output-location }}
       pull-request-number: ${{ github.event.pull_request.number }}
-      repository-url:  ${{ github.event.repository.html_url }}
+      repository-url: ${{ github.event.repository.html_url }}
     secrets:
       azure-static-web-apps-api-token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
       github-token: ${{ secrets.GITHUB_TOKEN }}
