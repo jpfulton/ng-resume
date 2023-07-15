@@ -154,6 +154,10 @@ jobs:
     # PRs into the default branch that are not closed.
     if: (github.event_name == 'pull_request' && github.event.action != 'closed')
 
+    permissions:
+      contents: read
+      pull-requests: write
+
     uses: ./.github/workflows/api-cd-job.yml
     with:
       dotnet-version: $DOTNET_VERSION
