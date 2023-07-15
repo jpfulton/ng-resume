@@ -12,6 +12,7 @@ on:
 
 jobs:
   e2e_job:
+    name: E2E Testing Job
     permissions:
       contents: read # for actions/checkout to fetch code
 

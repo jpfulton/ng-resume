@@ -51,7 +51,7 @@ jobs:
       - run: echo "Exporting variables to outputs."
 
   analyze:
-    name: CodeQL Analyze Job
+    name: (All)
     needs: [export_vars]
     permissions:
       actions: read
@@ -64,7 +64,7 @@ jobs:
     uses: ./.github/workflows/analyze-job.yml
     
   frontend_ci_job:
-    name: Frontend CI Job
+    name: (All)
     needs: [export_vars]
     # Execute this job upon pushes to the default branch or
     # PRs into the default branch that are not closed.
@@ -76,7 +76,7 @@ jobs:
       app-working-dir: ${{ needs.export_vars.outputs.app-working-dir }}
     
   preview_api_cd_job:
-    name: API CD Job (Preview)
+    name: (Preview)
     needs: [export_vars, analyze, frontend_ci_job]
     if: (github.event_name == 'pull_request' && github.event.action != 'closed') # Execute this job upon PRs into the default branch that are not closed.
     permissions:
@@ -93,7 +93,7 @@ jobs:
       azure-sp-credentials: ${{ secrets.PREVIEW_AZURE_SP_CREDENTIALS }}
 
   api_cd_job:
-    name: API CD Job
+    name: (Production)
     needs: [export_vars, analyze, frontend_ci_job] 
     if: (github.event_name == 'push') # Execute this job upon pushes to the default branch
     permissions:
@@ -110,7 +110,7 @@ jobs:
       azure-sp-credentials: ${{ secrets.AZURE_SP_CREDENTIALS }}
 
   preview_frontend_cd_job:
-    name: Frontend CD Job (Preview)
+    name: (Preview)
     needs: [export_vars, analyze, frontend_ci_job]
     if: (github.event_name == 'pull_request' && github.event.action != 'closed') # Execute this job upon PRs into the default branch that are not closed.
     permissions:
@@ -131,7 +131,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   frontend_cd_job:
-    name: Frontend CD Job
+    name: (Production)
     needs: [export_vars, analyze, frontend_ci_job]
     if: (github.event_name == 'push') # Execute this job upon pushes to the default branch.
     permissions:
@@ -152,7 +152,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   preview_e2e_job:
-    name: E2E Job (Preview)
+    name: (Preview)
     needs: [export_vars, preview_frontend_cd_job, preview_api_cd_job]
     if: (github.event_name == 'pull_request' && github.event.action != 'closed') # Execute this job upon PRs into the default branch that are not closed.
     permissions:
@@ -163,7 +163,7 @@ jobs:
       base-url: ${{ needs.export_vars.outputs.preview-base-url }}
 
   e2e_job:
-    name: E2E Job
+    name: (Production)
     needs: [export_vars, frontend_cd_job, api_cd_job]
     if: (github.event_name == 'push') # Execute this job upon pushes to the default branch
     permissions:
