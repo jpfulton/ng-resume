@@ -9,6 +9,7 @@ on:
 
 jobs:
   frontend_ci_job:
+    name: Frontend CI Job
     permissions:
       contents: read # for actions/checkout to fetch code
 
