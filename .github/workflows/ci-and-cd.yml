@@ -46,9 +46,13 @@ permissions:
 
 jobs:
   export_vars:
-    name: Export Env Variables to Output
+    name: Export Variables to Output
     runs-on: ubuntu-latest
     outputs:
+      app-working-dir: ${{ env.APP_WORKING_DIR }}
+      app-location: ${{ env.APP_LOCATION }}
+      api-location: ${{ env.API_LOCATION }}
+      output-location: ${{ env.OUTPUT_LOCATION }}
       azure-functionapp-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
       preview-azure-functionapp-name: ${{ env.PREVIEW_AZURE_FUNCTIONAPP_NAME }}
       azure-functionapp-package-path: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
@@ -56,9 +60,9 @@ jobs:
       resource-group: ${{ env.RESOURCE_GROUP }}
       slot-name: ${{ env.SLOT_NAME }}
       base-url: ${{ env.BASE_URL }}
-      preview-base-ur: ${{ env.PREVIEW_BASE_URL }}
+      preview-base-url: ${{ env.PREVIEW_BASE_URL }}
     steps:
-      - run: echo "Exporting environment variables to outputs."
+      - run: echo "Exporting variables to outputs."
 
   #analyze:
   #  name: CodeQL Analyze Job
@@ -165,15 +169,10 @@ jobs:
     name: API CD Job (Preview)
   #  needs: [analyze, frontend_ci_job]
     needs: [export_vars, frontend_ci_job]
-
-    # Execute this job upon
-    # PRs into the default branch that are not closed.
-    if: (github.event_name == 'pull_request' && github.event.action != 'closed')
-
+    if: (github.event_name == 'pull_request' && github.event.action != 'closed') # Execute this job upon PRs into the default branch that are not closed.
     permissions:
       contents: read
       pull-requests: write
-
     uses: ./.github/workflows/api-cd-job.yml
     with:
       dotnet-version: ${{ needs.export_vars.outputs.dotnet-version }}
@@ -187,15 +186,11 @@ jobs:
   api_cd_job:
     name: API CD Job
   #  needs: [analyze, frontend_ci_job]
-    needs: [export_vars, frontend_ci_job]
-
-    # Execute this job upon pushes to the default branch 
-    if: github.event_name == 'push'
-
+    needs: [export_vars, frontend_ci_job] 
+    if: (github.event_name == 'push') # Execute this job upon pushes to the default branch
     permissions:
       contents: read
       pull-requests: write
-
     uses: ./.github/workflows/api-cd-job.yml
     with:
       dotnet-version: ${{ needs.export_vars.outputs.dotnet-version }}
@@ -209,70 +204,21 @@ jobs:
   preview_frontend_cd_job:
     name: Frontend CD Job (Preview)
   #  needs: [analyze, frontend_ci_job]
-    needs: [frontend_ci_job]
-
-    # Execute this job upon
-    # PRs into the default branch that are not closed.
-    if: (github.event_name == 'pull_request' && github.event.action != 'closed')
-
-    permissions:
-      contents: read # for actions/checkout to fetch code
-      pull-requests: write
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        id: checkout
-        uses: actions/checkout@v3
-
-      - name: Use Node.js
-        id: nodejs
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18.x"
-          cache: "yarn"
-          cache-dependency-path: ${{ env.APP_WORKING_DIR }}/yarn.lock
-
-      - name: Install dependencies via yarn with frozen lockfile
-        id: installdeps
-        working-directory: ${{ env.APP_WORKING_DIR }}
-        run: yarn --frozen-lockfile
-
-      - name: Build application
-        id: build
-        timeout-minutes: 5
-        working-directory: ${{ env.APP_WORKING_DIR }}
-        run: yarn run prerender
-
-      # Deploy build artifacts into Azure.
-      - name: Deploy application to Azure
-        id: deploy
-
-        # Use environment variables to control default behavior of the action
-        # and force "production" deployments from a PR per
-        # https://github.com/Azure/static-web-apps/issues/750#issuecomment-1116693199
-        env:
-          DEPLOYMENT_PROVIDER: "Custom"
-          REPOSITORY_URL: ${{ github.event.repository.html_url }}
-          BRANCH: ${{ github.event.pull_request.head.ref }}
-
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
-          azure_static_web_apps_api_token: ${{ secrets.PREVIEW_AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          action: "upload" # upload artifacts and deploy to either production or a preview environment
-          app_location: ${{ env.APP_LOCATION }}
-          api_location: ${{ env.API_LOCATION }}
-          output_location: ${{ env.OUTPUT_LOCATION }}
-
-      - name: Comment PR
-        uses: thollander/actions-comment-pull-request@v2
-        with:
-          message: |
-            PR #${{ github.event.pull_request.number }} deployed to ${{ env.PREVIEW_BASE_URL }} on
-            _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
-          comment_tag: preview_frontend_deployment
+    needs: [export_vars, frontend_ci_job]
+    if: (github.event_name == 'pull_request' && github.event.action != 'closed') # Execute this job upon PRs into the default branch that are not closed.
+    uses: ./.github/workflows/frontend-cd-job.yml
+    with:
+      api-location: ${{ needs.export_vars.outputs.api-location }}
+      app-location: ${{ needs.export_vars.outputs.app-location }}
+      app-working-dir: ${{ needs.export_vars.outputs.app-working-dir }}
+      base-url: ${{ needs.export_vars.outputs.preview-base-url }}
+      branch: ${{ github.event.pull_request.head.ref }}
+      output-location: ${{ needs.export_vars.outputs.output-location }}
+      pull-request-number: ${{ github.event.pull_request.number }}
+      repository-url:  ${{ github.event.repository.html_url }}
+    secrets:
+      azure-static-web-apps-api-token: ${{ secrets.PREVIEW_AZURE_STATIC_WEB_APPS_API_TOKEN }}
+      github-token: ${{ secrets.GITHUB_TOKEN }}
 
   frontend_cd_job:
     name: Frontend CD Job
