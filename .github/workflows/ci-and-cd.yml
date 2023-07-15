@@ -46,10 +46,11 @@ permissions:
 
 jobs:
   export_vars:
+    name: Export Env Variables to Output
     runs-on: ubuntu-latest
     outputs:
       azure-functionapp-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-      preview-azure-funtionapp-name: ${{ env.PREVIEW_AZURE_FUNCTIONAPP_NAME }}
+      preview-azure-functionapp-name: ${{ env.PREVIEW_AZURE_FUNCTIONAPP_NAME }}
       azure-functionapp-package-path: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
       dotnet-version: ${{ env.DOTNET_VERSION }}
       resource-group: ${{ env.RESOURCE_GROUP }}
@@ -176,7 +177,7 @@ jobs:
     uses: ./.github/workflows/api-cd-job.yml
     with:
       dotnet-version: ${{ needs.export_vars.outputs.dotnet-version }}
-      function-app-name: ${{ needs.export_vars.outputs.azure-functionapp-name }}
+      function-app-name: ${{ needs.export_vars.outputs.preview-azure-functionapp-name }}
       function-app-package-path: ${{ needs.export_vars.outputs.azure-functionapp-package-path }}
       resource-group: ${{ needs.export_vars.outputs.resource-group }}
       slot-name: ${{ needs.export_vars.outputs.slot-name }}
@@ -186,51 +187,24 @@ jobs:
   api_cd_job:
     name: API CD Job
   #  needs: [analyze, frontend_ci_job]
-    needs: [frontend_ci_job]
+    needs: [export_vars, frontend_ci_job]
 
     # Execute this job upon pushes to the default branch 
     if: github.event_name == 'push'
 
     permissions:
       contents: read
+      pull-requests: write
 
-    runs-on: windows-latest
-
-    steps:
-      - name: 'Checkout GitHub Action'
-        uses: actions/checkout@v3
-
-      - name: 'Login via Azure CLI'
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_SP_CREDENTIALS }}
-  
-      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-  
-      - name: 'Resolve Project Dependencies Using Dotnet'
-        shell: pwsh
-        run: |
-          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-          dotnet build --configuration Release --output ./output
-          popd
-  
-      - name: 'Run Azure Functions Action for ${{ env.SLOT_NAME }} Slot'
-        uses: Azure/functions-action@v1
-        id: fa
-        with:
-          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          slot-name: ${{ env.SLOT_NAME }}
-
-      - name: 'Swap ${{ env.SLOT_NAME }} to Production'
-        run: az functionapp deployment slot swap
-                -g ${{ env.RESOURCE_GROUP }}
-                -n ${{ env.AZURE_FUNCTIONAPP_NAME }}
-                --slot ${{ env.SLOT_NAME }}
-                --target-slot production
+    uses: ./.github/workflows/api-cd-job.yml
+    with:
+      dotnet-version: ${{ needs.export_vars.outputs.dotnet-version }}
+      function-app-name: ${{ needs.export_vars.outputs.azure-functionapp-name }}
+      function-app-package-path: ${{ needs.export_vars.outputs.azure-functionapp-package-path }}
+      resource-group: ${{ needs.export_vars.outputs.resource-group }}
+      slot-name: ${{ needs.export_vars.outputs.slot-name }}
+    secrets:
+      azure-sp-credentials: ${{ secrets.AZURE_SP_CREDENTIALS }}
 
   preview_frontend_cd_job:
     name: Frontend CD Job (Preview)

@@ -22,7 +22,6 @@ on:
       azure-sp-credentials:
         required: true
 
-
 jobs:
   api_cd_job:
     name: API CD Job
@@ -70,6 +69,7 @@ jobs:
               --target-slot production
 
       - name: Comment PR
+        if: (github.event_name == 'pull_request' && github.event.action != 'closed')
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
