@@ -25,8 +25,8 @@ env:
   OUTPUT_LOCATION: "" # an empty value here causes the APP_LOCATION location to be pushed to Azure
   AZURE_FUNCTIONAPP_NAME: personal-site-api
   PREVIEW_AZURE_FUNCTIONAPP_NAME: personal-site-api-preview
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: "ng-resume-api"
-  DOTNET_VERSION: "7.0.x"
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: ng-resume-api
+  DOTNET_VERSION: 7.0.x
   RESOURCE_GROUP: personal-site
   SLOT_NAME: staging
   BASE_URL: "https://www.jpatrickfulton.com"
@@ -163,7 +163,6 @@ jobs:
       dotnet-version: $DOTNET_VERSION
       function-app-name: $AZURE_FUNCTIONAPP_NAME
       function-app-package-path: $AZURE_FUNCTIONAPP_PACKAGE_PATH
-      job-name: API CD Job (Preview)
       resource-group: $RESOURCE_GROUP
       slot-name: $SLOT_NAME
     secrets:
