@@ -156,12 +156,12 @@ jobs:
 
     uses: ./.github/workflows/api-cd-job.yml
     with:
-      dotnet-version: ${{ env.DOTNET_VERSION }}
-      function-app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-      function-app-package-path: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+      dotnet-version: $DOTNET_VERSION
+      function-app-name: $AZURE_FUNCTIONAPP_NAME
+      function-app-package-path: $AZURE_FUNCTIONAPP_PACKAGE_PATH
       job-name: API CD Job (Preview)
-      resource-group: ${{ env.RESOURCE_GROUP }}
-      slot-name: ${{ env.SLOT_NAME }}
+      resource-group: $RESOURCE_GROUP
+      slot-name: $SLOT_NAME
     secrets:
       azure-sp-credentials: ${{ secrets.PREVIEW_AZURE_SP_CREDENTIALS }}
 
