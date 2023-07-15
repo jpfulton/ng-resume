@@ -64,67 +64,19 @@ jobs:
     steps:
       - run: echo "Exporting variables to outputs."
 
-  #analyze:
-  #  name: CodeQL Analyze Job
-  #  runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
-  #  timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
-  #  permissions:
-  #    actions: read
-  #    contents: read
-  #    security-events: write
-  #    pull-requests: write # allows analyzer to comment on PRs
-
+  analyze:
+    name: CodeQL Analyze Job
+    needs: [export_vars]
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+      pull-requests: write # allows analyzer to comment on PRs
     # Execute this job upon pushes to the default branch or
     # PRs into the default branch that are not closed.
-  #  if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
-
-  #  strategy:
-  #    fail-fast: false
-  #    matrix:
-  #      language: [ 'csharp', 'javascript' ]
-        # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby', 'swift' ]
-        # Use only 'java' to analyze code written in Java, Kotlin or both
-        # Use only 'javascript' to analyze code written in JavaScript, TypeScript or both
-        # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
-
-  #  steps:
-  #  - name: Checkout repository
-  #    uses: actions/checkout@v3
-
-    # Initializes the CodeQL tools for scanning.
-  #  - name: Initialize CodeQL
-  #    uses: github/codeql-action/init@v2
-  #    with:
-  #      languages: ${{ matrix.language }}
-        # If you wish to specify custom queries, you can do so here or in a config file.
-        # By default, queries listed here will override any specified in a config file.
-        # Prefix the list here with "+" to use these queries and those in the config file.
-
-        # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
-        # queries: security-extended,security-and-quality
-  #      queries: security-and-quality
-
-
-    # Autobuild attempts to build any compiled languages (C/C++, C#, Go, Java, or Swift).
-    # If this step fails, then you should remove it and run the build manually (see below)
-  #  - name: Autobuild
-  #    uses: github/codeql-action/autobuild@v2
-
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
-
-    #   If the Autobuild fails above, remove it and uncomment the following three lines.
-    #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
-
-    # - run: |
-    #     echo "Run, Build Application using script"
-    #     ./location_of_script_within_repo/buildscript.sh
-
-  #  - name: Perform CodeQL Analysis
-  #    uses: github/codeql-action/analyze@v2
-  #    with:
-  #      category: "/language:${{matrix.language}}"
-
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    uses: ./.github/workflows/analyze-job.yml
+    
   frontend_ci_job:
     name: Frontend CI Job
     needs: [export_vars]
@@ -139,8 +91,7 @@ jobs:
     
   preview_api_cd_job:
     name: API CD Job (Preview)
-  #  needs: [analyze, frontend_ci_job]
-    needs: [export_vars, frontend_ci_job]
+    needs: [export_vars, analyze, frontend_ci_job]
     if: (github.event_name == 'pull_request' && github.event.action != 'closed') # Execute this job upon PRs into the default branch that are not closed.
     permissions:
       contents: read
@@ -157,8 +108,7 @@ jobs:
 
   api_cd_job:
     name: API CD Job
-  #  needs: [analyze, frontend_ci_job]
-    needs: [export_vars, frontend_ci_job] 
+    needs: [export_vars, analyze, frontend_ci_job] 
     if: (github.event_name == 'push') # Execute this job upon pushes to the default branch
     permissions:
       contents: read
@@ -175,8 +125,7 @@ jobs:
 
   preview_frontend_cd_job:
     name: Frontend CD Job (Preview)
-  #  needs: [analyze, frontend_ci_job]
-    needs: [export_vars, frontend_ci_job]
+    needs: [export_vars, analyze, frontend_ci_job]
     if: (github.event_name == 'pull_request' && github.event.action != 'closed') # Execute this job upon PRs into the default branch that are not closed.
     permissions:
       contents: read # for actions/checkout to fetch code
@@ -197,8 +146,7 @@ jobs:
 
   frontend_cd_job:
     name: Frontend CD Job
-  #  needs: [analyze, frontend_ci_job]
-    needs: [export_vars, frontend_ci_job]
+    needs: [export_vars, analyze, frontend_ci_job]
     if: (github.event_name == 'push') # Execute this job upon pushes to the default branch.
     permissions:
       contents: read # for actions/checkout to fetch code
