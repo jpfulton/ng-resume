@@ -127,44 +127,16 @@ jobs:
 
   frontend_ci_job:
     name: Frontend CI Job
-
+    needs: [export_vars]
     # Execute this job upon pushes to the default branch or
     # PRs into the default branch that are not closed.
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
-
     permissions:
       contents: read # for actions/checkout to fetch code
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        id: checkout
-        uses: actions/checkout@v3
-
-      - name: Use Node.js
-        id: nodejs
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18.x"
-          cache: "yarn"
-          cache-dependency-path: ${{ env.APP_WORKING_DIR }}/yarn.lock
-
-      - name: Install dependencies via yarn with frozen lockfile
-        id: installdeps
-        working-directory: ${{ env.APP_WORKING_DIR }}
-        run: yarn --frozen-lockfile
-
-      - name: Lint application
-        id: lint
-        working-directory: ${{ env.APP_WORKING_DIR }}
-        run: yarn run lint
-
-      - name: Test application
-        id: test
-        working-directory: ${{ env.APP_WORKING_DIR }}
-        run: yarn run test --configuration=ci
-
+    uses: ./.github/workflows/frontend-ci-job.yml
+    with:
+      app-working-dir: ${{ needs.export_vars.outputs.app-working-dir }}
+    
   preview_api_cd_job:
     name: API CD Job (Preview)
   #  needs: [analyze, frontend_ci_job]
