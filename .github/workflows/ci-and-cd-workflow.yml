@@ -1,0 +1,174 @@
+# CI/CD workflow triggered by pushes and PRs into the default branch.
+#
+# References:
+#   https://github.com/actions/starter-workflows/blob/main/deployments/azure-staticwebapp.yml
+#   https://github.com/Azure/static-web-apps-deploy
+#   https://github.com/actions/setup-node#caching-global-packages-data
+#   https://github.com/cypress-io/github-action
+#   https://github.com/actions/upload-artifact/tree/main
+name: Continuous Integration and Deployment Workflow
+
+# Execute this workflow on pushes to the default branch or upon pull requests into the default branch.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+
+# Default permissions for each job. May be supplemented or overridden in each configured job.
+permissions:
+  contents: read
+
+jobs:
+  export_vars:
+    name: Export Variables to Output
+    runs-on: ubuntu-latest
+    # Define output variables available to all jobs using a needs declaration on this job.
+    #
+    # To allow for finer grained control of the Angular build process, these variables (which
+    # are used in the Azure/static-web-apps-deploy module) are configured as though the client
+    # application to deploy is a simple HTML application. Following the initial steps in the
+    # frontend_cd_job, the build outputs from the 'ng build' command are placed
+    # in the /ng-resume/dist/ng-resume folder as completed build output artifacts and may be pushed to Azure
+    # as though they are a "static HTML site" in the eyes of the deploy step.
+    #
+    # Reference for framework deploy configurations: https://docs.microsoft.com/azure/static-web-apps/front-end-frameworks
+    outputs:
+      app-working-dir: "ng-resume-app"
+      app-location: "/ng-resume-app/dist/ng-resume/browser" # location of the client application build artifacts
+      api-location: ""
+      output-location: "" # an empty value here causes the app-location location to be pushed to Azure
+      azure-functionapp-name: "personal-site-api"
+      preview-azure-functionapp-name: "personal-site-api-preview"
+      azure-functionapp-package-path: "ng-resume-api"
+      dotnet-version: "7.0.x"
+      resource-group: "personal-site"
+      slot-name: "staging"
+      base-url: "https://www.jpatrickfulton.com"
+      preview-base-url: "https://preview.jpatrickfulton.com"
+    steps:
+      - run: echo "Exporting variables to outputs."
+
+  analyze:
+    name: (All)
+    needs: [export_vars]
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+      pull-requests: write # allows analyzer to comment on PRs
+    # Execute this job upon pushes to the default branch or
+    # PRs into the default branch that are not closed.
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    uses: ./.github/workflows/analyze-job.yml
+
+  frontend_ci_job:
+    name: (All)
+    needs: [export_vars]
+    # Execute this job upon pushes to the default branch or
+    # PRs into the default branch that are not closed.
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    permissions:
+      contents: read # for actions/checkout to fetch code
+    uses: ./.github/workflows/frontend-ci-job.yml
+    with:
+      app-working-dir: ${{ needs.export_vars.outputs.app-working-dir }}
+
+  preview_api_cd_job:
+    name: (Preview)
+    needs: [export_vars, analyze, frontend_ci_job]
+    if: (github.event_name == 'pull_request' && github.event.action != 'closed') # Execute this job upon PRs into the default branch that are not closed.
+    permissions:
+      contents: read
+      pull-requests: write
+    uses: ./.github/workflows/api-cd-job.yml
+    with:
+      dotnet-version: ${{ needs.export_vars.outputs.dotnet-version }}
+      function-app-name: ${{ needs.export_vars.outputs.preview-azure-functionapp-name }}
+      function-app-package-path: ${{ needs.export_vars.outputs.azure-functionapp-package-path }}
+      resource-group: ${{ needs.export_vars.outputs.resource-group }}
+      slot-name: ${{ needs.export_vars.outputs.slot-name }}
+    secrets:
+      azure-sp-credentials: ${{ secrets.PREVIEW_AZURE_SP_CREDENTIALS }}
+
+  api_cd_job:
+    name: (Production)
+    needs: [export_vars, analyze, frontend_ci_job]
+    if: (github.event_name == 'push') # Execute this job upon pushes to the default branch
+    permissions:
+      contents: read
+      pull-requests: write
+    uses: ./.github/workflows/api-cd-job.yml
+    with:
+      dotnet-version: ${{ needs.export_vars.outputs.dotnet-version }}
+      function-app-name: ${{ needs.export_vars.outputs.azure-functionapp-name }}
+      function-app-package-path: ${{ needs.export_vars.outputs.azure-functionapp-package-path }}
+      resource-group: ${{ needs.export_vars.outputs.resource-group }}
+      slot-name: ${{ needs.export_vars.outputs.slot-name }}
+    secrets:
+      azure-sp-credentials: ${{ secrets.AZURE_SP_CREDENTIALS }}
+
+  preview_frontend_cd_job:
+    name: (Preview)
+    needs: [export_vars, analyze, frontend_ci_job]
+    if: (github.event_name == 'pull_request' && github.event.action != 'closed') # Execute this job upon PRs into the default branch that are not closed.
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      pull-requests: write # for Azure/static-web-apps-deploy to comment on PRs
+    uses: ./.github/workflows/frontend-cd-job.yml
+    with:
+      api-location: ${{ needs.export_vars.outputs.api-location }}
+      app-location: ${{ needs.export_vars.outputs.app-location }}
+      app-working-dir: ${{ needs.export_vars.outputs.app-working-dir }}
+      base-url: ${{ needs.export_vars.outputs.preview-base-url }}
+      branch: ${{ github.event.pull_request.head.ref }}
+      output-location: ${{ needs.export_vars.outputs.output-location }}
+      pull-request-number: ${{ github.event.pull_request.number }}
+      repository-url: ${{ github.event.repository.html_url }}
+    secrets:
+      azure-static-web-apps-api-token: ${{ secrets.PREVIEW_AZURE_STATIC_WEB_APPS_API_TOKEN }}
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  frontend_cd_job:
+    name: (Production)
+    needs: [export_vars, analyze, frontend_ci_job]
+    if: (github.event_name == 'push') # Execute this job upon pushes to the default branch.
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      pull-requests: write # for Azure/static-web-apps-deploy to comment on PRs
+    uses: ./.github/workflows/frontend-cd-job.yml
+    with:
+      api-location: ${{ needs.export_vars.outputs.api-location }}
+      app-location: ${{ needs.export_vars.outputs.app-location }}
+      app-working-dir: ${{ needs.export_vars.outputs.app-working-dir }}
+      base-url: ${{ needs.export_vars.outputs.base-url }}
+      branch: ${{ github.event.pull_request.head.ref }}
+      output-location: ${{ needs.export_vars.outputs.output-location }}
+      pull-request-number: ${{ github.event.pull_request.number }}
+      repository-url: ${{ github.event.repository.html_url }}
+    secrets:
+      azure-static-web-apps-api-token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  preview_e2e_job:
+    name: (Preview)
+    needs: [export_vars, preview_frontend_cd_job, preview_api_cd_job]
+    if: (github.event_name == 'pull_request' && github.event.action != 'closed') # Execute this job upon PRs into the default branch that are not closed.
+    permissions:
+      contents: read # for actions/checkout to fetch code
+    uses: ./.github/workflows/e2e-job.yml
+    with:
+      app-working-dir: ${{ needs.export_vars.outputs.app-working-dir }}
+      base-url: ${{ needs.export_vars.outputs.preview-base-url }}
+
+  e2e_job:
+    name: (Production)
+    needs: [export_vars, frontend_cd_job, api_cd_job]
+    if: (github.event_name == 'push') # Execute this job upon pushes to the default branch
+    permissions:
+      contents: read # for actions/checkout to fetch code
+    uses: ./.github/workflows/e2e-job.yml
+    with:
+      app-working-dir: ${{ needs.export_vars.outputs.app-working-dir }}
+      base-url: ${{ needs.export_vars.outputs.base-url }}

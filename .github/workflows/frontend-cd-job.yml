@@ -1,0 +1,98 @@
+name: Reusable Frontend CD Workflow
+
+on:
+  workflow_call:
+    inputs:
+      app-working-dir:
+        required: true
+        type: string
+      repository-url:
+        required: true
+        type: string
+      branch:
+        required: true
+        type: string
+      app-location:
+        required: true
+        type: string
+      api-location:
+        required: true
+        type: string
+      output-location:
+        required: true
+        type: string
+      pull-request-number:
+        required: true
+        type: string
+      base-url:
+        required: true
+        type: string
+    secrets:
+      github-token:
+        required: true
+      azure-static-web-apps-api-token:
+        required: true
+
+jobs:
+  frontend_cd_job:
+    name: Frontend CD Job
+
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      pull-requests: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        id: checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        id: nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          cache: "yarn"
+          cache-dependency-path: ${{ inputs.app-working-dir }}/yarn.lock
+
+      - name: Install dependencies via yarn with frozen lockfile
+        id: installdeps
+        working-directory: ${{ inputs.app-working-dir }}
+        run: yarn --frozen-lockfile
+
+      - name: Build application
+        id: build
+        timeout-minutes: 5
+        working-directory: ${{ inputs.app-working-dir }}
+        run: yarn run prerender
+
+      # Deploy build artifacts into Azure.
+      - name: Deploy application to Azure
+        id: deploy
+
+        # Use environment variables to control default behavior of the action
+        # and force "production" deployments from a PR per
+        # https://github.com/Azure/static-web-apps/issues/750#issuecomment-1116693199
+        env:
+          DEPLOYMENT_PROVIDER: "Custom"
+          REPOSITORY_URL: ${{ inputs.repository-url }}
+          BRANCH: ${{ inputs.branch }}
+
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          repo_token: ${{ secrets.github-token }} # Used for Github integrations (i.e. PR comments)
+          azure_static_web_apps_api_token: ${{ secrets.azure-static-web-apps-api-token }}
+          action: "upload" # upload artifacts and deploy to either production or a preview environment
+          app_location: ${{ inputs.app-location }}
+          api_location: ${{ inputs.api-location }}
+          output_location: ${{ inputs.output-location }}
+
+      - name: Comment PR
+        if: (github.event_name == 'pull_request' && github.event.action != 'closed')
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            PR #${{ github.event.pull_request.number }} deployed to ${{ inputs.base-url }} on
+            _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
+          comment_tag: preview_frontend_deployment

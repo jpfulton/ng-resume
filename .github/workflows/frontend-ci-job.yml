@@ -1,0 +1,44 @@
+name: Reusable Frontend CI Workflow
+
+on:
+  workflow_call:
+    inputs:
+      app-working-dir:
+        required: true
+        type: string
+
+jobs:
+  frontend_ci_job:
+    name: Frontend CI Job
+    permissions:
+      contents: read # for actions/checkout to fetch code
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        id: checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        id: nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          cache: "yarn"
+          cache-dependency-path: ${{ inputs.app-working-dir }}/yarn.lock
+
+      - name: Install dependencies via yarn with frozen lockfile
+        id: installdeps
+        working-directory: ${{ inputs.app-working-dir }}
+        run: yarn --frozen-lockfile
+
+      - name: Lint application
+        id: lint
+        working-directory: ${{ inputs.app-working-dir }}
+        run: yarn run lint
+
+      - name: Test application
+        id: test
+        working-directory: ${{ inputs.app-working-dir }}
+        run: yarn run test --configuration=ci
