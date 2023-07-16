@@ -17,7 +17,6 @@ namespace Jpf.NgResume.Api.Auth
             string jwtBearerScheme = JwtBearerDefaults.AuthenticationScheme,
             bool subscribeToJwtBearerMiddlewareDiagnosticsEvents = false)
         {
-
             // call AddMicrosoftIdentityWebApi to work its internal magic to
             // wire up authentication and authorization services and handlers
             var builderWithConfiguration = builder.AddMicrosoftIdentityWebApi(
@@ -26,6 +25,7 @@ namespace Jpf.NgResume.Api.Auth
                 jwtBearerScheme,
                 subscribeToJwtBearerMiddlewareDiagnosticsEvents);
 
+            /*
             // find and remove the JwtBearerHandler that was registered above
             var jwtService = builderWithConfiguration.Services
                 .FirstOrDefault(service => service.ServiceType.Equals(typeof(JwtBearerHandler)));
@@ -41,6 +41,7 @@ namespace Jpf.NgResume.Api.Auth
                 ServiceLifetime.Transient
             );
             builder.Services.Add(customJwtService);
+            */
 
             // return the results of AddMicrosoftIdentityWebApi with our modifications
             return builderWithConfiguration;

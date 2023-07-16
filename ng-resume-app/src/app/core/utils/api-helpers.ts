@@ -134,6 +134,7 @@ export function apiPromiseToObservable<T>(
 async function customFetcher<R = unknown>(
   args: Fetcher.Args,
 ): Promise<APIResponse<R, Fetcher.Error>> {
+  /*
   const headers: Record<string, string | undefined> | undefined = args.headers;
 
   if (headers) {
@@ -146,6 +147,7 @@ async function customFetcher<R = unknown>(
   }
 
   args.headers = headers;
+  */
 
   return fetcher(args);
 }

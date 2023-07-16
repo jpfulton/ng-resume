@@ -20,6 +20,7 @@ namespace Jpf.NgResume.Api.Auth
         protected override Task<AuthenticateResult> HandleAuthenticateAsync() {
             Logger.LogInformation("Using CustomJwtBearerHandler.");
 
+            /*
             // Incoming request from Azure or the function host use this
             // header to bear the Jwt token
             var token = Request.Headers[CustomJwtBearerConstants.HeaderName];
@@ -39,6 +40,7 @@ namespace Jpf.NgResume.Api.Auth
             else {
                 Logger.LogInformation("Request incoming from Azure or function host.");
             }
+            */
 
             // call base implementation to address authentication on token
             return base.HandleAuthenticateAsync();
