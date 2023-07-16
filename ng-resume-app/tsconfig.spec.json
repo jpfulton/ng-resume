@@ -4,13 +4,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "outDir": "./out-tsc/spec",
-    "types": [
-      "jasmine",
-      "gtag.js"
-    ]
+    "types": ["jasmine", "gtag.js"]
   },
-  "include": [
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts"
-  ]
+  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
 }

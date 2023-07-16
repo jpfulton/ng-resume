@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { WorkHistoryItemComponent } from './work-history-item.component';
-import { WorkHistory } from '@jpfulton/ng-resume-api-browser-sdk/api';
+import { WorkHistoryItemComponent } from "./work-history-item.component";
+import { WorkHistory } from "@jpfulton/ng-resume-api-browser-sdk/api";
 
-describe('WorkHistoryItemComponent', () => {
+describe("WorkHistoryItemComponent", () => {
   let component: WorkHistoryItemComponent;
   let fixture: ComponentFixture<WorkHistoryItemComponent>;
 
@@ -26,13 +26,25 @@ describe('WorkHistoryItemComponent', () => {
     fixture.detectChanges(); // must bind prior to element access
 
     itemElement = nativeElement.querySelector("div.work-history");
-    dateRangeElement = itemElement?.querySelector("div.work-history-date-range");
-    titleElement = itemElement?.querySelector("div.work-history-body > div.work-history-title");
-    organizationAnchorElement = itemElement?.querySelector("div.work-history-body > div > div.work-history-org > span > a");
-    organizationWithoutAnchorElement = itemElement?.querySelector("div.work-history-body > div > div.work-history-org > span.no-org-url");
+    dateRangeElement = itemElement?.querySelector(
+      "div.work-history-date-range",
+    );
+    titleElement = itemElement?.querySelector(
+      "div.work-history-body > div.work-history-title",
+    );
+    organizationAnchorElement = itemElement?.querySelector(
+      "div.work-history-body > div > div.work-history-org > span > a",
+    );
+    organizationWithoutAnchorElement = itemElement?.querySelector(
+      "div.work-history-body > div > div.work-history-org > span.no-org-url",
+    );
 
-    bulletsLiNodeList = itemElement?.querySelectorAll("div.work-history-body > div > div.work-history-bullet-list > ol > li");
-    skillsLiNodeList = itemElement?.querySelectorAll("div.work-history-body > div > div.work-history-skill-list > ol > li");
+    bulletsLiNodeList = itemElement?.querySelectorAll(
+      "div.work-history-body > div > div.work-history-bullet-list > ol > li",
+    );
+    skillsLiNodeList = itemElement?.querySelectorAll(
+      "div.work-history-body > div > div.work-history-skill-list > ol > li",
+    );
   }
 
   /**
@@ -44,33 +56,27 @@ describe('WorkHistoryItemComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [WorkHistoryItemComponent]
+      imports: [WorkHistoryItemComponent],
     });
     fixture = TestBed.createComponent(WorkHistoryItemComponent);
     component = fixture.componentInstance;
 
-    // fill out all properties in the model class before each run, 
+    // fill out all properties in the model class before each run,
     // tests should assign undefined to properties to test for conditional display
     // in the test function
     workHistoryItem = {
-      "id": "6df24b89-99c6-4af6-b064-b507b2533828",
-      "startYear": 0,
-      "endYear": 0,
-      "organization": "Mock org",
-      "organizationUrl": "https://www.google.com",
-      "title": "Mock title",
-      "bullets": [
-        "Mock bullet one",
-        "Mock bullet two"
-      ],
-      "skills": [
-        "Mock skill one",
-        "Mock skill two"
-      ]
+      id: "6df24b89-99c6-4af6-b064-b507b2533828",
+      startYear: 0,
+      endYear: 0,
+      organization: "Mock org",
+      organizationUrl: "https://www.google.com",
+      title: "Mock title",
+      bullets: ["Mock bullet one", "Mock bullet two"],
+      skills: ["Mock skill one", "Mock skill two"],
     };
   });
 
-  it('should create', () => {
+  it("should create", () => {
     populateComponentInputs();
     populateElementsAndDetectChanges();
 
@@ -86,18 +92,32 @@ describe('WorkHistoryItemComponent', () => {
     expect(organizationAnchorElement).toBeTruthy();
     expect(organizationWithoutAnchorElement).toBeFalsy(); // should not render when data obejct is full
 
-    expect(dateRangeElement?.textContent).toEqual(workHistoryItem.startYear + " - " + workHistoryItem.endYear);
+    expect(dateRangeElement?.textContent).toEqual(
+      workHistoryItem.startYear + " - " + workHistoryItem.endYear,
+    );
     expect(titleElement?.textContent).toEqual(workHistoryItem.title);
-    expect(organizationAnchorElement?.textContent).toEqual(" " + workHistoryItem.organization + " open_in_new");
-    expect(organizationAnchorElement?.attributes.getNamedItem("href")?.value ?? "").toEqual(workHistoryItem?.organizationUrl ?? "");
+    expect(organizationAnchorElement?.textContent).toEqual(
+      " " + workHistoryItem.organization + " open_in_new",
+    );
+    expect(
+      organizationAnchorElement?.attributes.getNamedItem("href")?.value ?? "",
+    ).toEqual(workHistoryItem?.organizationUrl ?? "");
 
     expect(bulletsLiNodeList?.length).toEqual(2);
-    expect(bulletsLiNodeList?.item(0).textContent).toEqual(workHistoryItem.bullets && workHistoryItem.bullets[0]);
-    expect(bulletsLiNodeList?.item(1).textContent).toEqual(workHistoryItem.bullets && workHistoryItem.bullets[1]);
+    expect(bulletsLiNodeList?.item(0).textContent).toEqual(
+      workHistoryItem.bullets && workHistoryItem.bullets[0],
+    );
+    expect(bulletsLiNodeList?.item(1).textContent).toEqual(
+      workHistoryItem.bullets && workHistoryItem.bullets[1],
+    );
 
     expect(skillsLiNodeList?.length).toEqual(2);
-    expect(skillsLiNodeList?.item(0).textContent?.trim()).toEqual(workHistoryItem.skills && workHistoryItem.skills[0]);
-    expect(skillsLiNodeList?.item(1).textContent?.trim()).toEqual("| " + (workHistoryItem.skills && workHistoryItem.skills[1]));
+    expect(skillsLiNodeList?.item(0).textContent?.trim()).toEqual(
+      workHistoryItem.skills && workHistoryItem.skills[0],
+    );
+    expect(skillsLiNodeList?.item(1).textContent?.trim()).toEqual(
+      "| " + (workHistoryItem.skills && workHistoryItem.skills[1]),
+    );
   });
 
   it("should have values in all child elements with no organization URL", () => {
@@ -108,19 +128,31 @@ describe('WorkHistoryItemComponent', () => {
 
     expect(dateRangeElement).toBeTruthy();
     expect(titleElement).toBeTruthy();
-    expect(organizationAnchorElement).toBeFalsy(); // should not render 
-    expect(organizationWithoutAnchorElement).toBeTruthy(); 
+    expect(organizationAnchorElement).toBeFalsy(); // should not render
+    expect(organizationWithoutAnchorElement).toBeTruthy();
 
-    expect(dateRangeElement?.textContent).toEqual(workHistoryItem.startYear + " - " + workHistoryItem.endYear);
+    expect(dateRangeElement?.textContent).toEqual(
+      workHistoryItem.startYear + " - " + workHistoryItem.endYear,
+    );
     expect(titleElement?.textContent).toEqual(workHistoryItem.title);
-    expect(organizationWithoutAnchorElement?.textContent).toEqual(workHistoryItem.organization);
-    
+    expect(organizationWithoutAnchorElement?.textContent).toEqual(
+      workHistoryItem.organization,
+    );
+
     expect(bulletsLiNodeList?.length).toEqual(2);
-    expect(bulletsLiNodeList?.item(0).textContent).toEqual(workHistoryItem.bullets && workHistoryItem.bullets[0]);
-    expect(bulletsLiNodeList?.item(1).textContent).toEqual(workHistoryItem.bullets && workHistoryItem.bullets[1]);
+    expect(bulletsLiNodeList?.item(0).textContent).toEqual(
+      workHistoryItem.bullets && workHistoryItem.bullets[0],
+    );
+    expect(bulletsLiNodeList?.item(1).textContent).toEqual(
+      workHistoryItem.bullets && workHistoryItem.bullets[1],
+    );
 
     expect(skillsLiNodeList?.length).toEqual(2);
-    expect(skillsLiNodeList?.item(0).textContent?.trim()).toEqual(workHistoryItem.skills && workHistoryItem.skills[0]);
-    expect(skillsLiNodeList?.item(1).textContent?.trim()).toEqual("| " + (workHistoryItem.skills && workHistoryItem.skills[1]));
+    expect(skillsLiNodeList?.item(0).textContent?.trim()).toEqual(
+      workHistoryItem.skills && workHistoryItem.skills[0],
+    );
+    expect(skillsLiNodeList?.item(1).textContent?.trim()).toEqual(
+      "| " + (workHistoryItem.skills && workHistoryItem.skills[1]),
+    );
   });
 });

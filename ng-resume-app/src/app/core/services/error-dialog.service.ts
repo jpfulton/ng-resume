@@ -1,15 +1,17 @@
-import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ErrorDialogComponent } from '../components/error-dialog/error-dialog.component';
-import { TimeoutDialogComponent } from '../components/timeout-dialog/timeout-dialog.component';
-import { UnauthorizedDialogComponent } from '../components/unauthorized-dialog/unauthorized-dialog.component';
+import { Injectable } from "@angular/core";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { ErrorDialogComponent } from "../components/error-dialog/error-dialog.component";
+import { TimeoutDialogComponent } from "../components/timeout-dialog/timeout-dialog.component";
+import { UnauthorizedDialogComponent } from "../components/unauthorized-dialog/unauthorized-dialog.component";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ErrorDialogService {
   private opened = false;
-  private dialogRef: MatDialogRef<ErrorDialogComponent | TimeoutDialogComponent | UnauthorizedDialogComponent> | null = null;
+  private dialogRef: MatDialogRef<
+    ErrorDialogComponent | TimeoutDialogComponent | UnauthorizedDialogComponent
+  > | null = null;
 
   constructor(private dialog: MatDialog) {}
 

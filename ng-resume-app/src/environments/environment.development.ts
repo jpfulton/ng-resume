@@ -1,3 +1,3 @@
 export const environment = {
-    cookieDomain: "localhost"
+  cookieDomain: "localhost",
 };

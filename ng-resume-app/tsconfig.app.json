@@ -4,14 +4,8 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "outDir": "./out-tsc/app",
-    "types": [
-      "gtag.js"
-    ]
+    "types": ["gtag.js"]
   },
-  "files": [
-    "src/main.ts"
-  ],
-  "include": [
-    "src/**/*.d.ts"
-  ]
+  "files": ["src/main.ts"],
+  "include": ["src/**/*.d.ts"]
 }

@@ -1,12 +1,12 @@
 {
-    "/api": {
-        "target": {
-            "host": "127.0.0.1",
-            "protocol": "http:",
-            "port": 7071
-        },
-        "secure": false,
-        "changeOrigin": false,
-        "logLevel": "debug"
-    }
+  "/api": {
+    "target": {
+      "host": "127.0.0.1",
+      "protocol": "http:",
+      "port": 7071
+    },
+    "secure": false,
+    "changeOrigin": false,
+    "logLevel": "debug"
+  }
 }

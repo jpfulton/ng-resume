@@ -1,14 +1,14 @@
 {
-    "platform": {
-      "apiRuntime": "dotnet-isolated:7.0"
-    },
-    "navigationFallback": {
-      "rewrite": "/index.html",
-      "exclude": [
-        "/error/index.html",
-        "/cookiepolicy/index.html",
-        "/privacy/index.html",
-        "*.{css,scss,js,png,gif,ico,jpg,svg,xml,webmanifest,txt,json}"
-      ]
-    }
+  "platform": {
+    "apiRuntime": "dotnet-isolated:7.0"
+  },
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/error/index.html",
+      "/cookiepolicy/index.html",
+      "/privacy/index.html",
+      "*.{css,scss,js,png,gif,ico,jpg,svg,xml,webmanifest,txt,json}"
+    ]
+  }
 }

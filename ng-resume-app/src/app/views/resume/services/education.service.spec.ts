@@ -1,16 +1,14 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { EducationService } from './education.service';
-import { MatDialogModule } from '@angular/material/dialog';
+import { EducationService } from "./education.service";
+import { MatDialogModule } from "@angular/material/dialog";
 
 describe("EducationService", () => {
   let service: EducationService;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [
-        MatDialogModule
-      ]
+      imports: [MatDialogModule],
     });
     service = TestBed.inject(EducationService);
   });
@@ -18,5 +16,4 @@ describe("EducationService", () => {
   it("should be created", () => {
     expect(service).toBeTruthy();
   });
-
 });

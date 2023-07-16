@@ -1,15 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
-import { LoggingService } from './logging.service';
+import { LoggingService } from "./logging.service";
 
 /**
  * Logging service implementation for SSR.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ServerLoggingService extends LoggingService {
-
   /**
    * Logs a trace message.
    * @param {string} message Message for trace.

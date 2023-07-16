@@ -1,3 +1,3 @@
 export const environment = {
-    cookieDomain: ".jpatrickfulton.com"
+  cookieDomain: ".jpatrickfulton.com",
 };
