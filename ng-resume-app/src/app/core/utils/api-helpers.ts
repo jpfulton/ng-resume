@@ -4,11 +4,6 @@ import {
   NgResumeApiTimeoutError,
 } from "@jpfulton/ng-resume-api-browser-sdk";
 import {
-  APIResponse,
-  Fetcher,
-  fetcher,
-} from "@jpfulton/ng-resume-api-browser-sdk/core";
-import {
   Observable,
   catchError,
   defer,
@@ -122,45 +117,12 @@ export function apiPromiseToObservable<T>(
 }
 
 /**
- * Custom api sdk fetcher implementation. This implementation moves the bearer token from
- * the "Authorize" header to the "X-Function-Api-Authorization" header prior to calling
- * the default fetcher function for the api sdk.
- * @template R Type returned by the ApiResponse.
- * @param {Fetcher.Args} args Internal sdk fetcher functions argument object. Carries
- *                            header values that will be submitted by the sdk.
- * @returns {Promise<APIResponse<R, Fetcher.Error>>} Standard internal response value
- *                                                   for the sdk fetcer function.
- */
-async function customFetcher<R = unknown>(
-  args: Fetcher.Args,
-): Promise<APIResponse<R, Fetcher.Error>> {
-  /*
-  const headers: Record<string, string | undefined> | undefined = args.headers;
-
-  if (headers) {
-    const authorizeHeaderValue = headers["Authorization"];
-
-    if (authorizeHeaderValue) {
-      delete headers["Authorization"];
-      headers["X-Function-Api-Authorization"] = authorizeHeaderValue;
-    }
-  }
-
-  args.headers = headers;
-  */
-
-  return fetcher(args);
-}
-
-/**
  * Constructs and returns an api client suitable for access to
  * unauthenticated api endpoints.
  * @returns {NgResumeApiClient} An api client.
  */
 export function getAnonymousApiClient(): NgResumeApiClient {
-  return new NgResumeApiClient({
-    fetcher: customFetcher,
-  });
+  return new NgResumeApiClient({});
 }
 
 /**
@@ -178,6 +140,5 @@ export function getAuthenticatedApiClient(authService: AuthService) {
 
   return new NgResumeApiClient({
     token: () => authService.getActiveAccessToken(),
-    fetcher: customFetcher,
   });
 }
