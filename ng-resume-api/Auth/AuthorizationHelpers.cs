@@ -14,9 +14,19 @@ using Microsoft.Identity.Web;
 namespace Jpf.NgResume.Api.Auth
 {
 
+    /// <summary>
+    /// Authorization extension methods.
+    /// </summary>
     public static class AuthorizationHelpers
     {
+        /// <summary>
+        /// Default cache expiration interval.
+        /// </summary>
         private const double CACHE_EXPIRATION_SECONDS = 120.0;
+
+        /// <summary>
+        /// Memory cache to store users to prevent repeat API calls.
+        /// </summary>
         private static readonly MemoryCache memoryCache;
 
         static AuthorizationHelpers()
@@ -24,6 +34,17 @@ namespace Jpf.NgResume.Api.Auth
             memoryCache = new MemoryCache("userCache");
         }
 
+        /// <summary>
+        /// Authenticate against an HttpRequestData object containing a JWT bearer token
+        /// in the header then authorize the user against group membership in a specified
+        /// group name.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="functionContext"></param>
+        /// <param name="graphClient"></param>
+        /// <param name="log"></param>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
         public static async Task<(bool, HttpResponseData?)> AuthenticateThenAuthorizeWithGroup(
             this HttpRequestData request,
             FunctionContext functionContext,
@@ -32,15 +53,18 @@ namespace Jpf.NgResume.Api.Auth
             string groupName
         )
         {
+            // authenticate
             var (authenticated, authenticationResponse, principal) = 
                 await request.AuthenticateAsync(functionContext, log);
             if (!authenticated) return (authenticated, authenticationResponse);
 
+            // attempt authorization with a token claim
             var (claimAuthorized, _) =
                 await request.AuthorizeWithClaimsPrincipal(principal!, log, groupName);
             if(claimAuthorized) 
                 return (claimAuthorized, null);
 
+            // fall back to authorization using the ms graph api
             var userId = principal != null ? principal.GetObjectId()! : "";
             var (graphAuthorized, graphAuthorizationResponse, _) = 
                 await request.AuthorizeWithMsGraphGroup( 
@@ -53,7 +77,15 @@ namespace Jpf.NgResume.Api.Auth
             return (graphAuthorized, null);
         }
 
-        public static async Task<(bool, HttpResponseData?)> AuthorizeWithClaimsPrincipal(
+        /// <summary>
+        /// Authorize based on group membership using claims in the JWT token.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="principal"></param>
+        /// <param name="log"></param>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
+        private static async Task<(bool, HttpResponseData?)> AuthorizeWithClaimsPrincipal(
             this HttpRequestData request,
             ClaimsPrincipal principal,
             ILogger log,
@@ -81,7 +113,16 @@ namespace Jpf.NgResume.Api.Auth
             }
         }
 
-        public static async Task<(bool, HttpResponseData?, Models.User?)> AuthorizeWithMsGraphGroup(
+        /// <summary>
+        /// Authorize based on group membership using MS Graph API query.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="graphClient"></param>
+        /// <param name="log"></param>
+        /// <param name="userId"></param>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
+        private static async Task<(bool, HttpResponseData?, Models.User?)> AuthorizeWithMsGraphGroup(
             this HttpRequestData request,
             GraphServiceClient graphClient,
             ILogger log,
@@ -89,10 +130,13 @@ namespace Jpf.NgResume.Api.Auth
             string groupName
         )
         {
+            // attempt getting the user from the memory cache
             var user = memoryCache.Get(userId) as Models.User;
             if (user == null) {
+                // user is not cached, retrieve it from the ms graph api
                 user = await UserHelpers.GetUser(graphClient, userId);
 
+                // add user to memory cache
                 var cacheItem = new CacheItem(userId, user);
                 var cacheItemPolicy = new CacheItemPolicy  
                 {  
@@ -101,6 +145,7 @@ namespace Jpf.NgResume.Api.Auth
                 memoryCache.Add(cacheItem, cacheItemPolicy);
             }
 
+            // check for group membership
             var authorized = 
                 string.IsNullOrEmpty(groupName) ||
                 user.MemberOf.Any(group => group.DisplayName == groupName);
