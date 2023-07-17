@@ -16,6 +16,15 @@ namespace Jpf.NgResume.Api.Auth
 {
     public static class HttpRequestDataExtensions
     {
+        /// <summary>
+        /// Authenticates against an HttpRequestData object containing a
+        /// JWT bearer token in its headers.
+        /// </summary>
+        /// <param name="requestData"></param>
+        /// <param name="functionContext"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static async Task<(bool, HttpResponseData?, ClaimsPrincipal?)> AuthenticateAsync(
             this HttpRequestData requestData,
             FunctionContext functionContext,
@@ -27,6 +36,7 @@ namespace Jpf.NgResume.Api.Auth
                 throw new ArgumentNullException("Parameter requestData cannot be null.");
             }
 
+            // create a HttpConext object from the data in the HttpRequestData object
             var httpContext = GetHttpContext(requestData, functionContext);
 
             AuthenticateResult? result =
@@ -52,6 +62,12 @@ namespace Jpf.NgResume.Api.Auth
             }
         }
 
+        /// <summary>
+        /// Creates a HttpConext object from the data in the HttpRequestData object.
+        /// </summary>
+        /// <param name="requestData"></param>
+        /// <param name="functionContext"></param>
+        /// <returns></returns>
         private static HttpContext GetHttpContext(
             HttpRequestData requestData, 
             FunctionContext functionContext
