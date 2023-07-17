@@ -139,11 +139,8 @@ namespace Jpf.NgResume.Api.Functions
         {
             var log = functionContext.GetLogger<TestFunctions>();
 
-            var (status, response, user) = await AuthenticationHelpers.AuthenticationHelperAsync(request, functionContext, log);
+            var (status, response, user) = await request.AuthenticateAsync(functionContext, log);
             if (!status) return response;
-
-            // var scopes = new string[] {"test.write"};
-            // req.HttpContext.VerifyUserHasAnyAcceptedScope(scopes);
 
             var displayName = user.GetDisplayName();
             var userId = user.GetObjectId();

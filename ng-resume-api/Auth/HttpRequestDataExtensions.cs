@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 
 #nullable enable
@@ -15,9 +16,10 @@ namespace Jpf.NgResume.Api.Auth
 {
     public static class HttpRequestDataExtensions
     {
-        public static async Task<(bool, HttpResponseData?, ClaimsPrincipal?)> AuthenticateAzureFunctionApiAsync(
+        public static async Task<(bool, HttpResponseData?, ClaimsPrincipal?)> AuthenticateAsync(
             this HttpRequestData requestData,
-            FunctionContext functionContext
+            FunctionContext functionContext,
+            ILogger log
             )
         {
             if (requestData == null)
@@ -36,6 +38,8 @@ namespace Jpf.NgResume.Api.Auth
             }
             else
             {
+                log.LogWarning("Unauthorized bearer token submitted.");
+
                 var resp = requestData.CreateResponse();
                 await resp.WriteAsJsonAsync(new CustomProblemDetails
                 {

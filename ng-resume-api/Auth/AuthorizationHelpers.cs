@@ -33,7 +33,7 @@ namespace Jpf.NgResume.Api.Auth
         )
         {
             var (authenticated, authenticationResponse, principal) = 
-                await request.AuthenticationHelperAsync(functionContext, log);
+                await request.AuthenticateAsync(functionContext, log);
             if (!authenticated) return (authenticated, authenticationResponse);
 
             var (claimAuthorized, _) =
