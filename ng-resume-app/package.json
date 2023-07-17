@@ -15,7 +15,8 @@
     "debugserver:ssr": "ng run ng-resume:serve-ssr --inspect",
     "serve:ssr": "node dist/ng-resume/server/main.js",
     "build:ssr": "ng build && ng run ng-resume:server",
-    "prerender": "ng run ng-resume:prerender"
+    "prerender": "ng run ng-resume:prerender",
+    "format": "prettier --write \"**/*.{js,mjs,jsx,ts,tsx,json,md,mdx}\""
   },
   "private": true,
   "dependencies": {
@@ -71,6 +72,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "prettier": "^3.0.0",
     "typescript": "~5.0.2"
   }
 }

@@ -5,11 +5,10 @@
  * a null or undefined value.
  * @param obj Input object for scrubbing.
  */
-export function scrubProperties(obj: { [x: string]: unknown; }) : void {
-    Object.keys(obj)
-        .forEach(key => {
-            if (obj[key] === null || obj[key] === undefined) {
-                delete obj[key];
-            }
-    });
+export function scrubProperties(obj: { [x: string]: unknown }): void {
+  Object.keys(obj).forEach((key) => {
+    if (obj[key] === null || obj[key] === undefined) {
+      delete obj[key];
+    }
+  });
 }

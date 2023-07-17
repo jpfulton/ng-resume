@@ -1,23 +1,22 @@
-import { Injectable } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { HttpErrorResponse } from "@angular/common/http";
 
 /**
  * Service to encapsulate logic surrounding the processing of client
  * and server errors.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ErrorService {
-
   /**
    * Separate the client error message.
    * @param {Error} error Client error object.
    * @returns {string} A message contructed from the error parameter.
    */
-  getClientMessage(error: Error) : string {
+  getClientMessage(error: Error): string {
     if (!navigator.onLine) {
-      return 'No internet connection.';
+      return "No internet connection.";
     }
 
     return error.message ? error.message : error.toString();
@@ -28,7 +27,7 @@ export class ErrorService {
    * @param {Error} error Client error object.
    * @returns {string} Client error stacktrace as a string.
    */
-  getClientStacktrace(error: Error) : string {
+  getClientStacktrace(error: Error): string {
     return error.stack ?? "Stack unavailable.";
   }
 
@@ -37,7 +36,7 @@ export class ErrorService {
    * @param {HttpErrorResponse} error Server error object.
    * @returns {string} Server error message as a string.
    */
-  getServerMessage(error: HttpErrorResponse) : string {
+  getServerMessage(error: HttpErrorResponse): string {
     return "Response Status: " + error.status + " Message: " + error.message;
   }
 
@@ -47,7 +46,7 @@ export class ErrorService {
    * @param {HttpErrorResponse} error Server side error object.
    * @returns {string} Server side stack trace if available.
    */
-  getServerStacktrace(error: HttpErrorResponse) : string {
+  getServerStacktrace(error: HttpErrorResponse): string {
     return error.error.toString();
   }
 }

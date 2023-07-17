@@ -1,13 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { Education } from '@jpfulton/ng-resume-api-browser-sdk/api';
-import { EducationItemComponent } from './education-item.component';
+import { Education } from "@jpfulton/ng-resume-api-browser-sdk/api";
+import { EducationItemComponent } from "./education-item.component";
 
 describe("EducationItemComponent", () => {
   let component: EducationItemComponent;
   let fixture: ComponentFixture<EducationItemComponent>;
 
-  let educationItem: Education; 
+  let educationItem: Education;
 
   let itemElement: Element | null | undefined;
   let titleElement: Element | null | undefined;
@@ -25,7 +25,9 @@ describe("EducationItemComponent", () => {
     itemElement = nativeElement.querySelector("div.education-item");
     titleElement = itemElement?.querySelector("div.education-item-title");
     subtitleElement = itemElement?.querySelector("div.education-item-subtitle");
-    organizationElement = itemElement?.querySelector("div.education-item-organization");
+    organizationElement = itemElement?.querySelector(
+      "div.education-item-organization",
+    );
   }
 
   /**
@@ -37,20 +39,20 @@ describe("EducationItemComponent", () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [EducationItemComponent]
+      imports: [EducationItemComponent],
     });
     fixture = TestBed.createComponent(EducationItemComponent);
 
     component = fixture.componentInstance;
 
-    // fill out all properties in the model class before each run, 
+    // fill out all properties in the model class before each run,
     // tests should assign undefined to properties to test for conditional display
     // in the test function
     educationItem = {
       id: "4825f74e-80ae-4823-a523-a5bf631cb3ad",
       organization: "Mock org",
       subtitle: "Mock subtitle",
-      title: "Mock title"
+      title: "Mock title",
     };
   });
 
@@ -71,7 +73,9 @@ describe("EducationItemComponent", () => {
 
     expect(titleElement?.textContent).toEqual(educationItem.title);
     expect(subtitleElement?.textContent).toEqual(educationItem.subtitle);
-    expect(organizationElement?.textContent).toEqual(educationItem.organization);
+    expect(organizationElement?.textContent).toEqual(
+      educationItem.organization,
+    );
   });
 
   it("should not render subtitle element", () => {
@@ -85,7 +89,9 @@ describe("EducationItemComponent", () => {
     expect(organizationElement).toBeTruthy();
 
     expect(titleElement?.textContent).toEqual(educationItem.title);
-    expect(organizationElement?.textContent).toEqual(educationItem.organization);
+    expect(organizationElement?.textContent).toEqual(
+      educationItem.organization,
+    );
   });
 
   it("should not render organization element", () => {
@@ -95,7 +101,7 @@ describe("EducationItemComponent", () => {
     populateElementsAndDetectChanges();
 
     expect(titleElement).toBeTruthy();
-    expect(subtitleElement).toBeTruthy(); 
+    expect(subtitleElement).toBeTruthy();
     expect(organizationElement).toBeFalsy(); // no data in property on input parameter, should not render
 
     expect(titleElement?.textContent).toEqual(educationItem.title);

@@ -1,25 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ErrorViewComponent } from './error-view.component';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ErrorViewComponent } from "./error-view.component";
+import { RouterTestingModule } from "@angular/router/testing";
 
-describe('ErrorViewComponent', () => {
+describe("ErrorViewComponent", () => {
   let component: ErrorViewComponent;
   let fixture: ComponentFixture<ErrorViewComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        ErrorViewComponent
-      ]
+      imports: [RouterTestingModule, ErrorViewComponent],
     });
     fixture = TestBed.createComponent(ErrorViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

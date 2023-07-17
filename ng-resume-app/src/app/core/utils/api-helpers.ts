@@ -1,11 +1,22 @@
 /* eslint-disable jsdoc/require-jsdoc */
-import { NgResumeApiClient, NgResumeApiTimeoutError } from '@jpfulton/ng-resume-api-browser-sdk';
-import { APIResponse, Fetcher, fetcher } from '@jpfulton/ng-resume-api-browser-sdk/core';
-import { Observable, catchError, defer, finalize, of, retry, throwError, timer } from 'rxjs';
-import { LoadingService } from 'src/app/core/services/loading.service';
-import { AuthService } from '../services/auth.service';
-import { ErrorDialogService } from '../services/error-dialog.service';
-import { UnauthorizedError } from '@jpfulton/ng-resume-api-browser-sdk/api';
+import {
+  NgResumeApiClient,
+  NgResumeApiTimeoutError,
+} from "@jpfulton/ng-resume-api-browser-sdk";
+import {
+  Observable,
+  catchError,
+  defer,
+  finalize,
+  of,
+  retry,
+  throwError,
+  timer,
+} from "rxjs";
+import { LoadingService } from "src/app/core/services/loading.service";
+import { AuthService } from "../services/auth.service";
+import { ErrorDialogService } from "../services/error-dialog.service";
+import { UnauthorizedError } from "@jpfulton/ng-resume-api-browser-sdk/api";
 
 const RETRY_COUNT = 3;
 const BACK_OFF_IN_MS = 1000;
@@ -15,61 +26,53 @@ const BACK_OFF_IN_MS = 1000;
  * logic to optionally interact with the LoadingService to interact with the
  * spinner component. Designed to work with Promises returned by the browser
  * SDK package.
- * @template T Data type of the Promise and returned Observable. 
+ * @template T Data type of the Promise and returned Observable.
  * @param {Function<T>} promiseFactory Factory function that returns a Promise of type T.
  * @param {LoadingService} loadingService Instance of the loading service.
  * @param {ErrorDialogService} errorDialogService Instance of the dialog service.
  * @returns {Observable<T>} An observable created from the Promise.
  */
 export function apiPromiseToObservableWithRetry<T>(
-    promiseFactory: () => Promise<T>,
-    loadingService: LoadingService | null = null,
-    errorDialogService: ErrorDialogService | null = null
-    ): Observable<T> {
-    
-    if (loadingService) {
-        loadingService.incrementTotalRequests();
-    }
+  promiseFactory: () => Promise<T>,
+  loadingService: LoadingService | null = null,
+  errorDialogService: ErrorDialogService | null = null,
+): Observable<T> {
+  if (loadingService) {
+    loadingService.incrementTotalRequests();
+  }
 
-    // usage of the "defer" operator postpones execution of the promise until subscribe is
-    // called on the Observable
-    return defer(promiseFactory).pipe(
-        retry({
-            count: RETRY_COUNT,
-            delay: (error, retryCount) => {
+  // usage of the "defer" operator postpones execution of the promise until subscribe is
+  // called on the Observable
+  return defer(promiseFactory).pipe(
+    retry({
+      count: RETRY_COUNT,
+      delay: (error, retryCount) => {
+        if (error instanceof NgResumeApiTimeoutError)
+          return timer(retryCount * BACK_OFF_IN_MS);
+        else return throwError(() => error);
+      },
+    }),
+    catchError((error) => {
+      if (error instanceof NgResumeApiTimeoutError) {
+        if (errorDialogService) {
+          errorDialogService.openTimeoutDialog();
+          return of();
+        }
+      } else if (error instanceof UnauthorizedError) {
+        if (errorDialogService) {
+          errorDialogService.openUnauthorizedDialog();
+          return of();
+        }
+      }
 
-                if (error instanceof NgResumeApiTimeoutError)
-                    return timer(retryCount * BACK_OFF_IN_MS);
-                else
-                    return throwError(() => error);
-                
-            }
-        }),
-        catchError(error => {
-            
-            if (error instanceof NgResumeApiTimeoutError)
-            {
-                if (errorDialogService) {
-                    errorDialogService.openTimeoutDialog();
-                    return of();
-                }
-            }
-            else if (error instanceof UnauthorizedError)
-            {
-                if (errorDialogService) {
-                    errorDialogService.openUnauthorizedDialog();
-                    return of();
-                }
-            }
-
-            return throwError(() => error);
-        }),
-        finalize(() => {
-            if (loadingService) {
-                loadingService.decrementTotalRequests();
-            }
-        })
-      );
+      return throwError(() => error);
+    }),
+    finalize(() => {
+      if (loadingService) {
+        loadingService.decrementTotalRequests();
+      }
+    }),
+  );
 }
 
 /**
@@ -77,69 +80,40 @@ export function apiPromiseToObservableWithRetry<T>(
  * logic to optionally interact with the LoadingService to interact with the
  * spinner component. Designed to work with Promises returned by the browser
  * SDK package.
- * @template T Data type of the Promise and returned Observable. 
+ * @template T Data type of the Promise and returned Observable.
  * @param {Function<T>} promiseFactory Factory function that returns a Promise of type T.
  * @param {LoadingService} loadingService Instance of the loading service.
  * @param {ErrorDialogService} errorDialogService Instance of the dialog service.
  * @returns {Observable<T>} An observable created from the Promise.
  */
 export function apiPromiseToObservable<T>(
-    promiseFactory: () => Promise<T>,
-    loadingService: LoadingService | null = null,
-    errorDialogService: ErrorDialogService | null = null
-    ): Observable<T> {
-    
-    if (loadingService) {
-        loadingService.incrementTotalRequests();
-    }
+  promiseFactory: () => Promise<T>,
+  loadingService: LoadingService | null = null,
+  errorDialogService: ErrorDialogService | null = null,
+): Observable<T> {
+  if (loadingService) {
+    loadingService.incrementTotalRequests();
+  }
 
-    // usage of the "defer" operator postpones execution of the promise until subscribe is
-    // called on the Observable
-    return defer(promiseFactory).pipe(
-        catchError(error => {
-            if (error instanceof NgResumeApiTimeoutError)
-            {
-                if (errorDialogService) {
-                    errorDialogService.openTimeoutDialog();
-                    return of();
-                }
-            }
-
-            return throwError(() => error);
-        }),
-        finalize(() => {
-            if (loadingService) {
-                loadingService.decrementTotalRequests();
-            }
-        })
-      );
-}
-
-/**
- * Custom api sdk fetcher implementation. This implementation moves the bearer token from
- * the "Authorize" header to the "X-Function-Api-Authorization" header prior to calling
- * the default fetcher function for the api sdk.
- * @template R Type returned by the ApiResponse.
- * @param {Fetcher.Args} args Internal sdk fetcher functions argument object. Carries 
- *                            header values that will be submitted by the sdk.
- * @returns {Promise<APIResponse<R, Fetcher.Error>>} Standard internal response value
- *                                                   for the sdk fetcer function.
- */
-async function customFetcher<R = unknown>(args: Fetcher.Args): Promise<APIResponse<R, Fetcher.Error>> {
-    const headers: Record<string, string | undefined> | undefined = args.headers;
-    
-    if (headers) {
-        const authorizeHeaderValue = headers["Authorization"];
-
-        if (authorizeHeaderValue) {
-            delete headers["Authorization"];
-            headers["X-Function-Api-Authorization"] = authorizeHeaderValue;
+  // usage of the "defer" operator postpones execution of the promise until subscribe is
+  // called on the Observable
+  return defer(promiseFactory).pipe(
+    catchError((error) => {
+      if (error instanceof NgResumeApiTimeoutError) {
+        if (errorDialogService) {
+          errorDialogService.openTimeoutDialog();
+          return of();
         }
-    }
+      }
 
-    args.headers = headers;
-
-    return fetcher(args);
+      return throwError(() => error);
+    }),
+    finalize(() => {
+      if (loadingService) {
+        loadingService.decrementTotalRequests();
+      }
+    }),
+  );
 }
 
 /**
@@ -148,9 +122,7 @@ async function customFetcher<R = unknown>(args: Fetcher.Args): Promise<APIRespon
  * @returns {NgResumeApiClient} An api client.
  */
 export function getAnonymousApiClient(): NgResumeApiClient {
-    return new NgResumeApiClient({
-        fetcher: customFetcher
-    });
+  return new NgResumeApiClient({});
 }
 
 /**
@@ -160,12 +132,13 @@ export function getAnonymousApiClient(): NgResumeApiClient {
  * @returns {NgResumeApiClient} An api client.
  */
 export function getAuthenticatedApiClient(authService: AuthService) {
-    if (!authService.isLoggedIn) {
-        throw new Error("Cannot initialize authenticated api client. No logged in user.");
-    }
+  if (!authService.isLoggedIn) {
+    throw new Error(
+      "Cannot initialize authenticated api client. No logged in user.",
+    );
+  }
 
-    return new NgResumeApiClient({
-        token: () => authService.getActiveAccessToken(),
-        fetcher: customFetcher
-    });
+  return new NgResumeApiClient({
+    token: () => authService.getActiveAccessToken(),
+  });
 }

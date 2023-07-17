@@ -1,30 +1,33 @@
 /* eslint-disable jsdoc/require-param-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 
-import { CookieService } from 'ngx-cookie-service';
+import { CookieService } from "ngx-cookie-service";
 
-import { ApplicationInsights } from '@microsoft/applicationinsights-web';
-import { AngularPlugin } from '@microsoft/applicationinsights-angularplugin-js';
+import { ApplicationInsights } from "@microsoft/applicationinsights-web";
+import { AngularPlugin } from "@microsoft/applicationinsights-angularplugin-js";
 
-import { GlobalErrorHandler } from '../utils/global-error-handler';
-import { APPLICATION_INSIGHTS_CONNECTION_STRING, APPLICATION_INSIGHTS_COOKIE_NAMES } from '../constants/application-insights-constants';
+import { GlobalErrorHandler } from "../utils/global-error-handler";
+import {
+  APPLICATION_INSIGHTS_CONNECTION_STRING,
+  APPLICATION_INSIGHTS_COOKIE_NAMES,
+} from "../constants/application-insights-constants";
 
 /**
  * Encapsulates Azure Application Insights integration with initialization logic
  * and utility methods. Note that passing router and globalErrorHandler parameters
  * to methods that require them helps avoid a circular dependency problem in the
  * DI engine related to the GlobalErrorHandler class.
- * 
+ *
  * References:
  *  https://github.com/microsoft/applicationinsights-angularplugin-js
  *  https://github.com/microsoft/ApplicationInsights-JS
  *  https://devblogs.microsoft.com/premier-developer/angular-how-to-add-application-insights-to-an-angular-spa/
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ApplicationInsightsService {
   private isInitialized = false;
@@ -41,21 +44,23 @@ export class ApplicationInsightsService {
    */
   private checkIsInitialized(method: string) {
     if (!this.isInitialized || this.appInsights === null)
-      throw new Error(`Application insights is not initialized. Cannot invoke ${method}.`);
+      throw new Error(
+        `Application insights is not initialized. Cannot invoke ${method}.`,
+      );
   }
 
   /**
-   * Performs internal initialization of the Application Insights script 
+   * Performs internal initialization of the Application Insights script
    * and Angular plugin.
    * @param {Router} router Router object.
    * @param {GlobalErrorHandler} globalErrorHandler Custom error handler object.
    * @param {boolean} allowCookies Setting to allow use of cookies.
    */
   private createApplicationInsights(
-    router: Router, 
+    router: Router,
     globalErrorHandler: GlobalErrorHandler,
-    allowCookies: boolean) : void 
-  {
+    allowCookies: boolean,
+  ): void {
     if (this.isInitialized) {
       this.appInsights?.flush();
       this.appInsights?.unload();
@@ -63,20 +68,19 @@ export class ApplicationInsightsService {
 
     const angularPlugin = new AngularPlugin();
 
-    this.appInsights = new ApplicationInsights(
-      { config: {
-          connectionString: APPLICATION_INSIGHTS_CONNECTION_STRING,
-          disableCookiesUsage: !allowCookies,
-          extensions: [angularPlugin],
-          extensionConfig: {
-            [angularPlugin.identifier]: { 
-              router: router,
-              errorServices: [globalErrorHandler]
-            }
-          }
-        } 
-      }
-    );
+    this.appInsights = new ApplicationInsights({
+      config: {
+        connectionString: APPLICATION_INSIGHTS_CONNECTION_STRING,
+        disableCookiesUsage: !allowCookies,
+        extensions: [angularPlugin],
+        extensionConfig: {
+          [angularPlugin.identifier]: {
+            router: router,
+            errorServices: [globalErrorHandler],
+          },
+        },
+      },
+    });
 
     this.appInsights.loadAppInsights();
   }
@@ -88,13 +92,14 @@ export class ApplicationInsightsService {
    * @param {boolean} allowCookies Setting to allow use of cookies. Defaults to false.
    */
   initialize(
-    router: Router, 
+    router: Router,
     globalErrorHandler: GlobalErrorHandler,
-    allowCookies = false
-    ) : void 
-  {
+    allowCookies = false,
+  ): void {
     if (this.isInitialized) {
-      throw new Error("Repeat initialization of ApplicationInsightsService attempted.");
+      throw new Error(
+        "Repeat initialization of ApplicationInsightsService attempted.",
+      );
     }
 
     this.currentCookieSetting = allowCookies;
@@ -112,10 +117,10 @@ export class ApplicationInsightsService {
    * @param {boolean} value Setting to allow use of cookies.
    */
   enableCookies(
-    router: Router, 
+    router: Router,
     globalErrorHandler: GlobalErrorHandler,
-    value: boolean) : void 
-  {
+    value: boolean,
+  ): void {
     this.checkIsInitialized("enableCookies");
 
     // Note that the follwing line works in version ^3.0.0 but not in ^2.8.12 (version in use here)
@@ -129,7 +134,7 @@ export class ApplicationInsightsService {
 
     // delete the ai cookies if they exist
     if (value === false) {
-      APPLICATION_INSIGHTS_COOKIE_NAMES.forEach(element => {
+      APPLICATION_INSIGHTS_COOKIE_NAMES.forEach((element) => {
         this.cookieService.delete(element);
       });
     }
@@ -140,12 +145,13 @@ export class ApplicationInsightsService {
    * @param {string} name Page title.
    * @param {string} url Url of page.
    */
-  logPageView(name?: string, url?: string) { // option to call manually
+  logPageView(name?: string, url?: string) {
+    // option to call manually
     this.checkIsInitialized("logPageView");
 
     this.appInsights?.trackPageView({
       name: name,
-      uri: url
+      uri: url,
     });
   }
 
@@ -156,7 +162,7 @@ export class ApplicationInsightsService {
    */
   logEvent(name: string, properties?: { [key: string]: any }) {
     this.checkIsInitialized("logEvent");
-    this.appInsights?.trackEvent({ name: name}, properties);
+    this.appInsights?.trackEvent({ name: name }, properties);
   }
 
   /**
@@ -165,7 +171,11 @@ export class ApplicationInsightsService {
    * @param {number} average Metric average.
    * @param properties Metric properties object.
    */
-  logMetric(name: string, average: number, properties?: { [key: string]: any }) {
+  logMetric(
+    name: string,
+    average: number,
+    properties?: { [key: string]: any },
+  ) {
     this.checkIsInitialized("logMetric");
     this.appInsights?.trackMetric({ name: name, average: average }, properties);
   }
@@ -177,7 +187,10 @@ export class ApplicationInsightsService {
    */
   logException(exception: Error, severityLevel?: number) {
     this.checkIsInitialized("logException");
-    this.appInsights?.trackException({ exception: exception, severityLevel: severityLevel });
+    this.appInsights?.trackException({
+      exception: exception,
+      severityLevel: severityLevel,
+    });
   }
 
   /**
@@ -187,6 +200,6 @@ export class ApplicationInsightsService {
    */
   logTrace(message: string, properties?: { [key: string]: any }) {
     this.checkIsInitialized("logTrace");
-    this.appInsights?.trackTrace({ message: message}, properties);
+    this.appInsights?.trackTrace({ message: message }, properties);
   }
 }

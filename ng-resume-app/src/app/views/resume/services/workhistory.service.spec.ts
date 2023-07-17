@@ -1,16 +1,14 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { WorkHistoryService } from './workhistory.service';
-import { MatDialogModule } from '@angular/material/dialog';
+import { WorkHistoryService } from "./workhistory.service";
+import { MatDialogModule } from "@angular/material/dialog";
 
 describe("WorkhistoryService", () => {
   let service: WorkHistoryService;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [
-        MatDialogModule
-      ]
+      imports: [MatDialogModule],
     });
     service = TestBed.inject(WorkHistoryService);
   });
@@ -18,5 +16,4 @@ describe("WorkhistoryService", () => {
   it("should be created", () => {
     expect(service).toBeTruthy();
   });
-
 });

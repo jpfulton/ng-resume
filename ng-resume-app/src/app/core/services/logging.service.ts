@@ -1,22 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
-import { ApplicationInsightsService } from './application-insights.service';
+import { ApplicationInsightsService } from "./application-insights.service";
 
 /**
  * Service to encapsulate logging functionality. Currently logs to console
  * and Azure Application Insights.
- * 
+ *
  * Additional logging targets can be added here. (e.g. Splunk, etc.)
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class LoggingService {
-
   constructor(
-    private applicationInsightsService: ApplicationInsightsService | null
-  )
-  { }
+    private applicationInsightsService: ApplicationInsightsService | null,
+  ) {}
 
   /**
    * Logs a debug message.
@@ -47,7 +45,8 @@ export class LoggingService {
    * @param {string} message Message for trace.
    */
   logTrace(message: string) {
-    if (this.applicationInsightsService) this.applicationInsightsService.logTrace(message);
+    if (this.applicationInsightsService)
+      this.applicationInsightsService.logTrace(message);
     console.trace("LoggingService: [trace] " + message);
   }
 
@@ -57,7 +56,10 @@ export class LoggingService {
    * @param {string} stackTrace Optional stack trace.
    */
   logError(message: string, stackTrace?: string) {
-    if (this.applicationInsightsService) this.applicationInsightsService.logException(new Error(message, { cause: stackTrace }));
+    if (this.applicationInsightsService)
+      this.applicationInsightsService.logException(
+        new Error(message, { cause: stackTrace }),
+      );
     console.error("LoggingService: [error] " + message);
   }
 }

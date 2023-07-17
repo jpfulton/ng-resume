@@ -66,7 +66,7 @@ namespace Jpf.NgResume.Api.Functions
             var log = functionContext.GetLogger<ProfileFunctions>();
 
             var (authenticated, authenticationResponse, principal) =
-                await request.AuthenticationHelperAsync(
+                await request.AuthenticateAsync(
                     functionContext,
                     log);
             if (!authenticated) return authenticationResponse;

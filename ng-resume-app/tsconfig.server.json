@@ -3,13 +3,7 @@
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
     "outDir": "./out-tsc/server",
-    "types": [
-      "node",
-      "gtag.js"
-    ]
+    "types": ["node", "gtag.js"]
   },
-  "files": [
-    "src/main.server.ts",
-    "server.ts"
-  ]
+  "files": ["src/main.server.ts", "server.ts"]
 }

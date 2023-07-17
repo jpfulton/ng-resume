@@ -42,23 +42,37 @@ describe("Deployment Sanity Tests [APP]", () => {
 
     cy.request("/").then((response) => {
       const contentType = response.headers["content-type"];
-      expect(contentType).to.be.contains("text/html", "Should be html content.");
-      
+      expect(contentType).to.be.contains(
+        "text/html",
+        "Should be html content.",
+      );
+
       const body = response.body; // returned from cypress as a string
       const dom = domParser.parseFromString(body, "text/html"); // parse into DOM
 
       const headTag = dom.head;
       const metaTags = headTag.getElementsByTagName("meta");
       expect(metaTags.length).to.be.greaterThan(0, "Should have meta tags.");
-      
+
       const metaTitle = headTag.querySelector("meta[name='title']");
-      expect(metaTitle).to.be.a.instanceof(Element, "Should contain a meta tag with title.");
+      expect(metaTitle).to.be.a.instanceof(
+        Element,
+        "Should contain a meta tag with title.",
+      );
 
       const metaOgImage = headTag.querySelector("meta[property='og\\:image']");
-      expect(metaOgImage).to.be.a.instanceof(Element, "Should contain a meta tag with og:image property.");
+      expect(metaOgImage).to.be.a.instanceof(
+        Element,
+        "Should contain a meta tag with og:image property.",
+      );
 
-      const metaTwitterCreator = headTag.querySelector("meta[name='twitter\\:creator']");
-      expect(metaTwitterCreator).to.be.a.instanceof(Element, "Should contain a meta tag with twitter:creator name.");
+      const metaTwitterCreator = headTag.querySelector(
+        "meta[name='twitter\\:creator']",
+      );
+      expect(metaTwitterCreator).to.be.a.instanceof(
+        Element,
+        "Should contain a meta tag with twitter:creator name.",
+      );
     });
   });
 });
