@@ -6,11 +6,20 @@ using Jpf.NgResume.Api.Models;
 
 namespace Jpf.NgResume.Api.Auth
 {
+    /// <summary>
+    /// Extension methods for working with Microsoft Graph Users.
+    /// </summary>
     public static class UserHelpers
     {
+        /// <summary>
+        /// Returns a User object populated with Groups to which it is a member.
+        /// </summary>
+        /// <param name="graphClient">API client</param>
+        /// <param name="userId">User id of the User to return.</param>
+        /// <returns>A User object populated with Groups to which it belongs.</returns>
         public static async Task<Models.User> GetUser(GraphServiceClient graphClient, string userId)
         {
-            var me = await graphClient.Users[userId].Request()
+            var user = await graphClient.Users[userId].Request()
                 .SelectUserProperties()
                 .GetAsync();
 
@@ -24,7 +33,7 @@ namespace Jpf.NgResume.Api.Auth
                 .Cast<Microsoft.Graph.Group>()
                 .ToList();
 
-            var appUser = me.FromMicrosoftGraph(groups);
+            var appUser = user.FromMicrosoftGraph(groups);
 
             return appUser;
         }
