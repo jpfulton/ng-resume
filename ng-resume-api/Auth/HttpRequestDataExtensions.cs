@@ -28,9 +28,7 @@ namespace Jpf.NgResume.Api.Auth
             var httpContext = GetHttpContext(requestData, functionContext);
 
             AuthenticateResult? result =
-                await httpContext.AuthenticateAsync(
-                    CustomJwtBearerConstants.DefaultScheme
-                    ).ConfigureAwait(false);
+                await httpContext.AuthenticateAsync().ConfigureAwait(false);
 
             if (result.Succeeded)
             {

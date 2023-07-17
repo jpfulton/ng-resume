@@ -12,6 +12,7 @@ using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.Graph;
 using Azure.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 #if DEBUG
 using Jpf.NgResume.Api.Diagnostics;
@@ -71,13 +72,12 @@ var host = new HostBuilder()
 
                     services.AddAuthentication(options =>
                     {
-                        options.DefaultScheme = CustomJwtBearerConstants.DefaultScheme;
-                        options.DefaultChallengeScheme = CustomJwtBearerConstants.DefaultScheme;
+                        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                     })
                     .AddMicrosoftIdentityFunctionApi(
                         configuration,
                         "AzureAdB2C",
-                        jwtBearerScheme: CustomJwtBearerConstants.DefaultScheme,
+                        jwtBearerScheme: JwtBearerDefaults.AuthenticationScheme,
 #if DEBUG
                         subscribeToJwtBearerMiddlewareDiagnosticsEvents: true
 #else
