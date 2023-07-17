@@ -11,23 +11,10 @@ namespace Jpf.NgResume.Api.Auth {
 
     public static class AuthenticationHelpers
     {
-        public static async Task<(bool, IActionResult?)> AuthenticationHelperAsync(
-            this HttpRequest req, 
-            ILogger log) 
-        {
-            var (status, response) = await req.HttpContext.AuthenticateAzureFunctionApiAsync();
-            if (!status)
-            {
-                log.LogWarning($"Unauthorized bearer token submitted.");
-            }
-
-            return (status, response);
-        }
-
         public static async Task<(bool, HttpResponseData?, ClaimsPrincipal?)> AuthenticationHelperAsync(
             this HttpRequestData req,
             FunctionContext functionContext, 
-            ILogger log) 
+            ILogger log)
         {
             var (status, response, principal) = await req.AuthenticateAzureFunctionApiAsync(functionContext);
             if (!status)

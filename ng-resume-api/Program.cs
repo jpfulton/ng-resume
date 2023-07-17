@@ -74,7 +74,7 @@ var host = new HostBuilder()
                     {
                         options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                     })
-                    .AddMicrosoftIdentityFunctionApi(
+                    .AddMicrosoftIdentityWebApi(
                         configuration,
                         "AzureAdB2C",
                         jwtBearerScheme: JwtBearerDefaults.AuthenticationScheme,
