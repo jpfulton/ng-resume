@@ -18,7 +18,7 @@ groups:
           namespaceExport: "NgResumeApi"  # optional
           outputEsm: true # default: false
           includeCredentialsOnCrossOriginRequests: false # default: false
-          bundle: false # default: false
+          bundle: true # default: false
           allowCustomFetcher: true # default: false
           includeUtilsOnUnionMembers: false # default: false
           includeOtherInUnionTypes: false # default: false
@@ -43,7 +43,7 @@ groups:
           namespaceExport: "NgResumeApi"  # optional
           outputEsm: true # default: false
           includeCredentialsOnCrossOriginRequests: false # default: false
-          bundle: false # default: false
+          bundle: true # default: false
           allowCustomFetcher: true # default: false
           includeUtilsOnUnionMembers: false # default: false
           includeOtherInUnionTypes: false # default: false
