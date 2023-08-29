@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { NgFor, NgIf } from "@angular/common";
 import { UsersService } from "./services/users.service";
-import { User } from "@jpfulton/ng-resume-api-browser-sdk/api";
+import { User } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
 import { Subscription } from "rxjs";
 import { MatTableModule } from "@angular/material/table";
 import { PlatformService } from "src/app/core/services/platform.service";

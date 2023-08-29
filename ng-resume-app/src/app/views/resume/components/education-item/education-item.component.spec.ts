@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { Education } from "@jpfulton/ng-resume-api-browser-sdk/api";
+import { Education } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
 import { EducationItemComponent } from "./education-item.component";
 
 describe("EducationItemComponent", () => {

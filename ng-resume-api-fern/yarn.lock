@@ -5,12 +5,12 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"fern-api@npm:0.11.2":
-  version: 0.11.2
-  resolution: "fern-api@npm:0.11.2"
+"fern-api@npm:0.14.3":
+  version: 0.14.3
+  resolution: "fern-api@npm:0.14.3"
   bin:
     fern: cli.cjs
-  checksum: c2e398ac9988f1042116d9e7ae9258cecdb1f246c56e97a3eb78f3e977709ca679930c44888329d6989ce39b0e0b5ff6d3fca85cc4aa2df206d76fde17f3c2c1
+  checksum: b7d03e6de4192d62e5e6637fa2e38b619b44b061bab3f8777c0b56e0bacf00bc7896262f920710b4543359b758c937c82d695838c11a64b1de48b73b3804e627
   languageName: node
   linkType: hard
 
@@ -18,6 +18,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ng-resume-api-fern@workspace:."
   dependencies:
-    fern-api: 0.11.2
+    fern-api: 0.14.3
   languageName: unknown
   linkType: soft

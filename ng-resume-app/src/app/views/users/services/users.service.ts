@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { User } from "@jpfulton/ng-resume-api-browser-sdk/api";
+import { User } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
 import { Observable } from "rxjs";
 import { AuthService } from "src/app/core/services/auth.service";
 import { ErrorDialogService } from "src/app/core/services/error-dialog.service";

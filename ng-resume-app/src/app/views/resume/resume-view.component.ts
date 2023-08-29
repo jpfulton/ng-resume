@@ -13,8 +13,8 @@ import { EducationItemComponent } from "./components/education-item/education-it
 import { PlatformService } from "../../core/services/platform.service";
 import { LoggingService } from "../../core/services/logging.service";
 
-import { Education } from "@jpfulton/ng-resume-api-browser-sdk/api";
-import { WorkHistory } from "@jpfulton/ng-resume-api-browser-sdk/api";
+import { Education } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
+import { WorkHistory } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
 
 /**
  * Top level component for the resume view heirarchy.
