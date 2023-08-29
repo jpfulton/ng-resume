@@ -7,7 +7,8 @@
       "type": "coreclr",
       "request": "attach",
       "processId": "${command:azureFunctions.pickProcess}",
-      "requireExactSource": true
+      "requireExactSource": true,
+      "preLaunchTask": "host start (functions)"
     }
   ]
 }
