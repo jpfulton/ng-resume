@@ -304,7 +304,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/cli@npm:~16.2.0":
+"@angular/cli@npm:^16.2.0":
   version: 16.2.0
   resolution: "@angular/cli@npm:16.2.0"
   dependencies:
@@ -4118,7 +4118,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jasmine@npm:~4.3.5":
+"@types/jasmine@npm:^4.3.5":
   version: 4.3.5
   resolution: "@types/jasmine@npm:4.3.5"
   checksum: 33839af6efd42bed948cb49de117821649de952228b3bf4743af09ef9d1736a6e9e9500750f04ffa74e308f00781f697092dadde4e038e2f041e741b087ceb9b
@@ -9016,7 +9016,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jasmine-core@npm:~5.1.1":
+"jasmine-core@npm:^5.1.1":
   version: 5.1.1
   resolution: "jasmine-core@npm:5.1.1"
   checksum: 84f1b3a0af7769c9bd514cdde1e366e7798a0b1110efa5a09157c653c53cdad77e1c84bffd5cafe07649c9dba7141cd602c444ac37813f111f8f5b5e3f8f6c99
@@ -9309,7 +9309,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma-chrome-launcher@npm:~3.2.0":
+"karma-chrome-launcher@npm:^3.2.0":
   version: 3.2.0
   resolution: "karma-chrome-launcher@npm:3.2.0"
   dependencies:
@@ -9318,7 +9318,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma-coverage@npm:~2.2.1":
+"karma-coverage@npm:^2.2.1":
   version: 2.2.1
   resolution: "karma-coverage@npm:2.2.1"
   dependencies:
@@ -9332,7 +9332,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma-jasmine-html-reporter@npm:~2.1.0":
+"karma-jasmine-html-reporter@npm:^2.1.0":
   version: 2.1.0
   resolution: "karma-jasmine-html-reporter@npm:2.1.0"
   peerDependencies:
@@ -9343,7 +9343,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma-jasmine@npm:~5.1.0":
+"karma-jasmine@npm:^5.1.0":
   version: 5.1.0
   resolution: "karma-jasmine@npm:5.1.0"
   dependencies:
@@ -9363,7 +9363,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma@npm:~6.4.2":
+"karma@npm:^6.4.2":
   version: 6.4.2
   resolution: "karma@npm:6.4.2"
   dependencies:
@@ -10148,7 +10148,7 @@ __metadata:
     "@angular-eslint/template-parser": 16.1.1
     "@angular/animations": ^16.2.2
     "@angular/cdk": 16.2.1
-    "@angular/cli": ~16.2.0
+    "@angular/cli": ^16.2.0
     "@angular/common": ^16.2.2
     "@angular/compiler": ^16.2.2
     "@angular/compiler-cli": ^16.2.2
@@ -10170,7 +10170,7 @@ __metadata:
     "@nguniversal/express-engine": ^16.2.0
     "@types/express": ^4.17.17
     "@types/gtag.js": ^0.0.13
-    "@types/jasmine": ~4.3.5
+    "@types/jasmine": ^4.3.5
     "@types/node": ^14.18.56
     "@typescript-eslint/eslint-plugin": 6.5.0
     "@typescript-eslint/parser": 6.5.0
@@ -10179,19 +10179,19 @@ __metadata:
     eslint: ^8.48.0
     eslint-plugin-jsdoc: ^46.5.0
     express: ^4.18.2
-    jasmine-core: ~5.1.1
-    karma: ~6.4.2
-    karma-chrome-launcher: ~3.2.0
-    karma-coverage: ~2.2.1
-    karma-jasmine: ~5.1.0
-    karma-jasmine-html-reporter: ~2.1.0
+    jasmine-core: ^5.1.1
+    karma: ^6.4.2
+    karma-chrome-launcher: ^3.2.0
+    karma-coverage: ^2.2.1
+    karma-jasmine: ^5.1.0
+    karma-jasmine-html-reporter: ^2.1.0
     ngx-cookie-service: ^16.0.1
     ngx-cookieconsent: ^4.0.2
     prettier: ^3.0.3
-    rxjs: ~7.8.1
+    rxjs: ^7.8.1
     tslib: ^2.6.2
-    typescript: ~5.2.2
-    zone.js: ~0.13.1
+    typescript: 5.1.6
+    zone.js: ^0.13.1
   languageName: unknown
   linkType: soft
 
@@ -11638,7 +11638,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:7.8.1, rxjs@npm:^7.0.0, rxjs@npm:^7.5.1, rxjs@npm:^7.5.5, rxjs@npm:~7.8.1":
+"rxjs@npm:7.8.1, rxjs@npm:^7.0.0, rxjs@npm:^7.5.1, rxjs@npm:^7.5.5, rxjs@npm:^7.8.1":
   version: 7.8.1
   resolution: "rxjs@npm:7.8.1"
   dependencies:
@@ -12814,23 +12814,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:~5.2.2":
-  version: 5.2.2
-  resolution: "typescript@npm:5.2.2"
+"typescript@npm:5.1.6":
+  version: 5.1.6
+  resolution: "typescript@npm:5.1.6"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 7912821dac4d962d315c36800fe387cdc0a6298dba7ec171b350b4a6e988b51d7b8f051317786db1094bd7431d526b648aba7da8236607febb26cf5b871d2d3c
+  checksum: b2f2c35096035fe1f5facd1e38922ccb8558996331405eb00a5111cc948b2e733163cc22fab5db46992aba7dd520fff637f2c1df4996ff0e134e77d3249a7350
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@~5.2.2#~builtin<compat/typescript>":
-  version: 5.2.2
-  resolution: "typescript@patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"
+"typescript@patch:typescript@5.1.6#~builtin<compat/typescript>":
+  version: 5.1.6
+  resolution: "typescript@patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 0f4da2f15e6f1245e49db15801dbee52f2bbfb267e1c39225afdab5afee1a72839cd86000e65ee9d7e4dfaff12239d28beaf5ee431357fcced15fb08583d72ca
+  checksum: f53bfe97f7c8b2b6d23cf572750d4e7d1e0c5fff1c36d859d0ec84556a827b8785077bc27676bf7e71fae538e517c3ecc0f37e7f593be913d884805d931bc8be
   languageName: node
   linkType: hard
 
@@ -13694,7 +13694,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zone.js@npm:~0.13.1":
+"zone.js@npm:^0.13.1":
   version: 0.13.1
   resolution: "zone.js@npm:0.13.1"
   dependencies:
