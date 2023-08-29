@@ -2543,16 +2543,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jpfulton/ng-resume-api-browser-sdk@npm:0.0.48":
-  version: 0.0.48
-  resolution: "@jpfulton/ng-resume-api-browser-sdk@npm:0.0.48"
+"@jpfulton/ng-resume-api-browser-sdk@npm:0.0.65":
+  version: 0.0.65
+  resolution: "@jpfulton/ng-resume-api-browser-sdk@npm:0.0.65"
   dependencies:
     "@types/url-join": 4.0.1
     "@ungap/url-search-params": 0.2.2
-    axios: 1.4.0
+    axios: 0.27.2
     js-base64: 3.7.2
     url-join: 4.0.1
-  checksum: 31bdfa3ba1a6b0b665f850807001c8a18b304a1fe46aca8ae4703abd23f44c32e14d294f9a4a3bf7f41a4b51fed6712dee6b1cd5f50049ed761b180ed044ed34
+  checksum: 17194a2862c25f4633fc0d567b29c11a94dfc7eea9a1d38d4e5fa40196dddf0a771581ca7ed77abaa5b46de25b51c4fa4fd03cc6fed7ad95223cb06527596b54
   languageName: node
   linkType: hard
 
@@ -5065,7 +5065,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:1.4.0, axios@npm:^1.0.0":
+"axios@npm:0.27.2":
+  version: 0.27.2
+  resolution: "axios@npm:0.27.2"
+  dependencies:
+    follow-redirects: ^1.14.9
+    form-data: ^4.0.0
+  checksum: 38cb7540465fe8c4102850c4368053c21683af85c5fdf0ea619f9628abbcb59415d1e22ebc8a6390d2bbc9b58a9806c874f139767389c862ec9b772235f06854
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.0.0":
   version: 1.4.0
   resolution: "axios@npm:1.4.0"
   dependencies:
@@ -7533,7 +7543,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.15.0":
+"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.14.9, follow-redirects@npm:^1.15.0":
   version: 1.15.2
   resolution: "follow-redirects@npm:1.15.2"
   peerDependenciesMeta:
@@ -10079,7 +10089,7 @@ __metadata:
     "@azure/msal-browser": 3.0.2
     "@azure/msal-common": 14.0.2
     "@cypress/schematic": 2.5.0
-    "@jpfulton/ng-resume-api-browser-sdk": 0.0.48
+    "@jpfulton/ng-resume-api-browser-sdk": 0.0.65
     "@microsoft/applicationinsights-angularplugin-js": 3.0.3
     "@microsoft/applicationinsights-web": 2.8.14
     "@nguniversal/builders": ^16.2.0

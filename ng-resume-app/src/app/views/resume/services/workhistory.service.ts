@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { WorkHistory } from "@jpfulton/ng-resume-api-browser-sdk/api";
+import { WorkHistory } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
 import { LoadingService } from "src/app/core/services/loading.service";
 import {
   apiPromiseToObservableWithRetry,

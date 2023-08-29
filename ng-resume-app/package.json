@@ -34,7 +34,7 @@
     "@azure/msal-angular": "3.0.2",
     "@azure/msal-browser": "3.0.2",
     "@azure/msal-common": "14.0.2",
-    "@jpfulton/ng-resume-api-browser-sdk": "0.0.48",
+    "@jpfulton/ng-resume-api-browser-sdk": "0.0.65",
     "@microsoft/applicationinsights-angularplugin-js": "3.0.3",
     "@microsoft/applicationinsights-web": "2.8.14",
     "@nguniversal/express-engine": "^16.2.0",

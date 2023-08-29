@@ -3,7 +3,7 @@ import { CommonModule } from "@angular/common";
 
 import { MatIconModule } from "@angular/material/icon";
 
-import { WorkHistory } from "@jpfulton/ng-resume-api-browser-sdk/api";
+import { WorkHistory } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
 
 /**
  * Component to render elements in the resume work history section.

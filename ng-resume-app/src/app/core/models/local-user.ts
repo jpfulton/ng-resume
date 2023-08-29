@@ -1,6 +1,6 @@
 import { AccountInfo } from "@azure/msal-common";
 import { Claim } from "./claim";
-import { User } from "@jpfulton/ng-resume-api-browser-sdk/api";
+import { User } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
 
 export interface LocalUser extends User {
   oid: string;

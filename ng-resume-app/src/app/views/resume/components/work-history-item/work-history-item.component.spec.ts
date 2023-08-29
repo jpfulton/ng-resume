@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { WorkHistoryItemComponent } from "./work-history-item.component";
-import { WorkHistory } from "@jpfulton/ng-resume-api-browser-sdk/api";
+import { WorkHistory } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
 
 describe("WorkHistoryItemComponent", () => {
   let component: WorkHistoryItemComponent;
