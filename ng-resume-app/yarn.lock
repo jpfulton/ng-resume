@@ -4069,17 +4069,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^14.18.56":
-  version: 14.18.56
-  resolution: "@types/node@npm:14.18.56"
-  checksum: 990cd0e853caa264586aa703ed923767fb445ad240e54cfe7c877c8db2e0b377f85c1bc4b80575c7f07dc9f4c56bdfbc6b5c2704a689cf7c8f9ac4ec2ed84975
-  languageName: node
-  linkType: hard
-
 "@types/node@npm:^16.18.39":
   version: 16.18.46
   resolution: "@types/node@npm:16.18.46"
   checksum: 1aed3fe9693f2098b8dac8c76c809c1925a456da00dd6f06c1ccb55c62ccfbbe7ec43ccfd12001f9cb4ff84e138292ae53456435dfecd5c4bb1324394c3e09c7
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^18.11.9":
+  version: 18.17.12
+  resolution: "@types/node@npm:18.17.12"
+  checksum: 79f8bcca3067a3c529f30e172df8d14f25ab9e4cd6a05ed897a924ab1dec774e8ea172ef5c4a67ffec433d423a0c81778f17db22606d574bc83871b60aab298e
   languageName: node
   linkType: hard
 
@@ -10087,7 +10087,7 @@ __metadata:
     "@types/express": ^4.17.17
     "@types/gtag.js": ^0.0.13
     "@types/jasmine": ^4.3.5
-    "@types/node": ^14.18.56
+    "@types/node": ^18.11.9
     "@typescript-eslint/eslint-plugin": 6.5.0
     "@typescript-eslint/parser": 6.5.0
     cookieconsent: ^3.1.1
