@@ -28,10 +28,14 @@ jobs:
           cache: "yarn"
           cache-dependency-path: ${{ inputs.app-working-dir }}/yarn.lock
 
-      - name: Install dependencies via yarn with frozen lockfile
+      - name: Use Modern Yarn
+        id: modern-yarn
+        run: corepack enable && yarn set version 3.6.3
+
+      - name: Install dependencies
         id: installdeps
         working-directory: ${{ inputs.app-working-dir }}
-        run: yarn --frozen-lockfile
+        run: yarn
 
       - name: Lint application
         id: lint
