@@ -10,13 +10,13 @@ groups:
           location: local-file-system
           path: ../../generated/openapi
       - name: fernapi/fern-typescript-browser-sdk
-        version: 0.7.1
+        version: 0.7.2
         config:
           useBrandedStringAliases: false # default: false
           private: false # default: true
           neverThrowErrors: false #default: false
-          #namespaceExport:  # optional
-          outputEsm: false # default: false
+          namespaceExport: "NgResumeApi"  # optional
+          outputEsm: true # default: false
           includeCredentialsOnCrossOriginRequests: false # default: false
           bundle: false # default: false
           allowCustomFetcher: true # default: false
@@ -35,13 +35,13 @@ groups:
   publish:
     generators:
       - name: fernapi/fern-typescript-browser-sdk
-        version: 0.7.1
+        version: 0.7.2
         config:
           useBrandedStringAliases: false # default: false
           private: false # default: true
           neverThrowErrors: false #default: false
-          #namespaceExport:  # optional
-          outputEsm: false # default: false
+          namespaceExport: "NgResumeApi"  # optional
+          outputEsm: true # default: false
           includeCredentialsOnCrossOriginRequests: false # default: false
           bundle: false # default: false
           allowCustomFetcher: true # default: false
