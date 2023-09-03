@@ -148,7 +148,7 @@ namespace Jpf.NgResume.Api.Functions
             var test = await JsonSerializer.DeserializeAsync<Test>(request.Body);
 
             test.Id = Guid.NewGuid();
-            test.Message = test.Message + $" (Received by API from user: {displayName} [{userId}])";
+            test.Message += $" (Received by API from user: {displayName} [{userId}])";
 
             var resp = request.CreateResponse(HttpStatusCode.OK);
             await resp.WriteAsJsonAsync(test);
