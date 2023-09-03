@@ -36,7 +36,7 @@ namespace Jpf.NgResume.Api.Auth
                 throw new ArgumentNullException("Parameter requestData cannot be null.");
             }
 
-            // create a HttpConext object from the data in the HttpRequestData object
+            // create a HttpContext object from the data in the HttpRequestData object
             var httpContext = GetHttpContext(requestData, functionContext);
 
             AuthenticateResult? result =
@@ -63,7 +63,7 @@ namespace Jpf.NgResume.Api.Auth
         }
 
         /// <summary>
-        /// Creates a HttpConext object from the data in the HttpRequestData object.
+        /// Creates a HttpContext object from the data in the HttpRequestData object.
         /// </summary>
         /// <param name="requestData"></param>
         /// <param name="functionContext"></param>
