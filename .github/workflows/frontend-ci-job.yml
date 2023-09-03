@@ -35,14 +35,14 @@ jobs:
       - name: Install dependencies
         id: installdeps
         working-directory: ${{ inputs.app-working-dir }}
-        run: yarn
+        run: yarn install --immutable
 
       - name: Lint application
         id: lint
         working-directory: ${{ inputs.app-working-dir }}
-        run: yarn run lint
+        run: yarn lint
 
       - name: Test application
         id: test
         working-directory: ${{ inputs.app-working-dir }}
-        run: yarn run test --configuration=ci
+        run: yarn test --configuration=ci
