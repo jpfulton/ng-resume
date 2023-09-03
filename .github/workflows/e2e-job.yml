@@ -38,7 +38,7 @@ jobs:
       - name: Install dependencies
         id: installdeps
         working-directory: ${{ inputs.app-working-dir }}
-        run: yarn
+        run: yarn install --immutable
 
       # Run the cypress e2e sanity test suite on the Azure deployment.
       # The static_web_app_url output variable from the deployment step

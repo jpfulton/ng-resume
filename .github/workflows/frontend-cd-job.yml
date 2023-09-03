@@ -63,13 +63,13 @@ jobs:
       - name: Install dependencies
         id: installdeps
         working-directory: ${{ inputs.app-working-dir }}
-        run: yarn
+        run: yarn install --immutable
 
       - name: Build application
         id: build
         timeout-minutes: 5
         working-directory: ${{ inputs.app-working-dir }}
-        run: yarn run prerender
+        run: yarn prerender
 
       # Deploy build artifacts into Azure.
       - name: Deploy application to Azure
