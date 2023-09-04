@@ -51,7 +51,7 @@
               mat-icon-button 
               color="accent"
               aria-label="expand row" 
-              (click)="(expandedUser = expandedUser === user ? null : user); $event.stopPropagation()"
+              (click)="expandUserRow(user); $event.stopPropagation();"
               >
               <mat-icon *ngIf="expandedUser !== user">keyboard_arrow_down</mat-icon>
               <mat-icon *ngIf="expandedUser === user">keyboard_arrow_up</mat-icon>
@@ -87,6 +87,21 @@
                   </div>
                 </div>
 
+                <div class="group-container" *ngFor="let group of expandedUserGroups">
+
+                  <div class="column">
+                    <div class="bold cell">Id</div>
+                    <div class="bold cell">Name</div>
+                    <div class="bold cell">Security Enabled</div>
+                  </div>
+
+                  <div class="column">
+                    <div class="cell">{{group.id}}</div>
+                    <div class="cell">{{group.displayName}}</div>
+                    <div class="cell">{{group.securityEnabled}}</div>
+                  </div>
+                </div>
+
               </div>
 
             </div>
@@ -97,7 +112,7 @@
         <tr mat-row *matRowDef="let user; columns: columnsToDisplayWithExpand;"
             class="user-row"
             [class.expanded-row]="expandedUser === user"
-            (click)="expandedUser = expandedUser === user ? null : user">
+            (click)="expandUserRow(user); $event.stopPropagation();">
         </tr>
         <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
       </table>

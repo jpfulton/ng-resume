@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { NgFor, NgIf } from "@angular/common";
 import { UsersService } from "./services/users.service";
-import { User } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
+import { Group, User } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
 import { Subscription } from "rxjs";
 import { MatTableModule } from "@angular/material/table";
 import { PlatformService } from "src/app/core/services/platform.service";
@@ -43,6 +43,7 @@ import { MatDividerModule } from "@angular/material/divider";
 export class UsersViewComponent implements OnInit, OnDestroy {
   userList: User[] = [];
   expandedUser: User | null = null;
+  expandedUserGroups: Group[] = [];
   displayedColumns: string[] = [
     "id",
     "displayName",
@@ -53,6 +54,7 @@ export class UsersViewComponent implements OnInit, OnDestroy {
   columnsToDisplayWithExpand: string[] = [...this.displayedColumns, "expand"];
 
   private usersSubscription: Subscription | null = null;
+  private userGroupSubscription: Subscription | null = null;
 
   constructor(
     private usersService: UsersService,
@@ -69,9 +71,21 @@ export class UsersViewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.usersSubscription?.unsubscribe();
+    this.userGroupSubscription?.unsubscribe();
   }
 
   copyToClipboard(data: string): void {
     navigator.clipboard.writeText(data);
+  }
+
+  expandUserRow(user: User): void {
+    this.expandedUser = this.expandedUser === user ? null : user;
+    this.expandedUserGroups = [];
+
+    if (this.userGroupSubscription) this.userGroupSubscription.unsubscribe();
+
+    this.userGroupSubscription = this.usersService
+      .getUserGroupMembership(user.id!)
+      .subscribe((data) => (this.expandedUserGroups = data));
   }
 }

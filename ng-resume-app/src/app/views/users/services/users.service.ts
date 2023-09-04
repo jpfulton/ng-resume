@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { User } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
+import { Group, User } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
 import { Observable } from "rxjs";
 import { AuthService } from "src/app/core/services/auth.service";
 import { ErrorDialogService } from "src/app/core/services/error-dialog.service";
@@ -24,6 +24,16 @@ export class UsersService {
 
     return apiPromiseToObservableWithRetry<User[]>(
       () => apiClient.users.getAll(),
+      this.loadingService,
+      this.errorDialogService,
+    );
+  }
+
+  getUserGroupMembership(userId: string): Observable<Group[]> {
+    const apiClient = getAuthenticatedApiClient(this.authService);
+
+    return apiPromiseToObservableWithRetry<Group[]>(
+      () => apiClient.users.getUserGroupMembership(userId),
       this.loadingService,
       this.errorDialogService,
     );
