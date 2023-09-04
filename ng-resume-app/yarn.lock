@@ -2543,16 +2543,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jpfulton/ng-resume-api-browser-sdk@npm:0.0.65":
-  version: 0.0.65
-  resolution: "@jpfulton/ng-resume-api-browser-sdk@npm:0.0.65"
+"@jpfulton/ng-resume-api-browser-sdk@npm:^0.0.71":
+  version: 0.0.71
+  resolution: "@jpfulton/ng-resume-api-browser-sdk@npm:0.0.71"
   dependencies:
     "@types/url-join": 4.0.1
     "@ungap/url-search-params": 0.2.2
     axios: 0.27.2
     js-base64: 3.7.2
     url-join: 4.0.1
-  checksum: 17194a2862c25f4633fc0d567b29c11a94dfc7eea9a1d38d4e5fa40196dddf0a771581ca7ed77abaa5b46de25b51c4fa4fd03cc6fed7ad95223cb06527596b54
+  checksum: 9a4dbfd61a4e2aebcb6ba851f4e11d70613468a131ba895b42d22f3cbd293e7297089e38c569e507375b14d0ab6c64801751d5ef99e2bcc2ff016f6affe70e26
   languageName: node
   linkType: hard
 
@@ -10089,7 +10089,7 @@ __metadata:
     "@azure/msal-browser": 3.0.2
     "@azure/msal-common": 14.0.2
     "@cypress/schematic": 2.5.0
-    "@jpfulton/ng-resume-api-browser-sdk": 0.0.65
+    "@jpfulton/ng-resume-api-browser-sdk": ^0.0.71
     "@microsoft/applicationinsights-angularplugin-js": 3.0.3
     "@microsoft/applicationinsights-web": 2.8.14
     "@nguniversal/builders": ^16.2.0
