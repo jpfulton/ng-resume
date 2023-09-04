@@ -6,16 +6,15 @@ using Jpf.NgResume.Api.Auth;
 using Jpf.NgResume.Api.MicrosoftGraph;
 using Jpf.NgResume.Api.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
-using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
 using Microsoft.OpenApi.Models;
 
-namespace Jpf.NgResume.Api.Functions {
+namespace Jpf.NgResume.Api.Functions
+{
 
     public class UserFunctions {
         private readonly GraphServiceClient graphClient;
