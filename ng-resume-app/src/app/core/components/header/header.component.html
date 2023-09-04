@@ -1,149 +1,197 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <mat-toolbar id="header-toolbar" color="primary">
-    <a mat-icon-button
-       class="home-button"
-       aria-label="Home"
-       routerLink="/" 
-       routerLinkActive="active">
-        <mat-icon>home</mat-icon>
+  <a
+    mat-icon-button
+    class="home-button"
+    aria-label="Home"
+    routerLink="/"
+    routerLinkActive="active"
+  >
+    <mat-icon>home</mat-icon>
+  </a>
+
+  <span class="toolbar-spacer"></span>
+
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="accountMenu"
+    (onMenuOpen)="profileMenuOpening()"
+    aria-label="Account Menu"
+  >
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <mat-menu #accountMenu="matMenu">
+    <button mat-menu-item (click)="login()" *ngIf="!authService.isLoggedIn">
+      <mat-icon>login</mat-icon>
+      Log In or Sign Up...
+    </button>
+    <div mat-menu-item *ngIf="authService.isLoggedIn && account">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            {{ account.idTokenClaims?.name }}
+          </mat-card-title>
+          <mat-card-subtitle
+            *ngIf="account?.idTokenClaims?.emails?.length !== 0"
+          >
+            {{ account.idTokenClaims!.emails![0] }}
+          </mat-card-subtitle>
+          <mat-card-subtitle>
+            {{ account.idTokenClaims!.idp }}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions align="end">
+          <button mat-button color="warn" (click)="logout()">Logout</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </mat-menu>
+
+  <button mat-icon-button [matMenuTriggerFor]="mainMenu" aria-label="Main Menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #mainMenu="matMenu">
+    <div
+      mat-menu-item
+      appFocusable
+      (click)="$event.stopPropagation()"
+      (keydown)="$event.stopPropagation()"
+    >
+      <mat-slide-toggle #darkModeToggle>
+        <span>Dark Mode</span>
+      </mat-slide-toggle>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <button
+      mat-menu-item
+      class="github-button"
+      [matMenuTriggerFor]="gitHubMenu"
+    >
+      <mat-icon>
+        <img
+          *ngIf="darkModeToggle.checked"
+          alt="GitHub"
+          src="/assets/images/github-circle-white-transparent.svg"
+        />
+        <img
+          *ngIf="!darkModeToggle.checked"
+          alt="GitHub"
+          src="/assets/images/github-circle-black-transparent.svg"
+        />
+      </mat-icon>
+      GitHub
+    </button>
+    <mat-menu #gitHubMenu="matMenu">
+      <a mat-menu-item href="https://github.com/jpfulton/" target="_blank">
+        <mat-icon>open_in_new</mat-icon>
+        Profile
+      </a>
+      <a
+        mat-menu-item
+        href="https://github.com/jpfulton/ng-resume/"
+        target="_blank"
+      >
+        <mat-icon>open_in_new</mat-icon>
+        Project Repository
+      </a>
+    </mat-menu>
+    <a
+      mat-menu-item
+      class="linkedin-button"
+      href="https://www.linkedin.com/in/jpatrickfulton/"
+      target="_blank"
+    >
+      <mat-icon>
+        <img
+          *ngIf="darkModeToggle.checked"
+          alt="LinkedIn"
+          src="/assets/images/linkedin-white.svg"
+        />
+        <img
+          *ngIf="!darkModeToggle.checked"
+          alt="LinkedIn"
+          src="/assets/images/linkedin-black.svg"
+        />
+      </mat-icon>
+      LinkedIn Profile
     </a>
 
-    <span class="toolbar-spacer"></span>
+    <mat-divider></mat-divider>
 
-    <button 
-        mat-icon-button 
-        [matMenuTriggerFor]="accountMenu" 
-        (onMenuOpen)="profileMenuOpening()"
-        aria-label="Account Menu">
-        <mat-icon>account_circle</mat-icon>
+    <button mat-menu-item [matMenuTriggerFor]="policyMenu">
+      <mat-icon>policy</mat-icon>
+      Policies
     </button>
-    <mat-menu #accountMenu="matMenu">
-        <button mat-menu-item (click)="login()" *ngIf="!authService.isLoggedIn">
-            <mat-icon>login</mat-icon>
-            Log In or Sign Up...
-        </button>
-        <div mat-menu-item *ngIf="authService.isLoggedIn && account">
-            <mat-card>
-                <mat-card-header>
-                    <mat-card-title>
-                        {{account.idTokenClaims?.name}}
-                    </mat-card-title>
-                    <mat-card-subtitle *ngIf="account?.idTokenClaims?.emails?.length !== 0">
-                        {{account.idTokenClaims!.emails![0]}}
-                    </mat-card-subtitle>
-                    <mat-card-subtitle>
-                        {{account.idTokenClaims!.idp}}
-                    </mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-actions align="end">
-                    <button mat-button color="warn" (click)="logout()">
-                        Logout
-                    </button>
-                </mat-card-actions>
-            </mat-card>
-        </div>
-    </mat-menu>
-
-    <button mat-icon-button [matMenuTriggerFor]="mainMenu" aria-label="Main Menu">
-        <mat-icon>menu</mat-icon>
+    <button
+      mat-menu-item
+      [matMenuTriggerFor]="developerMenu"
+      *ngIf="authService.isActiveUserInOneGroup(['Developers'])"
+    >
+      <mat-icon>developer_mode</mat-icon>
+      Developer Resources
     </button>
-    <mat-menu #mainMenu="matMenu">
-
-        <div mat-menu-item appFocusable
-            (click)="$event.stopPropagation()" 
-            (keydown)="$event.stopPropagation()">
-            <mat-slide-toggle #darkModeToggle>
-                <span>Dark Mode</span>
-            </mat-slide-toggle>
-        </div>
-
-        <mat-divider></mat-divider>
-
-        <button mat-menu-item class="github-button" [matMenuTriggerFor]="gitHubMenu">
-            <mat-icon>
-                <img *ngIf="darkModeToggle.checked" alt="GitHub" src="/assets/images/github-circle-white-transparent.svg" />
-                <img *ngIf="!darkModeToggle.checked" alt="GitHub" src="/assets/images/github-circle-black-transparent.svg" />
-            </mat-icon>
-            GitHub
-        </button>
-        <mat-menu #gitHubMenu="matMenu">
-            <a mat-menu-item href="https://github.com/jpfulton/" target="_blank">
-                <mat-icon>open_in_new</mat-icon>
-                Profile
-            </a>
-            <a mat-menu-item href="https://github.com/jpfulton/ng-resume/" target="_blank">
-                <mat-icon>open_in_new</mat-icon>
-                Project Repository
-            </a>
-        </mat-menu>
-        <a mat-menu-item class="linkedin-button" href="https://www.linkedin.com/in/jpatrickfulton/" target="_blank">
-            <mat-icon>
-                <img *ngIf="darkModeToggle.checked" alt="LinkedIn" src="/assets/images/linkedin-white.svg" />
-                <img *ngIf="!darkModeToggle.checked" alt="LinkedIn" src="/assets/images/linkedin-black.svg" />
-            </mat-icon>
-            LinkedIn Profile
-        </a>
-
-        <mat-divider></mat-divider>
-
-        <button mat-menu-item [matMenuTriggerFor]="policyMenu">
-            <mat-icon>policy</mat-icon>
-            Policies
-        </button>
-        <button mat-menu-item 
-            [matMenuTriggerFor]="developerMenu"
-            *ngIf="authService.isActiveUserInOneGroup(['Developers'])">
-            <mat-icon>developer_mode</mat-icon>
-            Developer Resources
-        </button>
-        <mat-menu #developerMenu="matMenu">
-            <a mat-menu-item 
-                href="/api/swagger/ui" 
-                target="_blank"
-                *ngIf="authService.isActiveUserInOneGroup(['Developers'])">
-                <mat-icon>open_in_new</mat-icon>
-                API Documentation
-            </a>
-            <a mat-menu-item 
-                href="/api/openapi/v3.yml" 
-                target="_blank"
-                *ngIf="authService.isActiveUserInOneGroup(['Developers'])">
-                <mat-icon>open_in_new</mat-icon>
-                OpenAPI v3 Description
-            </a>
-            <a mat-menu-item 
-                routerLink="/claims" 
-                routerLinkActive="active" 
-                *ngIf="authService.isActiveUserInOneGroup(['Developers'])">
-                <mat-icon>code</mat-icon>
-                Token Claims
-            </a>
-            <a mat-menu-item 
-                routerLink="/test" 
-                routerLinkActive="active" 
-                *ngIf="authService.isActiveUserInOneGroup(['Developers'])">
-                <mat-icon>code</mat-icon>
-                Test Harness
-            </a>
-        </mat-menu>
-
-        <a mat-menu-item 
-            routerLink="/users" 
-            routerLinkActive="active" 
-            *ngIf="authService.isActiveUserInOneGroup(['SiteOwners', 'Administators'])">
-            <mat-icon>person</mat-icon>
-            User Administration
-        </a>
+    <mat-menu #developerMenu="matMenu">
+      <a
+        mat-menu-item
+        href="/api/swagger/ui"
+        target="_blank"
+        *ngIf="authService.isActiveUserInOneGroup(['Developers'])"
+      >
+        <mat-icon>open_in_new</mat-icon>
+        API Documentation
+      </a>
+      <a
+        mat-menu-item
+        href="/api/openapi/v3.yml"
+        target="_blank"
+        *ngIf="authService.isActiveUserInOneGroup(['Developers'])"
+      >
+        <mat-icon>open_in_new</mat-icon>
+        OpenAPI v3 Description
+      </a>
+      <a
+        mat-menu-item
+        routerLink="/claims"
+        routerLinkActive="active"
+        *ngIf="authService.isActiveUserInOneGroup(['Developers'])"
+      >
+        <mat-icon>code</mat-icon>
+        Token Claims
+      </a>
+      <a
+        mat-menu-item
+        routerLink="/test"
+        routerLinkActive="active"
+        *ngIf="authService.isActiveUserInOneGroup(['Developers'])"
+      >
+        <mat-icon>code</mat-icon>
+        Test Harness
+      </a>
     </mat-menu>
 
-    <mat-menu #policyMenu="matMenu">
-        <a mat-menu-item routerLink="/cookiepolicy" routerLinkActive="active">
-            <mat-icon>cookie</mat-icon>
-            <span>Cookie Policy</span>
-        </a>
-        <a mat-menu-item routerLink="/privacy" routerLinkActive="active">
-            <mat-icon>privacy_tip</mat-icon>
-            <span>Privacy Policy</span>
-        </a>
-    </mat-menu>
+    <a
+      mat-menu-item
+      routerLink="/users"
+      routerLinkActive="active"
+      *ngIf="
+        authService.isActiveUserInOneGroup(['SiteOwners', 'Administators'])
+      "
+    >
+      <mat-icon>person</mat-icon>
+      User Administration
+    </a>
+  </mat-menu>
+
+  <mat-menu #policyMenu="matMenu">
+    <a mat-menu-item routerLink="/cookiepolicy" routerLinkActive="active">
+      <mat-icon>cookie</mat-icon>
+      <span>Cookie Policy</span>
+    </a>
+    <a mat-menu-item routerLink="/privacy" routerLinkActive="active">
+      <mat-icon>privacy_tip</mat-icon>
+      <span>Privacy Policy</span>
+    </a>
+  </mat-menu>
 </mat-toolbar>

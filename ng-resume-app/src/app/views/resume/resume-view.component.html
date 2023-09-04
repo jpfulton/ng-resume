@@ -1,51 +1,56 @@
 <section id="contact-section">
-    <h1>J. Patrick Fulton</h1>
-    <div class="divider"></div>
+  <h1>J. Patrick Fulton</h1>
+  <div class="divider"></div>
 
-    <div class="column-container">
-        <div class="column">
-            <a href="mailto:jpatrick.fulton@gmail.com">jpatrick.fulton@gmail.com</a>
-            <br />
-            <a href="tel:+13129896512">(312) 989-6512</a>
-        </div>
-        <div class="column-right">
-            <a class="ext-link" href="https://www.jpatrickfulton.dev" target="_blank">
-                https://www.jpatrickfulton.dev
-                <mat-icon>open_in_new</mat-icon>
-            </a>
-            <br />
-            <a class="ext-link" href="https://www.linkedin.com/in/jpatrickfulton" target="_blank">
-                https://www.linkedin.com/in/jpatrickfulton
-                <mat-icon>open_in_new</mat-icon>
-            </a>
-            <br />
-            <a class="ext-link" href="https://github.com/jpfulton" target="_blank">
-                https://github.com/jpfulton
-                <mat-icon>open_in_new</mat-icon>
-            </a>
-            <br />
-            <span>Chicago, IL</span>
-        </div>
+  <div class="column-container">
+    <div class="column">
+      <a href="mailto:jpatrick.fulton@gmail.com">jpatrick.fulton@gmail.com</a>
+      <br />
+      <a href="tel:+13129896512">(312) 989-6512</a>
     </div>
+    <div class="column-right">
+      <a class="ext-link" href="https://www.jpatrickfulton.dev" target="_blank">
+        https://www.jpatrickfulton.dev
+        <mat-icon>open_in_new</mat-icon>
+      </a>
+      <br />
+      <a
+        class="ext-link"
+        href="https://www.linkedin.com/in/jpatrickfulton"
+        target="_blank"
+      >
+        https://www.linkedin.com/in/jpatrickfulton
+        <mat-icon>open_in_new</mat-icon>
+      </a>
+      <br />
+      <a class="ext-link" href="https://github.com/jpfulton" target="_blank">
+        https://github.com/jpfulton
+        <mat-icon>open_in_new</mat-icon>
+      </a>
+      <br />
+      <span>Chicago, IL</span>
+    </div>
+  </div>
 </section>
 
 <section *ngIf="workHistoryList.length !== 0" id="work-experience-section">
-    <h1>Work Experience</h1>
-    <div class="divider"></div>
+  <h1>Work Experience</h1>
+  <div class="divider"></div>
 
-    <app-work-history-item 
-        *ngFor="let workHistory of workHistoryList; trackBy: trackWorkHistoryById"
-        [workHistory]="workHistory">
-    </app-work-history-item>
-
+  <app-work-history-item
+    *ngFor="let workHistory of workHistoryList; trackBy: trackWorkHistoryById"
+    [workHistory]="workHistory"
+  >
+  </app-work-history-item>
 </section>
 
 <section *ngIf="educationList.length !== 0" id="education-section">
-    <h1>Education and Certification</h1>
-    <div class="divider"></div>
+  <h1>Education and Certification</h1>
+  <div class="divider"></div>
 
-    <app-education-item
-        *ngFor="let education of educationList; trackBy: trackEductionById"
-        [education]="education">
-    </app-education-item>
+  <app-education-item
+    *ngFor="let education of educationList; trackBy: trackEductionById"
+    [education]="education"
+  >
+  </app-education-item>
 </section>

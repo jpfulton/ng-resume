@@ -1,34 +1,41 @@
 <div class="work-history">
-    <div class="work-history-date-range">{{workHistory.startYear}} - {{workHistory.endYear}}</div>
-    <div class="work-history-body">
-        <div class="work-history-title">{{workHistory.title}}</div>
-        <div>
-            <div class="work-history-org">
-
-                <span *ngIf="workHistory.organizationUrl !== undefined; else noLinkBlock">
-                    <a class="ext-link" href="{{workHistory.organizationUrl}}" target="_blank" rel="noopener noreferrer">
-                        {{workHistory.organization}}
-                        <mat-icon>open_in_new</mat-icon>
-                    </a>
-                </span>
-                <ng-template #noLinkBlock>
-                    <span class="no-org-url">{{workHistory.organization}}</span>
-                </ng-template>
-            
-            </div>
-            <div class="work-history-bullet-list">
-                <ol>
-                    <li *ngFor="let bullet of workHistory.bullets">{{bullet}}</li>
-                </ol>
-            </div>
-            <div class="work-history-skill-list">
-                <ol>
-                    <li *ngFor="let skill of workHistory.skills; index as i;">
-                        <span *ngIf="i !== 0">|</span>
-                        {{skill}}
-                    </li>
-                </ol>
-            </div>
-        </div>
+  <div class="work-history-date-range">
+    {{ workHistory.startYear }} - {{ workHistory.endYear }}
+  </div>
+  <div class="work-history-body">
+    <div class="work-history-title">{{ workHistory.title }}</div>
+    <div>
+      <div class="work-history-org">
+        <span
+          *ngIf="workHistory.organizationUrl !== undefined; else noLinkBlock"
+        >
+          <a
+            class="ext-link"
+            href="{{ workHistory.organizationUrl }}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ workHistory.organization }}
+            <mat-icon>open_in_new</mat-icon>
+          </a>
+        </span>
+        <ng-template #noLinkBlock>
+          <span class="no-org-url">{{ workHistory.organization }}</span>
+        </ng-template>
+      </div>
+      <div class="work-history-bullet-list">
+        <ol>
+          <li *ngFor="let bullet of workHistory.bullets">{{ bullet }}</li>
+        </ol>
+      </div>
+      <div class="work-history-skill-list">
+        <ol>
+          <li *ngFor="let skill of workHistory.skills; index as i">
+            <span *ngIf="i !== 0">|</span>
+            {{ skill }}
+          </li>
+        </ol>
+      </div>
     </div>
+  </div>
 </div>

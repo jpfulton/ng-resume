@@ -1,7 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { NgIf } from "@angular/common";
 import { TestService } from "./services/test.service";
-import { Test, User } from "@jpfulton/ng-resume-api-browser-sdk/types/api/types";
+import {
+  Test,
+  User,
+} from "@jpfulton/ng-resume-api-browser-sdk/types/api/types";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDividerModule } from "@angular/material/divider";
 import { AuthService } from "src/app/core/services/auth.service";

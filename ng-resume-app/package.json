@@ -17,7 +17,7 @@
     "serve:ssr": "node dist/ng-resume/server/main.js",
     "build:ssr": "ng build && ng run ng-resume:server",
     "prerender": "ng run ng-resume:prerender",
-    "format": "prettier --write \"**/*.{js,mjs,jsx,ts,tsx,json,md,mdx}\""
+    "format": "prettier --write \"**/*.{js,mjs,jsx,ts,tsx,json,md,mdx,html}\""
   },
   "private": true,
   "dependencies": {
