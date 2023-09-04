@@ -67,45 +67,70 @@
 
               <div class="detail-container">
                 
-                <div class="identity-container" *ngFor="let identity of user.identities">
-                  <div class="column">
-                    <div class="bold cell">Identity</div>
-                    <div class="bold cell">---</div>
-                    <div class="bold cell">Issuer</div>
-                    <div class="bold cell">Issuer Assigned Id</div>
-                    <div class="bold cell">Sign In Type</div>
-                    <div class="cell"><mat-divider></mat-divider></div>
-                  </div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th colspan="3">Identities</th>
+                    </tr>
+                  <tr>
+                    <th>Issuer</th>
+                    <th>Sign In Type</th>
+                    <th class="absorbing-column">Issuer Assigned Id</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let identity of user.identities">
+                    <td>{{identity.issuer}}</td>
+                    <td>{{identity.signInType}}</td>
+                    <td>{{identity.issuerAssignedId}}</td>
+                  </tr>
+                </tbody>
+                </table>
+
+                <div class="table-divider">
+                  <mat-divider></mat-divider>
+                </div>
+                
+                <table>
+                  <thead>
+                    <tr>
+                      <th colspan="3">Group Membership</th>
+                    </tr>
+                  <tr>
+                    <th class="id-widget-column">Id</th>
+                    <th>Name</th>
+                    <th class="absorbing-column">Security Enabled</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let group of expandedUserGroups">
+
                   
-                  <div class="column">
-                    <div class="cell">&nbsp;</div>
-                    <div class="cell">&nbsp;</div>
-                    <div class="cell">{{identity.issuer}}</div>
-                    <div class="cell">{{identity.issuerAssignedId}}</div>
-                    <div class="cell">{{identity.signInType}}</div>
-                    <div class="cell">&nbsp;</div>
-                  </div>
-                </div>
+                    <td>
+                      <div class="id-widget">
+                        <div class="id-container" title="{{group.id}}">
+                          {{group.id}}
+                        </div>
+                        <button 
+                        mat-icon-button
+                        class="small-icon-button" 
+                        color="disabled" 
+                        title="Copy"
+                        (click)="copyToClipboard(group.id!); $event.stopPropagation();">
+                          <mat-icon>file_copy</mat-icon>
+                        </button>
+                      </div>
+                    </td>
+                    <td>{{group.displayName}}</td>
+                    <td>{{group.securityEnabled}}</td>
+                  
+                </tr>
 
-                <div class="group-container" *ngFor="let group of expandedUserGroups">
-
-                  <div class="column">
-                    <div class="bold cell">Id</div>
-                    <div class="bold cell">Name</div>
-                    <div class="bold cell">Security Enabled</div>
-                  </div>
-
-                  <div class="column">
-                    <div class="cell">{{group.id}}</div>
-                    <div class="cell">{{group.displayName}}</div>
-                    <div class="cell">{{group.securityEnabled}}</div>
-                  </div>
-                </div>
-
-              </div>
+              </tbody>
+              </table>
 
             </div>
-          </td>
+          </div>
         </ng-container>
       
         <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>

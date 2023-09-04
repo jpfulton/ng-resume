@@ -16,23 +16,36 @@ table {
         padding-top: 10px;
         padding-bottom: 10px;
 
-        .group-container,
-        .identity-container {
-            padding-top: 5px;
-            display: flex;
+        table {
+            border: 1px solid whitesmoke;
+            table-layout: auto;
+            thead {
+                font-weight: bold;
+                
+                th {
+                    border-bottom: 1px solid whitesmoke;
+                    padding: 0.5rem;
+                }
 
-            .column {
-                display: flex;
-                flex-direction: column;
+                .id-widget-column {
+                    min-width: 80px;
+                }
+
+                .absorbing-column {
+                    width: 100%;
+                }
             }
-
-            .cell {
-                padding: 5px;
+            
+            tbody {
+                td {
+                    border-bottom: 1px solid whitesmoke;
+                    padding: 0.5rem;
+                }
             }
         }
 
-        .bold {
-            font-weight: bold;
+        .table-divider {
+            margin: 1rem;
         }
     }
 
@@ -52,7 +65,7 @@ table {
             width: 24px !important;
             height: 24px !important;
             padding: 0px !important;
-            display: inline-flex !important;
+            display: inline !important;
             align-items: center;
             justify-content: center;
          
