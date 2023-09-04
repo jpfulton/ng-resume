@@ -110,8 +110,15 @@ namespace Jpf.NgResume.Api.Functions
             Scheme = OpenApiSecuritySchemeType.Bearer,
             BearerFormat = "JWT",
             In = OpenApiSecurityLocationType.Header)]
+        [OpenApiParameter(
+            "groupId",
+            In = ParameterLocation.Path,
+            Required = true,
+            Type = typeof(string),
+            Description = "Id of the group."
+        )]
         [OpenApiRequestBody(
-            contentType: "application/problem+json; charset=utf-8",
+            contentType: "application/json; charset=utf-8",
             bodyType: typeof(Models.User),
             Description = "User to be added to the group.",
             Required = true
@@ -166,6 +173,20 @@ namespace Jpf.NgResume.Api.Functions
             Scheme = OpenApiSecuritySchemeType.Bearer,
             BearerFormat = "JWT",
             In = OpenApiSecurityLocationType.Header
+        )]
+        [OpenApiParameter(
+            "groupId",
+            In = ParameterLocation.Path,
+            Required = true,
+            Type = typeof(string),
+            Description = "Id of the group."
+        )]
+        [OpenApiParameter(
+            "userId",
+            In = ParameterLocation.Path,
+            Required = true,
+            Type = typeof(string),
+            Description = "Id of the user."
         )]
         [OpenApiResponseWithoutBody(
             statusCode: HttpStatusCode.NoContent,
