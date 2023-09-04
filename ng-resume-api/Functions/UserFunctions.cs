@@ -101,5 +101,75 @@ namespace Jpf.NgResume.Api.Functions
 
             return response;
         }
+
+        [Function("UsersGetUserGroupMembership")]
+        [OpenApiOperation(operationId: "GetUserGroupMembership", tags: new[] { "users" })]
+        [OpenApiSecurity(
+            "Bearer",
+            SecuritySchemeType.Http,
+            Scheme = OpenApiSecuritySchemeType.Bearer,
+            BearerFormat = "JWT",
+            In = OpenApiSecurityLocationType.Header)]
+        [OpenApiParameter(
+            "userId",
+            In = ParameterLocation.Path,
+            Required = true,
+            Type = typeof(string),
+            Description = "Id of the user."
+        )]
+        [OpenApiResponseWithBody(
+            statusCode: HttpStatusCode.OK,
+            contentType: "application/json; charset=utf-8",
+            bodyType: typeof(List<Models.Group>),
+            Description = "A list of application groups."
+        )]
+        [OpenApiResponseWithBody(
+            statusCode: HttpStatusCode.Unauthorized,
+            contentType: "application/problem+json; charset=utf-8",
+            bodyType: typeof(CustomProblemDetails),
+            Description = "Problem details of an unauthorized access result."
+        )]
+        public async Task<HttpResponseData> GetUserGroupMembershipAsync(
+            [HttpTrigger(
+                AuthorizationLevel.Anonymous,
+                "get",
+                Route = "users/{userId}/groups"
+                )
+            ]
+            HttpRequestData request,
+            string userId,
+            FunctionContext functionContext)
+        {
+            var log = functionContext.GetLogger<GroupFunctions>();
+
+            var (authorized, authorizationResponse) =
+                await request.AuthenticateThenAuthorizeWithGroup(
+                    functionContext,
+                    graphClient,
+                    log,
+                    "SiteOwners");
+            if (!authorized) return authorizationResponse;
+
+            var memberships = await graphClient.Users[userId]
+                .MemberOf
+                .Request()
+                .GetAsync();
+
+            var graphGroups = memberships
+                .Where(p => p.GetType() == typeof(Microsoft.Graph.Group))
+                .Cast<Microsoft.Graph.Group>()
+                .ToList();
+
+            var groups = new List<Models.Group>();
+            graphGroups.ForEach((msGroup) =>
+            {
+                groups.Add(msGroup.FromMicrosoftGraph());
+            });
+
+            var response = request.CreateResponse();
+            await response.WriteAsJsonAsync(groups);
+
+            return response;
+        }
     }
 }
