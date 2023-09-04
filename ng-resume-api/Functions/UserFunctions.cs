@@ -35,7 +35,7 @@ namespace Jpf.NgResume.Api.Functions
             statusCode: HttpStatusCode.OK,
             contentType:  "application/json; charset=utf-8",
             bodyType: typeof(List<Models.User>),
-            Description = "A user representing the current user's profile."
+            Description = "A list of application users."
         )]
         [OpenApiResponseWithBody(
             statusCode: HttpStatusCode.Unauthorized,
@@ -53,7 +53,7 @@ namespace Jpf.NgResume.Api.Functions
             HttpRequestData request,
             FunctionContext functionContext)
         {
-            var log = functionContext.GetLogger<TestFunctions>();
+            var log = functionContext.GetLogger<UserFunctions>();
 
             var (authorized, authorizationResponse) =
                 await request.AuthenticateThenAuthorizeWithGroup(
@@ -64,9 +64,9 @@ namespace Jpf.NgResume.Api.Functions
             if (!authorized) return authorizationResponse;
 
             var users = await graphClient.Users
-                    .Request()
-                    .SelectUserProperties()
-                    .GetAsync();
+                .Request()
+                .SelectUserProperties()
+                .GetAsync();
 
             // Iterate over all the users in the directory
             var pageIterator = PageIterator<Microsoft.Graph.User>
