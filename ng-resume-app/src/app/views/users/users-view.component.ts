@@ -15,6 +15,7 @@ import {
 } from "@angular/animations";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDividerModule } from "@angular/material/divider";
+import { MatChipsModule } from "@angular/material/chips";
 
 @Component({
   selector: "app-users-view",
@@ -26,6 +27,7 @@ import { MatDividerModule } from "@angular/material/divider";
     MatButtonModule,
     MatIconModule,
     MatDividerModule,
+    MatChipsModule
   ],
   templateUrl: "./users-view.component.html",
   styleUrls: ["./users-view.component.scss"],
@@ -41,6 +43,7 @@ import { MatDividerModule } from "@angular/material/divider";
   ],
 })
 export class UsersViewComponent implements OnInit, OnDestroy {
+  groupList: Group[] = [];
   userList: User[] = [];
   expandedUser: User | null = null;
   expandedUserGroups: Group[] = [];
@@ -53,6 +56,7 @@ export class UsersViewComponent implements OnInit, OnDestroy {
   ];
   columnsToDisplayWithExpand: string[] = [...this.displayedColumns, "expand"];
 
+  private groupSubscription: Subscription | null = null;
   private usersSubscription: Subscription | null = null;
   private userGroupSubscription: Subscription | null = null;
 
@@ -63,6 +67,10 @@ export class UsersViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.platformService.isBrowser()) {
+      this.groupSubscription = this.usersService
+        .getAllGroups()
+        .subscribe((data) => (this.groupList = data));
+
       this.usersSubscription = this.usersService
         .getAll()
         .subscribe((data) => (this.userList = data));
@@ -70,6 +78,7 @@ export class UsersViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.groupSubscription?.unsubscribe();
     this.usersSubscription?.unsubscribe();
     this.userGroupSubscription?.unsubscribe();
   }

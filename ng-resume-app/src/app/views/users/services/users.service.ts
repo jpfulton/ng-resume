@@ -38,4 +38,14 @@ export class UsersService {
       this.errorDialogService,
     );
   }
+
+  getAllGroups(): Observable<Group[]> {
+    const apiClient = getAuthenticatedApiClient(this.authService);
+
+    return apiPromiseToObservableWithRetry<Group[]>(
+      () => apiClient.groups.getAll(),
+      this.loadingService,
+      this.errorDialogService,
+    );
+  }
 }

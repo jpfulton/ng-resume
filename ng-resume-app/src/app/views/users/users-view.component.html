@@ -95,11 +95,24 @@
             <div class="table-divider">
               <mat-divider></mat-divider>
             </div>
-
+            
+            <mat-chip-listbox multiple="true">
+              <mat-chip-option
+                *ngFor="let group of groupList"
+                selected="(expandedUserGroups.filter(g => g.Id === group.Id).length > 0)"
+                color="accent"
+                >
+                {{ group.displayName }}
+              </mat-chip-option>
+            </mat-chip-listbox>
+            
             <table>
               <thead>
                 <tr>
-                  <th colspan="3">Group Membership</th>
+                  <th colspan="2">Group Membership</th>
+                  <th class="align-right">
+  
+                  </th>
                 </tr>
                 <tr>
                   <th class="id-widget-column">Id</th>
