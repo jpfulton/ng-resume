@@ -16,6 +16,22 @@ table {
         padding-top: 10px;
         padding-bottom: 10px;
 
+        .bold {
+            font-weight: bold;
+        }
+
+        .chips-container {
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
+
+            .chips-label {
+                font-weight: bold;
+                font-size: medium;
+                margin-right: 1rem;
+            }
+        }
+
         table {
             border: 1px solid whitesmoke;
             table-layout: auto;
@@ -49,7 +65,8 @@ table {
         }
 
         .table-divider {
-            margin: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
         }
     }
 

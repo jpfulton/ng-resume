@@ -76,18 +76,23 @@
               <mat-divider></mat-divider>
             </div>
 
-            <mat-chip-listbox multiple="true">
-              <mat-chip-option
-                *ngFor="let group of groupList"
-                [selected]="isGroupInExpandedUserGroups(group.id!)"
-                color="accent"
-                (selectionChange)="
-                  onChipSelectionChange($event, expandedUser!, group)
-                "
-              >
-                {{ group.displayName }}
-              </mat-chip-option>
-            </mat-chip-listbox>
+            <div class="chips-container">
+
+              <mat-chip-listbox multiple="true">
+                <mat-chip-option
+                  *ngFor="let group of groupList"
+                  [selected]="isGroupInExpandedUserGroups(group.id!)"
+                  color="accent"
+                  (selectionChange)="
+                    onChipSelectionChange($event, expandedUser!, group)
+                  "
+                >
+                  {{ group.displayName }}
+                </mat-chip-option>
+              </mat-chip-listbox>
+
+              <div class="chips-label">Group Membership</div>
+            </div>
 
             <div class="table-divider">
               <mat-divider></mat-divider>
