@@ -2,6 +2,7 @@
   "name": "ng-resume",
   "version": "0.0.0",
   "scripts": {
+    "clean": "rm -rf dist",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -16,7 +17,7 @@
     "serve:ssr": "node dist/ng-resume/server/main.js",
     "build:ssr": "ng build && ng run ng-resume:server",
     "prerender": "ng run ng-resume:prerender",
-    "format": "prettier --write \"**/*.{js,mjs,jsx,ts,tsx,json,md,mdx}\""
+    "format": "prettier --write \"**/*.{js,mjs,jsx,ts,tsx,json,md,mdx,html}\""
   },
   "private": true,
   "dependencies": {
@@ -34,7 +35,7 @@
     "@azure/msal-angular": "3.0.2",
     "@azure/msal-browser": "3.0.2",
     "@azure/msal-common": "14.0.2",
-    "@jpfulton/ng-resume-api-browser-sdk": "0.0.65",
+    "@jpfulton/ng-resume-api-browser-sdk": "^0.0.74",
     "@microsoft/applicationinsights-angularplugin-js": "3.0.3",
     "@microsoft/applicationinsights-web": "2.8.14",
     "@nguniversal/express-engine": "^16.2.0",

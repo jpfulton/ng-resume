@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { User } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
+import { Group, User } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
 import { Observable } from "rxjs";
 import { AuthService } from "src/app/core/services/auth.service";
 import { ErrorDialogService } from "src/app/core/services/error-dialog.service";
@@ -27,5 +27,37 @@ export class UsersService {
       this.loadingService,
       this.errorDialogService,
     );
+  }
+
+  getUserGroupMembership(userId: string): Observable<Group[]> {
+    const apiClient = getAuthenticatedApiClient(this.authService);
+
+    return apiPromiseToObservableWithRetry<Group[]>(
+      () => apiClient.users.getUserGroupMembership(userId),
+      this.loadingService,
+      this.errorDialogService,
+    );
+  }
+
+  getAllGroups(): Observable<Group[]> {
+    const apiClient = getAuthenticatedApiClient(this.authService);
+
+    return apiPromiseToObservableWithRetry<Group[]>(
+      () => apiClient.groups.getAll(),
+      this.loadingService,
+      this.errorDialogService,
+    );
+  }
+
+  async addUserToGroup(groupId: string, user: User): Promise<void> {
+    const apiClient = getAuthenticatedApiClient(this.authService);
+
+    await apiClient.groups.addUser(groupId, user);
+  }
+
+  async removeUserFromGroup(groupId: string, userId: string): Promise<void> {
+    const apiClient = getAuthenticatedApiClient(this.authService);
+
+    await apiClient.groups.removeUser(groupId, userId);
   }
 }

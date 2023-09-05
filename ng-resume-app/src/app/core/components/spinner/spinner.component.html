@@ -1,19 +1,17 @@
 <div *ngIf="this.loadingService.getLoading()">
+  <div class="loader">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="loading"></div>
+  </div>
 
-    <div class="loader">
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="loading"></div>
-    </div>
-
-    <p class="spinner-message" *ngIf="message && message !== ''">
-        {{message}}
-    </p>
-    
+  <p class="spinner-message" *ngIf="message && message !== ''">
+    {{ message }}
+  </p>
 </div>

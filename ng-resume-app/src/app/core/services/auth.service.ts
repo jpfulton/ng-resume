@@ -152,9 +152,8 @@ export class AuthService {
       });
 
     if (interactionRequired) {
-      response = await this.msalAuthService.instance.acquireTokenRedirect(
-        request,
-      );
+      response =
+        await this.msalAuthService.instance.acquireTokenRedirect(request);
     }
 
     const token = response?.accessToken;

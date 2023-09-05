@@ -2,7 +2,7 @@
 import {
   NgResumeApiClient,
   NgResumeApiTimeoutError,
-  NgResumeApi
+  NgResumeApi,
 } from "@jpfulton/ng-resume-api-browser-sdk";
 import {
   Observable,

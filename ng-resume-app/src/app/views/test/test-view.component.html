@@ -1,30 +1,30 @@
 <section>
-    <button mat-raised-button color="accent" (click)="sendTestPost()">
-        Test POST
-    </button>
-    
-    <button mat-raised-button color="accent" (click)="sendProfileGet()">
-        GET Profile
-    </button>
+  <button mat-raised-button color="accent" (click)="sendTestPost()">
+    Test POST
+  </button>
+
+  <button mat-raised-button color="accent" (click)="sendProfileGet()">
+    GET Profile
+  </button>
 </section>
 
 <mat-divider></mat-divider>
 
 <section *ngIf="test">
-    <h2>Test POST Result</h2>
-    <pre>{{ getTestAsJson() }}</pre>
+  <h2>Test POST Result</h2>
+  <pre>{{ getTestAsJson() }}</pre>
 </section>
 
 <mat-divider></mat-divider>
 
 <section *ngIf="user">
-    <h2>Profile Result</h2>
-    <pre>{{ getUserAsJson() }}</pre>
+  <h2>Profile Result</h2>
+  <pre>{{ getUserAsJson() }}</pre>
 </section>
 
 <mat-divider></mat-divider>
 
 <section>
-    <h2>Access Token</h2>
-    <div style="word-wrap: break-word;">{{ accessToken }}</div>
+  <h2>Access Token</h2>
+  <div style="word-wrap: break-word">{{ accessToken }}</div>
 </section>
