@@ -48,4 +48,16 @@ export class UsersService {
       this.errorDialogService,
     );
   }
+
+  async addUserToGroup(groupId: string, user: User): Promise<void> {
+    const apiClient = getAuthenticatedApiClient(this.authService);
+
+    await apiClient.groups.addUser(groupId, user);
+  }
+
+  async removeUserFromGroup(groupId: string, userId: string): Promise<void> {
+    const apiClient = getAuthenticatedApiClient(this.authService);
+
+    await apiClient.groups.removeUser(groupId, userId);
+  }
 }

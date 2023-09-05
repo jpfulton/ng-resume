@@ -99,8 +99,9 @@
             <mat-chip-listbox multiple="true">
               <mat-chip-option
                 *ngFor="let group of groupList"
-                selected="(expandedUserGroups.filter(g => g.Id === group.Id).length > 0)"
+                [selected]="isGroupInExpandedUserGroups(group.id!)"
                 color="accent"
+                (selectionChange)="onChipSelectionChange($event, expandedUser!, group)"
                 >
                 {{ group.displayName }}
               </mat-chip-option>

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { NgFor, NgIf } from "@angular/common";
 import { UsersService } from "./services/users.service";
 import { Group, User } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
@@ -15,7 +15,7 @@ import {
 } from "@angular/animations";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDividerModule } from "@angular/material/divider";
-import { MatChipsModule } from "@angular/material/chips";
+import { MatChipSelectionChange, MatChipsModule } from "@angular/material/chips";
 
 @Component({
   selector: "app-users-view",
@@ -63,6 +63,7 @@ export class UsersViewComponent implements OnInit, OnDestroy {
   constructor(
     private usersService: UsersService,
     private platformService: PlatformService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -96,5 +97,25 @@ export class UsersViewComponent implements OnInit, OnDestroy {
     this.userGroupSubscription = this.usersService
       .getUserGroupMembership(user.id!)
       .subscribe((data) => (this.expandedUserGroups = data));
+    
+    // this.changeDetectorRef.detectChanges();
+  }
+
+  onChipSelectionChange(event: MatChipSelectionChange, user: User, group: Group): Promise<void> {
+    if (event.isUserInput) {
+      if (event.selected) {
+        return this.usersService.addUserToGroup(group.id!, user);
+      }
+      else {
+        return this.usersService.removeUserFromGroup(group.id!, user.id!);
+      }
+    }
+    else {
+      return new Promise<void>(resolve => resolve());
+    }
+  }
+
+  isGroupInExpandedUserGroups(groupId: string): boolean {
+    return this.expandedUserGroups.filter(g => g.id === groupId).length > 0 ? true : false;
   }
 }
