@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { NgFor, NgIf } from "@angular/common";
 import { UsersService } from "./services/users.service";
 import { Group, User } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
@@ -62,8 +62,7 @@ export class UsersViewComponent implements OnInit, OnDestroy {
 
   constructor(
     private usersService: UsersService,
-    private platformService: PlatformService,
-    private changeDetectorRef: ChangeDetectorRef
+    private platformService: PlatformService
   ) {}
 
   ngOnInit(): void {
@@ -97,8 +96,6 @@ export class UsersViewComponent implements OnInit, OnDestroy {
     this.userGroupSubscription = this.usersService
       .getUserGroupMembership(user.id!)
       .subscribe((data) => (this.expandedUserGroups = data));
-    
-    // this.changeDetectorRef.detectChanges();
   }
 
   onChipSelectionChange(event: MatChipSelectionChange, user: User, group: Group): Promise<void> {
