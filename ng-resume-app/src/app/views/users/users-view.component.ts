@@ -113,7 +113,7 @@ export class UsersViewComponent implements OnInit, OnDestroy {
       if (event.selected) {
         await this.usersService.addUserToGroup(group.id!, user);
         this.snackBar.open(
-          `User has been added to the ${group.displayName} group.`,
+          `User (${user.id}) has been added to the ${group.displayName} group.`,
           undefined,
           {
             duration: 3000,
@@ -122,7 +122,7 @@ export class UsersViewComponent implements OnInit, OnDestroy {
       } else {
         await this.usersService.removeUserFromGroup(group.id!, user.id!);
         this.snackBar.open(
-          `User has been removed from the ${group.displayName} group.`,
+          `User (${user.id}) has been removed from the ${group.displayName} group.`,
           undefined,
           {
             duration: 3000,
