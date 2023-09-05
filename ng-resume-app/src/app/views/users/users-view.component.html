@@ -72,6 +72,10 @@
           [@detailExpand]="user === expandedUser ? 'expanded' : 'collapsed'"
         >
           <div class="detail-container">
+            <div class="table-divider">
+              <mat-divider></mat-divider>
+            </div>
+
             <mat-chip-listbox multiple="true">
               <mat-chip-option
                 *ngFor="let group of groupList"
@@ -108,6 +112,10 @@
                 </tr>
               </tbody>
             </table>
+
+            <div class="table-divider">
+              <mat-divider></mat-divider>
+            </div>
           </div>
         </div>
       </td>
