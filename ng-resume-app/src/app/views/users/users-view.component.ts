@@ -20,6 +20,7 @@ import {
   MatChipsModule,
 } from "@angular/material/chips";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
+import { IdWidgetComponent } from "./components/id-widget/id-widget.component";
 
 @Component({
   selector: "app-users-view",
@@ -33,6 +34,7 @@ import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
     MatDividerModule,
     MatChipsModule,
     MatSnackBarModule,
+    IdWidgetComponent
   ],
   templateUrl: "./users-view.component.html",
   styleUrls: ["./users-view.component.scss"],

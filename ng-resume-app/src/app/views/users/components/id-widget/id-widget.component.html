@@ -1,0 +1,15 @@
+<div class="id-widget">
+  <div class="id-container" title="{{ data }}">
+    {{ data }}
+  </div>
+  <button
+    mat-icon-button
+    class="small-icon-button"
+    color="disabled"
+    #tooltip="matTooltip"
+    [matTooltip]="toolTipMessage"
+    (click)="copyToClipboard(tooltip, data); $event.stopPropagation()"
+  >
+    <mat-icon color="accent">file_copy</mat-icon>
+  </button>
+</div>
