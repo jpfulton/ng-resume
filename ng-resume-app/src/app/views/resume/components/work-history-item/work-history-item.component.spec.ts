@@ -92,7 +92,7 @@ describe("WorkHistoryItemComponent", () => {
     expect(organizationAnchorElement).toBeTruthy();
     expect(organizationWithoutAnchorElement).toBeFalsy(); // should not render when data obejct is full
 
-    expect(dateRangeElement?.textContent).toEqual(
+    expect(dateRangeElement?.textContent?.trim()).toEqual(
       workHistoryItem.startYear + " - " + workHistoryItem.endYear,
     );
     expect(titleElement?.textContent).toEqual(workHistoryItem.title);
@@ -131,7 +131,7 @@ describe("WorkHistoryItemComponent", () => {
     expect(organizationAnchorElement).toBeFalsy(); // should not render
     expect(organizationWithoutAnchorElement).toBeTruthy();
 
-    expect(dateRangeElement?.textContent).toEqual(
+    expect(dateRangeElement?.textContent?.trim()).toEqual(
       workHistoryItem.startYear + " - " + workHistoryItem.endYear,
     );
     expect(titleElement?.textContent).toEqual(workHistoryItem.title);

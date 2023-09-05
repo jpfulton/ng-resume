@@ -71,9 +71,9 @@ describe("EducationItemComponent", () => {
     expect(subtitleElement).toBeTruthy();
     expect(organizationElement).toBeTruthy();
 
-    expect(titleElement?.textContent).toEqual(educationItem.title);
-    expect(subtitleElement?.textContent).toEqual(educationItem.subtitle);
-    expect(organizationElement?.textContent).toEqual(
+    expect(titleElement?.textContent?.trim()).toEqual(educationItem.title);
+    expect(subtitleElement?.textContent?.trim()).toEqual(educationItem.subtitle);
+    expect(organizationElement?.textContent?.trim()).toEqual(
       educationItem.organization,
     );
   });
@@ -88,8 +88,8 @@ describe("EducationItemComponent", () => {
     expect(subtitleElement).toBeFalsy(); // no data in property on input, should not render
     expect(organizationElement).toBeTruthy();
 
-    expect(titleElement?.textContent).toEqual(educationItem.title);
-    expect(organizationElement?.textContent).toEqual(
+    expect(titleElement?.textContent?.trim()).toEqual(educationItem.title);
+    expect(organizationElement?.textContent?.trim()).toEqual(
       educationItem.organization,
     );
   });
@@ -104,7 +104,7 @@ describe("EducationItemComponent", () => {
     expect(subtitleElement).toBeTruthy();
     expect(organizationElement).toBeFalsy(); // no data in property on input parameter, should not render
 
-    expect(titleElement?.textContent).toEqual(educationItem.title);
-    expect(subtitleElement?.textContent).toEqual(educationItem.subtitle);
+    expect(titleElement?.textContent?.trim()).toEqual(educationItem.title);
+    expect(subtitleElement?.textContent?.trim()).toEqual(educationItem.subtitle);
   });
 });
