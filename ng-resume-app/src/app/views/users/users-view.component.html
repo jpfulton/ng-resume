@@ -72,6 +72,22 @@
           [@detailExpand]="user === expandedUser ? 'expanded' : 'collapsed'"
         >
           <div class="detail-container">
+
+            <mat-chip-listbox multiple="true">
+              <mat-chip-option
+                *ngFor="let group of groupList"
+                [selected]="isGroupInExpandedUserGroups(group.id!)"
+                color="accent"
+                (selectionChange)="onChipSelectionChange($event, expandedUser!, group)"
+                >
+                {{ group.displayName }}
+              </mat-chip-option>
+            </mat-chip-listbox>
+
+            <div class="table-divider">
+              <mat-divider></mat-divider>
+            </div>
+
             <table>
               <thead>
                 <tr>
@@ -92,60 +108,6 @@
               </tbody>
             </table>
 
-            <div class="table-divider">
-              <mat-divider></mat-divider>
-            </div>
-            
-            <mat-chip-listbox multiple="true">
-              <mat-chip-option
-                *ngFor="let group of groupList"
-                [selected]="isGroupInExpandedUserGroups(group.id!)"
-                color="accent"
-                (selectionChange)="onChipSelectionChange($event, expandedUser!, group)"
-                >
-                {{ group.displayName }}
-              </mat-chip-option>
-            </mat-chip-listbox>
-            
-            <table>
-              <thead>
-                <tr>
-                  <th colspan="2">Group Membership</th>
-                  <th class="align-right">
-  
-                  </th>
-                </tr>
-                <tr>
-                  <th class="id-widget-column">Id</th>
-                  <th>Name</th>
-                  <th class="absorbing-column">Security Enabled</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let group of expandedUserGroups">
-                  <td>
-                    <div class="id-widget">
-                      <div class="id-container" title="{{ group.id }}">
-                        {{ group.id }}
-                      </div>
-                      <button
-                        mat-icon-button
-                        class="small-icon-button"
-                        color="disabled"
-                        title="Copy"
-                        (click)="
-                          copyToClipboard(group.id!); $event.stopPropagation()
-                        "
-                      >
-                        <mat-icon>file_copy</mat-icon>
-                      </button>
-                    </div>
-                  </td>
-                  <td>{{ group.displayName }}</td>
-                  <td>{{ group.securityEnabled }}</td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </div>
       </td>
