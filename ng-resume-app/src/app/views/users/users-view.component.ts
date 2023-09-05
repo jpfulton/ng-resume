@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { NgFor, NgIf } from "@angular/common";
 import { UsersService } from "./services/users.service";
 import { Group, User } from "@jpfulton/ng-resume-api-browser-sdk/types/api";
 import { Subscription } from "rxjs";
-import { MatTableModule } from "@angular/material/table";
+import { MatTableDataSource, MatTableModule } from "@angular/material/table";
 import { PlatformService } from "src/app/core/services/platform.service";
 import { MatIconModule } from "@angular/material/icon";
 import {
@@ -21,6 +21,7 @@ import {
 } from "@angular/material/chips";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
 import { IdWidgetComponent } from "./components/id-widget/id-widget.component";
+import { MatSort, MatSortModule } from "@angular/material/sort";
 
 @Component({
   selector: "app-users-view",
@@ -29,6 +30,7 @@ import { IdWidgetComponent } from "./components/id-widget/id-widget.component";
     NgFor,
     NgIf,
     MatTableModule,
+    MatSortModule,
     MatButtonModule,
     MatIconModule,
     MatDividerModule,
@@ -49,7 +51,9 @@ import { IdWidgetComponent } from "./components/id-widget/id-widget.component";
     ]),
   ],
 })
-export class UsersViewComponent implements OnInit, OnDestroy {
+export class UsersViewComponent implements AfterViewInit, OnInit, OnDestroy {
+  @ViewChild(MatSort) sort!: MatSort;
+  
   groupList: Group[] = [];
   userList: User[] = [];
   expandedUser: User | null = null;
@@ -63,6 +67,8 @@ export class UsersViewComponent implements OnInit, OnDestroy {
   ];
   columnsToDisplayWithExpand: string[] = [...this.displayedColumns, "expand"];
 
+  dataSource = new MatTableDataSource<User>([]);
+
   private groupSubscription: Subscription | null = null;
   private usersSubscription: Subscription | null = null;
   private userGroupSubscription: Subscription | null = null;
@@ -71,7 +77,11 @@ export class UsersViewComponent implements OnInit, OnDestroy {
     private usersService: UsersService,
     private platformService: PlatformService,
     private snackBar: MatSnackBar,
-  ) {}
+  ) { }
+  
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+  }
 
   ngOnInit(): void {
     if (this.platformService.isBrowser()) {
@@ -81,7 +91,7 @@ export class UsersViewComponent implements OnInit, OnDestroy {
 
       this.usersSubscription = this.usersService
         .getAll()
-        .subscribe((data) => (this.userList = data));
+        .subscribe((data) => (this.dataSource.data = data));
     }
   }
 
