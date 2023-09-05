@@ -72,14 +72,15 @@
           [@detailExpand]="user === expandedUser ? 'expanded' : 'collapsed'"
         >
           <div class="detail-container">
-
             <mat-chip-listbox multiple="true">
               <mat-chip-option
                 *ngFor="let group of groupList"
                 [selected]="isGroupInExpandedUserGroups(group.id!)"
                 color="accent"
-                (selectionChange)="onChipSelectionChange($event, expandedUser!, group)"
-                >
+                (selectionChange)="
+                  onChipSelectionChange($event, expandedUser!, group)
+                "
+              >
                 {{ group.displayName }}
               </mat-chip-option>
             </mat-chip-listbox>
@@ -107,7 +108,6 @@
                 </tr>
               </tbody>
             </table>
-
           </div>
         </div>
       </td>
