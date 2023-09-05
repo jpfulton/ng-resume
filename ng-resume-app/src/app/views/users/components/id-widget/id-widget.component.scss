@@ -1,0 +1,37 @@
+.id-widget {
+  display: inline;
+
+  .id-container {
+      display: inline-block;
+      max-width: 4em;
+      max-height: 1em;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+  }
+
+  .small-icon-button {
+      width: 24px !important;
+      height: 24px !important;
+      padding: 0px !important;
+      display: inline !important;
+      align-items: center;
+      justify-content: center;
+   
+      & > *[role=img] {
+         width: 16px;
+         height: 16px;
+         font-size: 16px;
+   
+         svg {
+            width: 16px;
+            height: 16px;
+         }
+      }
+   
+      .mat-mdc-button-touch-target {
+         width: 24px !important;
+         height: 24px !important;
+      }
+   }
+}

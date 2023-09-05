@@ -20,6 +20,7 @@ import {
   MatChipsModule,
 } from "@angular/material/chips";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
+import { IdWidgetComponent } from "./components/id-widget/id-widget.component";
 
 @Component({
   selector: "app-users-view",
@@ -33,6 +34,7 @@ import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
     MatDividerModule,
     MatChipsModule,
     MatSnackBarModule,
+    IdWidgetComponent
   ],
   templateUrl: "./users-view.component.html",
   styleUrls: ["./users-view.component.scss"],
@@ -113,7 +115,7 @@ export class UsersViewComponent implements OnInit, OnDestroy {
       if (event.selected) {
         await this.usersService.addUserToGroup(group.id!, user);
         this.snackBar.open(
-          `User has been added to the ${group.displayName} group.`,
+          `User (${user.id}) has been added to the ${group.displayName} group.`,
           undefined,
           {
             duration: 3000,
@@ -122,7 +124,7 @@ export class UsersViewComponent implements OnInit, OnDestroy {
       } else {
         await this.usersService.removeUserFromGroup(group.id!, user.id!);
         this.snackBar.open(
-          `User has been removed from the ${group.displayName} group.`,
+          `User (${user.id}) has been removed from the ${group.displayName} group.`,
           undefined,
           {
             duration: 3000,
