@@ -16,6 +16,7 @@ import {
 import { MatButtonModule } from "@angular/material/button";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatChipSelectionChange, MatChipsModule } from "@angular/material/chips";
+import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-users-view",
@@ -27,7 +28,8 @@ import { MatChipSelectionChange, MatChipsModule } from "@angular/material/chips"
     MatButtonModule,
     MatIconModule,
     MatDividerModule,
-    MatChipsModule
+    MatChipsModule,
+    MatSnackBarModule
   ],
   templateUrl: "./users-view.component.html",
   styleUrls: ["./users-view.component.scss"],
@@ -62,7 +64,8 @@ export class UsersViewComponent implements OnInit, OnDestroy {
 
   constructor(
     private usersService: UsersService,
-    private platformService: PlatformService
+    private platformService: PlatformService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -98,18 +101,31 @@ export class UsersViewComponent implements OnInit, OnDestroy {
       .subscribe((data) => (this.expandedUserGroups = data));
   }
 
-  onChipSelectionChange(event: MatChipSelectionChange, user: User, group: Group): Promise<void> {
+  async onChipSelectionChange(event: MatChipSelectionChange, user: User, group: Group): Promise<void> {
     if (event.isUserInput) {
       if (event.selected) {
-        return this.usersService.addUserToGroup(group.id!, user);
+        await this.usersService.addUserToGroup(group.id!, user);
+        this.snackBar.open(
+          `User has been added to the ${group.displayName} group.`,
+          undefined,
+          {
+            duration: 3000
+          }
+        );
       }
       else {
-        return this.usersService.removeUserFromGroup(group.id!, user.id!);
+        await this.usersService.removeUserFromGroup(group.id!, user.id!);
+        this.snackBar.open(
+          `User has been removed from the ${group.displayName} group.`,
+          undefined,
+          {
+            duration: 3000
+          }
+        );
       }
     }
-    else {
-      return new Promise<void>(resolve => resolve());
-    }
+
+    return new Promise<void>(resolve => resolve());
   }
 
   isGroupInExpandedUserGroups(groupId: string): boolean {
