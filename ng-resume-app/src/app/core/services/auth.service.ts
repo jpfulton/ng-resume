@@ -267,7 +267,7 @@ export class AuthService {
           window.location.pathname = "/";
         } else {
           this.setIsLoggedIn();
-          this.loggingService.logInfo("Login sucess. ");
+          this.loggingService.logInfo("Login success.");
         }
       });
 
@@ -381,7 +381,7 @@ export class AuthService {
           result.error &&
           result.error.message.indexOf("AADB2C90091") > -1
         ) {
-          this.loggingService.logWarn("User canceled signin process.");
+          this.loggingService.logWarn("User canceled sign in process.");
         }
       });
   }
