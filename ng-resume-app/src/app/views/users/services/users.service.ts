@@ -29,6 +29,16 @@ export class UsersService {
     );
   }
 
+  getCurrentUser(): Observable<User> {
+    const apiClient = getAuthenticatedApiClient(this.authService);
+
+    return apiPromiseToObservableWithRetry<User>(
+      () => apiClient.profile.get(),
+      this.loadingService,
+      this.errorDialogService,
+    );
+  }
+
   getUserGroupMembership(userId: string): Observable<Group[]> {
     const apiClient = getAuthenticatedApiClient(this.authService);
 

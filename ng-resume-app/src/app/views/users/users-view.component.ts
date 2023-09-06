@@ -58,6 +58,9 @@ export class UsersViewComponent implements AfterViewInit, OnInit, OnDestroy {
   userList: User[] = [];
   expandedUser: User | null = null;
   expandedUserGroups: Group[] = [];
+
+  currentUser: User | null = null;
+
   displayedColumns: string[] = [
     "id",
     "displayName",
@@ -65,10 +68,11 @@ export class UsersViewComponent implements AfterViewInit, OnInit, OnDestroy {
     "surname",
     "federatedIssuer",
   ];
-  columnsToDisplayWithExpand: string[] = [...this.displayedColumns, "expand"];
+  columnsToDisplayWithUtils: string[] = [...this.displayedColumns, "expand", "currentUser"];
 
   dataSource = new MatTableDataSource<User>([]);
 
+  private currentUserSubscription: Subscription | null = null;
   private groupSubscription: Subscription | null = null;
   private usersSubscription: Subscription | null = null;
   private userGroupSubscription: Subscription | null = null;
@@ -92,10 +96,15 @@ export class UsersViewComponent implements AfterViewInit, OnInit, OnDestroy {
       this.usersSubscription = this.usersService
         .getAll()
         .subscribe((data) => (this.dataSource.data = data));
+      
+      this.currentUserSubscription = this.usersService
+        .getCurrentUser()
+        .subscribe((data) => (this.currentUser = data));
     }
   }
 
   ngOnDestroy(): void {
+    this.currentUserSubscription?.unsubscribe();
     this.groupSubscription?.unsubscribe();
     this.usersSubscription?.unsubscribe();
     this.userGroupSubscription?.unsubscribe();
@@ -150,5 +159,9 @@ export class UsersViewComponent implements AfterViewInit, OnInit, OnDestroy {
     return this.expandedUserGroups.filter((g) => g.id === groupId).length > 0
       ? true
       : false;
+  }
+
+  isCurrentUser(userId: string): boolean {
+    return this.currentUser?.id === userId;
   }
 }
