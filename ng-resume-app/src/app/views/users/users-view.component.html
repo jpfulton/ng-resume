@@ -79,7 +79,10 @@
 
             <div class="chips-container">
 
-              <mat-chip-listbox multiple="true">
+              <mat-chip-listbox 
+                multiple="true"
+                [disabled]="isCurrentUser(user.id!)"
+              >
                 <mat-chip-option
                   *ngFor="let group of groupList"
                   [selected]="isGroupInExpandedUserGroups(group.id!)"
